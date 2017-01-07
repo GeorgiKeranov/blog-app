@@ -1,4 +1,4 @@
-package georgi.com.blogapplicationbeta.Threads;
+package georgi.com.LoginRegister.Threads;
 
 import android.content.Context;
 import android.content.Intent;
@@ -17,7 +17,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import georgi.com.blogapplicationbeta.Activities.LoggedActivity;
+import georgi.com.LoginRegister.Activities.LoggedActivity;
 
 
 public class RegisterThread extends AsyncTask<String, Void, JSONObject> {

@@ -1,4 +1,4 @@
-package georgi.com.blogapplicationbeta.Activities;
+package georgi.com.LoginRegister.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,7 +8,7 @@ import android.widget.TextView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import georgi.com.blogapplicationbeta.R;
+import georgi.com.LoginRegister.R;
 
 
 public class LoggedActivity extends AppCompatActivity {

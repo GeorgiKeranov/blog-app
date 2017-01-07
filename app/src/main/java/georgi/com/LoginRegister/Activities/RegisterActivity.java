@@ -1,13 +1,12 @@
-package georgi.com.blogapplicationbeta.Activities;
+package georgi.com.LoginRegister.Activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 
-import georgi.com.blogapplicationbeta.Threads.RegisterThread;
-import georgi.com.blogapplicationbeta.R;
+import georgi.com.LoginRegister.Threads.RegisterThread;
+import georgi.com.LoginRegister.R;
 
 /**
  * Created by georgi on 12/14/16.

@@ -1,13 +1,12 @@
-package georgi.com.blogapplicationbeta.Activities;
+package georgi.com.LoginRegister.Activities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import georgi.com.blogapplicationbeta.R;
-import georgi.com.blogapplicationbeta.Threads.LoginThread;
+import georgi.com.LoginRegister.R;
+import georgi.com.LoginRegister.Threads.LoginThread;
 
 public class LoginActivity extends AppCompatActivity {
 
