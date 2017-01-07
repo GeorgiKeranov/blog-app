@@ -8,10 +8,6 @@ import android.widget.EditText;
 import georgi.com.LoginRegister.Threads.RegisterThread;
 import georgi.com.LoginRegister.R;
 
-/**
- * Created by georgi on 12/14/16.
- */
-
 public class RegisterActivity extends AppCompatActivity {
 
     // Getting "RegisterActivity" class name for debuging.
