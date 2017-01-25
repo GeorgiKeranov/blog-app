@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="georgi.com.LoginRegister.Activities.LoginActivity"
+    tools:context="georgi.com.BlogApp.Activities.LoginActivity"
     android:background="@android:color/holo_blue_bright">
 
     <Button
@@ -40,13 +40,13 @@
         android:layout_alignParentStart="true" />
 
     <EditText
-        android:id="@+id/id_email"
+        android:id="@+id/id_username"
         android:background="@android:color/holo_orange_dark"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:inputType="textEmailAddress"
         android:padding="10dp"
-        android:hint="Email"
+        android:hint="Username"
         android:ems="10"
         android:layout_above="@+id/id_password"
         android:layout_centerHorizontal="true"

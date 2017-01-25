@@ -1,19 +1,24 @@
-package georgi.com.LoginRegister.Activities;
+package georgi.com.BlogApp.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import georgi.com.LoginRegister.R;
+import georgi.com.BlogApp.R;
+import georgi.com.BlogApp.Threads.SetImageThread;
 
 
 public class LoggedActivity extends AppCompatActivity {
+
     String TAG = getClass().getSimpleName();
-    TextView text_name, text_email;
+
+    TextView text_name;
+    ImageView image_user;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -21,21 +26,26 @@ public class LoggedActivity extends AppCompatActivity {
         setContentView(R.layout.activity_logged);
 
         text_name = (TextView) findViewById(R.id.text_name);
-        text_email = (TextView) findViewById(R.id.text_email);
+
+        image_user = (ImageView) findViewById(R.id.image_user);
 
         Intent intent = getIntent();
-        if (intent.hasExtra("JSON")) getResponse(intent.getStringExtra("JSON"));
+        if (intent.hasExtra("JSON")) onResponse(intent.getStringExtra("JSON"));
     }
 
-    private void getResponse(String jsonString) {
+    private void onResponse(String jsonString) {
         try {
             JSONObject json = new JSONObject(jsonString);
-            JSONObject user = json.getJSONObject("user");
-            String name = user.getString("name");
-            String email = user.getString("email");
+            String name = json.getString("fullname");
 
             text_name.setText(name);
-            text_email.setText(email);
+
+            String imageName = json.getString("profile_picture");
+            if(imageName == null || imageName.equals("")) return;
+
+            SetImageThread imageThread = new SetImageThread(image_user);
+            imageThread.execute(json.getString("username"), imageName);
+
 
         }catch (JSONException e){
             e.printStackTrace();

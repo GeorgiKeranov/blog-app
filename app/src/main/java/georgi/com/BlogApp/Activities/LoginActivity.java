@@ -1,26 +1,27 @@
-package georgi.com.LoginRegister.Activities;
+package georgi.com.BlogApp.Activities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
-import georgi.com.LoginRegister.R;
-import georgi.com.LoginRegister.Threads.LoginThread;
+
+import georgi.com.BlogApp.R;
+import georgi.com.BlogApp.Threads.Authentication.LoginThread;
 
 public class LoginActivity extends AppCompatActivity {
 
     // Getting "LoginActivity" class name for debugging.
     String TAG = getClass().getSimpleName();
 
-    EditText email, password;
+    EditText username, password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        email = (EditText) findViewById(R.id.id_email);
+        username = (EditText) findViewById(R.id.id_username);
         password = (EditText) findViewById(R.id.id_password);
 
     }
@@ -30,7 +31,8 @@ public class LoginActivity extends AppCompatActivity {
         switch (view.getId()){
             case R.id.but_login :
                 LoginThread loginThread = new LoginThread(getApplicationContext());
-                loginThread.execute(email.getText().toString(), password.getText().toString());
+                loginThread.execute(username.getText().toString(),
+                                    password.getText().toString());
                 break;
 
             case R.id.id_register :
