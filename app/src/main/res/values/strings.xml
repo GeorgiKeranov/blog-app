@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">BlogApp</string>
     <string name="welcome">Welcome, please Log in.</string>
-    <string name="no_account_yet">You don't have account yet? Register here.</string>
+    <string name="no_account_yet">You don\'t have account yet? Register here</string>
     <string name="register">Welcome, please Register.</string>
-    <string name="already_got_account">You have already registered. Login here.</string>
+    <string name="already_got_account">You have already registered. Login here</string>
 </resources>

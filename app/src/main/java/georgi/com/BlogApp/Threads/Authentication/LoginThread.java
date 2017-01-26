@@ -1,7 +1,9 @@
 package georgi.com.BlogApp.Threads.Authentication;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
+import android.support.v7.app.AlertDialog;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -51,8 +53,7 @@ public class LoginThread extends AsyncTask<String, Void, String>{
             if(response.getBoolean("authenticated")){
                 String cookies = conn.getHeaderField("set-cookie");
                 String[] cookiesArray = cookies.split(";");
-                String JSESSION_ID = cookiesArray[0];
-                return JSESSION_ID;
+                return cookiesArray[0];
             }
 
         } catch (IOException e) {
@@ -72,13 +73,26 @@ public class LoginThread extends AsyncTask<String, Void, String>{
     @Override
     protected void onPostExecute(String cookie) {
 
-        if(cookie == null) return; // Open Windows that says Incorrect credentials.
+        if(cookie == null) {
+            // Creating invalid credentials dialog.
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setTitle("Error");
+            builder.setMessage("Invalid Credentials");
+            builder.setCancelable(false);
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+            }).create().show();
+        }
+
         else {
+            // Cookie is stored in sharedPreferences.
             PreferencesHelper helper = new PreferencesHelper(context);
             helper.setCookie(cookie);
 
-            GetUserInfoThread getUser = new GetUserInfoThread(context);
-            getUser.execute();
+            //TODO Go to new activity.
 
         }
 

@@ -1,6 +1,8 @@
 package georgi.com.BlogApp.Activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -30,7 +32,7 @@ public class LoginActivity extends AppCompatActivity {
 
         switch (view.getId()){
             case R.id.but_login :
-                LoginThread loginThread = new LoginThread(getApplicationContext());
+                LoginThread loginThread = new LoginThread(this);
                 loginThread.execute(username.getText().toString(),
                                     password.getText().toString());
                 break;

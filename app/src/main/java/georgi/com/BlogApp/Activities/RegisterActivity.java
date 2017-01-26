@@ -1,6 +1,8 @@
 package georgi.com.BlogApp.Activities;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
@@ -39,11 +41,26 @@ public class RegisterActivity extends AppCompatActivity {
             case R.id.but_register :
                 // If password and confirm password are not equal.
                 if(!password.getText().toString().equals(confirmPass.getText().toString())){
-                    // Window is appeared for information that they aren't the same.
-                    return;
+
+                    // Show alert that passwords are not the same.
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setTitle("Passwords error");
+                    builder.setMessage("Passwords are not the same");
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+
+                            // Password and confirm password are cleared.
+                            password.setText("");
+                            confirmPass.setText("");
+                        }
+                    }).create().show();
+
+                    break;
                 }
 
-                RegisterThread regThread = new RegisterThread(getApplicationContext());
+                RegisterThread regThread = new RegisterThread(this, username, email);
                 regThread.execute(
                         firstName.getText().toString(),
                         lastName.getText().toString(),
