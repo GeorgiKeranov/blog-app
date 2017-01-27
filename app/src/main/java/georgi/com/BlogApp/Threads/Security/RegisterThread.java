@@ -1,7 +1,8 @@
-package georgi.com.BlogApp.Threads;
+package georgi.com.BlogApp.Threads.Security;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -17,6 +18,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
+import georgi.com.BlogApp.Activities.Account.LoginActivity;
 
 import static georgi.com.BlogApp.Configs.ServerURLs.REGISTER_URL;
 
@@ -116,7 +119,20 @@ public class RegisterThread extends AsyncTask<String, Void, JSONObject> {
 
             else {
 
-                //TODO
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Successful");
+                builder.setMessage("You have been registered successful!");
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Intent intent = new Intent(context, LoginActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+                                Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        dialogInterface.dismiss();
+
+                        context.startActivity(intent);
+                    }
+                });
 
             }
 

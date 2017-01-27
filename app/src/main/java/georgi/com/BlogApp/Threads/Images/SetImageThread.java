@@ -1,4 +1,4 @@
-package georgi.com.BlogApp.Threads;
+package georgi.com.BlogApp.Threads.Images;
 
 
 import android.graphics.Bitmap;
@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import static georgi.com.BlogApp.Configs.ServerURLs.POSTS_IMAGES_URL;
 import static georgi.com.BlogApp.Configs.ServerURLs.USER_IMAGES_URL;
 
 public class SetImageThread extends AsyncTask<String, Void, Bitmap> {
@@ -24,11 +25,13 @@ public class SetImageThread extends AsyncTask<String, Void, Bitmap> {
     @Override
     protected Bitmap doInBackground(String... strings) {
         try {
-            String urlForImage = USER_IMAGES_URL + strings[0] + "/" + strings[1];
+            String urlForImage = POSTS_IMAGES_URL + strings[0];
             urlForImage = urlForImage.replace(" ", "%20");
 
             URL url = new URL(urlForImage);
-            Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+
+            Bitmap bmp = BitmapFactory.decodeStream(url.openStream());
+
             return bmp;
 
         } catch (MalformedURLException e) {

@@ -14,8 +14,7 @@ public class PreferencesHelper {
 
     public void setCookie(String cookie) {
 
-        SharedPreferences sharPref = context.getSharedPreferences("Cookies",
-                Context.MODE_PRIVATE);
+        SharedPreferences sharPref = context.getSharedPreferences("Cookies", 0);
         SharedPreferences.Editor editor = sharPref.edit();
         editor.putString("JSESSIONID", cookie);
         editor.apply();
@@ -23,8 +22,7 @@ public class PreferencesHelper {
     }
 
     public String getCookie(){
-        SharedPreferences sharPref = context.getSharedPreferences("Cookies",
-                Context.MODE_PRIVATE);
+        SharedPreferences sharPref = context.getSharedPreferences("Cookies", 0);
         return sharPref.getString("JSESSIONID", null);
     }
 }

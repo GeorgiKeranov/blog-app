@@ -1,7 +1,8 @@
-package georgi.com.BlogApp.Threads.Authentication;
+package georgi.com.BlogApp.Threads.Security;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AlertDialog;
 
@@ -15,8 +16,8 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import georgi.com.BlogApp.Activities.Posts.LatestPostsActivity;
 import georgi.com.BlogApp.Helpers.PreferencesHelper;
-import georgi.com.BlogApp.Threads.GetUserInfoThread;
 
 import static georgi.com.BlogApp.Configs.ServerURLs.LOGIN_URL;
 
@@ -89,10 +90,11 @@ public class LoginThread extends AsyncTask<String, Void, String>{
 
         else {
             // Cookie is stored in sharedPreferences.
-            PreferencesHelper helper = new PreferencesHelper(context);
-            helper.setCookie(cookie);
+            new PreferencesHelper(context).setCookie(cookie);
 
-            //TODO Go to new activity.
+            Intent homeActivity = new Intent(context, LatestPostsActivity.class);
+            homeActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            context.startActivity(homeActivity);
 
         }
 

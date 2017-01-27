@@ -1,4 +1,4 @@
-package georgi.com.BlogApp.Threads;
+package georgi.com.BlogApp.Threads.Users;
 
 import android.content.Context;
 import android.os.AsyncTask;

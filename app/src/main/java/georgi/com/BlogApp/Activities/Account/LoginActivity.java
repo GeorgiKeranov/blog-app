@@ -1,17 +1,15 @@
-package georgi.com.BlogApp.Activities;
+package georgi.com.BlogApp.Activities.Account;
 
-import android.content.DialogInterface;
+import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
 import georgi.com.BlogApp.R;
-import georgi.com.BlogApp.Threads.Authentication.LoginThread;
+import georgi.com.BlogApp.Threads.Security.LoginThread;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends Activity {
 
     // Getting "LoginActivity" class name for debugging.
     String TAG = getClass().getSimpleName();
