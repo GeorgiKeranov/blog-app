@@ -1,3 +1,3 @@
-# LoginRegisterPHP
-# Android application that can login and register to server.
-# Sends async http post user data and gets json response then updates UI thread.
+# BlogApp - android application.
+
+BlogApp is android application that uses rest service from https://github.com/GeorgiKeranov/Blog.
