@@ -1,5 +1,6 @@
 package georgi.com.BlogApp.Adapters;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,17 +8,23 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 import georgi.com.BlogApp.POJO.Post;
 import georgi.com.BlogApp.R;
-import georgi.com.BlogApp.Threads.Images.SetImageThread;
+
+import static georgi.com.BlogApp.Configs.ServerURLs.POSTS_IMAGES_URL;
 
 public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.MyViewHolder>{
 
+    private Context context;
+
     private List<Post> posts;
 
-    public HomePageAdapter(List<Post> posts){
+    public HomePageAdapter(Context context, List<Post> posts){
+        this.context = context;
         this.posts = posts;
     }
 
@@ -31,8 +38,10 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.MyView
     public void onBindViewHolder(MyViewHolder holder, int position) {
         Post curPost = posts.get(position);
 
-        SetImageThread setImage = new SetImageThread(holder.postImage);
-        setImage.execute(curPost.getIcon());
+        Glide.with(context)
+                .load(POSTS_IMAGES_URL + curPost.getIcon())
+                .override(100, 100)
+                .into(holder.postImage);
 
         holder.title.setText(curPost.getSummaryTitle());
         holder.description.setText(curPost.getSummaryDesc());

@@ -84,7 +84,7 @@ public class GetLatestPostsThread extends AsyncTask<Void, Void, List<Post>>{
     @Override
     protected void onPostExecute(List<Post> posts) {
 
-        adapter = new HomePageAdapter(posts);
+        adapter = new HomePageAdapter(context, posts);
         recyclerView.setAdapter(adapter);
 
     }

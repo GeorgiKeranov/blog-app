@@ -13,6 +13,6 @@ public class ServerURLs {
     public static final String LATEST10POSTS_URL = SERVER_URL + "/posts/latest10";
 
     public static final String USER_IMAGES_URL = "http://192.168.0.102:8080/res/images/";
-    public static final String POSTS_IMAGES_URL = "http://192.168.0.102:8080/res/posts-images";
+    public static final String POSTS_IMAGES_URL = "http://192.168.0.102:8080/res/image-post/";
 
 }
