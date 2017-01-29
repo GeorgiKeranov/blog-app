@@ -3,7 +3,6 @@ package georgi.com.BlogApp.Threads.Posts;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,17 +16,14 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import georgi.com.BlogApp.Adapters.HomePageAdapter;
+import georgi.com.BlogApp.Adapters.PostsAdapter;
 import georgi.com.BlogApp.Helpers.PreferencesHelper;
-import georgi.com.BlogApp.POJO.Comment;
 import georgi.com.BlogApp.POJO.Post;
-import georgi.com.BlogApp.POJO.Reply;
-import georgi.com.BlogApp.POJO.User;
 
 import static georgi.com.BlogApp.Configs.ServerURLs.LATEST10POSTS_URL;
 
 
-public class GetLatestPostsThread extends AsyncTask<Void, Void, List<Post>>{
+public class GetPostsThread extends AsyncTask<String, Void, List<Post>>{
 
     private String TAG = getClass().getSimpleName();
 
@@ -36,20 +32,18 @@ public class GetLatestPostsThread extends AsyncTask<Void, Void, List<Post>>{
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
 
-    private List<Post> postsResponse = new ArrayList<>();
-
-    public GetLatestPostsThread(Context context, RecyclerView recyclerView, RecyclerView.Adapter adapter) {
+    public GetPostsThread(Context context, RecyclerView recyclerView, RecyclerView.Adapter adapter) {
         this.context = context;
         this.recyclerView = recyclerView;
         this.adapter = adapter;
     }
 
     @Override
-    protected List<Post> doInBackground(Void... voids) {
+    protected List<Post> doInBackground(String... strings) {
 
         try {
 
-            URL url = new URL(LATEST10POSTS_URL);
+            URL url = new URL(strings[0]);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Cookie", new PreferencesHelper(context).getCookie());
@@ -68,9 +62,7 @@ public class GetLatestPostsThread extends AsyncTask<Void, Void, List<Post>>{
 
             JSONArray response = new JSONArray(builder.toString());
 
-            convertToListOfObjects(response);
-
-            return postsResponse;
+            return convertToListOfObjects(response);
 
         } catch(IOException e) {
             e.printStackTrace();
@@ -84,13 +76,13 @@ public class GetLatestPostsThread extends AsyncTask<Void, Void, List<Post>>{
     @Override
     protected void onPostExecute(List<Post> posts) {
 
-        adapter = new HomePageAdapter(context, posts);
+        adapter = new PostsAdapter(context, posts);
         recyclerView.setAdapter(adapter);
-
     }
 
+    private List<Post> convertToListOfObjects(JSONArray jsonArray) throws JSONException {
 
-    private void convertToListOfObjects(JSONArray jsonArray) throws JSONException {
+        List<Post> postsResponse = new ArrayList<>();
 
         for(int i = 0; i<jsonArray.length(); i++) {
 
@@ -106,5 +98,6 @@ public class GetLatestPostsThread extends AsyncTask<Void, Void, List<Post>>{
             postsResponse.add(newPost);
         }
 
+        return  postsResponse;
     }
 }

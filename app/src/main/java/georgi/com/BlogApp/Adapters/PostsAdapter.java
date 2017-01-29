@@ -1,6 +1,7 @@
 package georgi.com.BlogApp.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,18 +13,19 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
+import georgi.com.BlogApp.Activities.Posts.PostActivity;
 import georgi.com.BlogApp.POJO.Post;
 import georgi.com.BlogApp.R;
 
 import static georgi.com.BlogApp.Configs.ServerURLs.POSTS_IMAGES_URL;
 
-public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.MyViewHolder>{
+public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyViewHolder>{
 
     private Context context;
 
     private List<Post> posts;
 
-    public HomePageAdapter(Context context, List<Post> posts){
+    public PostsAdapter(Context context, List<Post> posts){
         this.context = context;
         this.posts = posts;
     }
@@ -40,11 +42,12 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.MyView
 
         Glide.with(context)
                 .load(POSTS_IMAGES_URL + curPost.getIcon())
-                .override(100, 100)
+                .override(400, 400)
                 .into(holder.postImage);
 
         holder.title.setText(curPost.getSummaryTitle());
         holder.description.setText(curPost.getSummaryDesc());
+        holder.post_id = curPost.getId();
     }
 
     @Override
@@ -54,6 +57,7 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.MyView
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
+        Long post_id;
         ImageView postImage;
         TextView title, description;
 
@@ -65,6 +69,14 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.MyView
             title = (TextView) itemView.findViewById(R.id.post_summaryTitle);
             description = (TextView) itemView.findViewById(R.id.post_summaryDesc);
 
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, PostActivity.class);
+                    intent.putExtra("post_id", post_id);
+                    context.startActivity(intent);
+                }
+            });
         }
     }
 

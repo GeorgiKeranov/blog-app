@@ -20,11 +20,32 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".Activities.Account.LoginActivity"></activity>
+        <activity
+            android:name=".Activities.Account.LoginActivity">
 
-        <activity android:name=".Activities.Account.RegisterActivity"></activity>
+        </activity>
 
-        <activity android:name=".Activities.Posts.LatestPostsActivity"></activity>
+        <activity
+            android:name=".Activities.Account.RegisterActivity">
+
+        </activity>
+
+        <activity
+            android:name=".Activities.Posts.LatestPostsActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+
+        </activity>
+
+        <activity android:name=".Activities.Account.AccountActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+
+        </activity>
+
+        <activity android:name=".Activities.Posts.PostActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+
+        </activity>
+
     </application>
 
 </manifest>

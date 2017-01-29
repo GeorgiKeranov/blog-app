@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="Your Account Name"
+        android:id="@+id/toolbar_account" />
+    <item android:title="Create new post"
+        android:id="@+id/toolbar_createPost" />
+    <item android:title="Your posts"
+        android:id="@+id/toolbar_yourPosts" />
+    <item android:title="Logout"
+        android:id="@+id/toolbar_logout" />
+</menu>

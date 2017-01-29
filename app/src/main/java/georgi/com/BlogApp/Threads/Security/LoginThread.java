@@ -24,9 +24,11 @@ import static georgi.com.BlogApp.Configs.ServerURLs.LOGIN_URL;
 public class LoginThread extends AsyncTask<String, Void, String>{
 
     private Context context;
+    private PreferencesHelper preferencesHelper;
 
     public LoginThread(Context context) {
         this.context = context;
+        this.preferencesHelper = new PreferencesHelper(context);
     }
 
     @Override
@@ -51,11 +53,18 @@ public class LoginThread extends AsyncTask<String, Void, String>{
             reader.close();
             is.close();
 
+            String cookie = null;
+
             if(response.getBoolean("authenticated")){
                 String cookies = conn.getHeaderField("set-cookie");
                 String[] cookiesArray = cookies.split(";");
-                return cookiesArray[0];
+                cookie = cookiesArray[0];
             }
+
+            if(cookie != null)
+                preferencesHelper.setCustomKeyValue("username", strings[0]);
+
+            return cookie;
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -90,11 +99,12 @@ public class LoginThread extends AsyncTask<String, Void, String>{
 
         else {
             // Cookie is stored in sharedPreferences.
-            new PreferencesHelper(context).setCookie(cookie);
+            preferencesHelper.setCookie(cookie);
 
             Intent homeActivity = new Intent(context, LatestPostsActivity.class);
             homeActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             context.startActivity(homeActivity);
+
 
         }
 

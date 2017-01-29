@@ -97,10 +97,11 @@ public class RegisterThread extends AsyncTask<String, Void, JSONObject> {
         try {
             boolean error = response.getBoolean("error");
 
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
             if(error){
                 final String error_msg = response.getString("error_msg");
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 builder.setTitle("Error");
                 builder.setMessage(error_msg);
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -112,14 +113,9 @@ public class RegisterThread extends AsyncTask<String, Void, JSONObject> {
                         else username.setText("");
                     }
                 });
-
-                AlertDialog dialog = builder.create();
-                dialog.show();
             }
 
             else {
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 builder.setTitle("Successful");
                 builder.setMessage("You have been registered successful!");
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -133,8 +129,10 @@ public class RegisterThread extends AsyncTask<String, Void, JSONObject> {
                         context.startActivity(intent);
                     }
                 });
-
             }
+
+            AlertDialog dialog = builder.create();
+            dialog.show();
 
         } catch (JSONException e) {
             e.printStackTrace();
