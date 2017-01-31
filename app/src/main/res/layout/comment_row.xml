@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:srcCompat="@android:color/background_dark"
+        android:id="@+id/comment_userProfilePic" />
+
+    <TextView
+        android:text="Full name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/comment_userProfilePic"
+        android:layout_toEndOf="@+id/comment_userProfilePic"
+        android:layout_marginLeft="11dp"
+        android:layout_marginStart="11dp"
+        android:id="@+id/comment_fullName" />
+
+    <TextView
+        android:text="Comment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/comment_fullName"
+        android:layout_alignLeft="@+id/comment_fullName"
+        android:layout_alignStart="@+id/comment_fullName"
+        android:layout_marginLeft="15dp"
+        android:layout_marginStart="15dp"
+        android:id="@+id/comment_comment" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/comment_replyRecyclerView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/comment_userProfilePic"
+        android:layout_alignLeft="@+id/comment_fullName"
+        android:layout_alignStart="@+id/comment_fullName"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+</RelativeLayout>

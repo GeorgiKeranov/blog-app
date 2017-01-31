@@ -14,6 +14,7 @@ public class ServerURLs {
     public static final String EDIT_ACCOUNT_URL = SERVER_URL + "/account/edit";
     public static final String AUTH_USER_POSTS_URL = SERVER_URL + "/account/posts";
 
+    public static final String CREATE_POST_URL = SERVER_URL + "/create-post";
     public static final String POST_URL = SERVER_URL + "/posts/";
     public static final String LATEST10POSTS_URL = SERVER_URL + "/posts/latest10";
 

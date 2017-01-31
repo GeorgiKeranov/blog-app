@@ -3,6 +3,7 @@ package georgi.com.BlogApp.Threads.Posts;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -21,6 +22,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import georgi.com.BlogApp.Adapters.CommentsAdapter;
 import georgi.com.BlogApp.Helpers.PreferencesHelper;
 import georgi.com.BlogApp.POJO.Comment;
 import georgi.com.BlogApp.POJO.Post;
@@ -35,13 +37,18 @@ public class GetPostThread extends AsyncTask<Long, Void, Post> {
     private Context context;
 
     private TextView title, description;
-    private ImageView image;
+    private ImageView postImage;
 
-    public GetPostThread(Context context, TextView title, TextView description, ImageView image) {
+    private RecyclerView comments;
+    private CommentsAdapter commentsAdapter;
+
+    public GetPostThread(Context context, TextView title, TextView description, ImageView postImage, RecyclerView comments, CommentsAdapter commentsAdapter) {
         this.context = context;
         this.title = title;
         this.description = description;
-        this.image = image;
+        this.postImage = postImage;
+        this.comments = comments;
+        this.commentsAdapter = commentsAdapter;
     }
 
     @Override
@@ -88,12 +95,13 @@ public class GetPostThread extends AsyncTask<Long, Void, Post> {
         Glide.with(context)
                 .load(POSTS_IMAGES_URL + post.getIcon())
                 .override(800, 800)
-                .into(image);
+                .into(postImage);
 
         description.setText(post.getDescription());
         description.setVisibility(View.VISIBLE);
 
-        //TODO for the comments and replies create recyclerView adapter in recyclerView adapter.
+        commentsAdapter = new CommentsAdapter(context, post.getComments());
+        comments.setAdapter(commentsAdapter);
     }
 
 

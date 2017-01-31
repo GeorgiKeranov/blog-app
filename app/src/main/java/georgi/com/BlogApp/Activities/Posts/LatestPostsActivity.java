@@ -68,6 +68,12 @@ public class LatestPostsActivity extends AppCompatActivity {
             case R.id.toolbar_account :
                 Intent intent = new Intent(this, AccountActivity.class);
                 startActivity(intent);
+                break;
+
+            case R.id.toolbar_createPost :
+                Intent intent1 = new Intent(this, CreateNewPostActivity.class);
+                startActivity(intent1);
+                break;
         }
 
         return super.onOptionsItemSelected(item);

@@ -62,4 +62,8 @@ public class User {
     public void setProfile_picture(String profile_picture) {
         this.profile_picture = profile_picture;
     }
+
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
 }
