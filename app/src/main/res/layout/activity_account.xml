@@ -30,31 +30,25 @@
         android:layout_toEndOf="@+id/account_picture">
 
         <TextView
-            android:text="First Name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/account_firstName"
             android:textSize="25sp"
-            android:layout_marginBottom="20dp"
-            android:visibility="invisible"/>
+            android:layout_marginBottom="20dp"/>
 
         <TextView
-            android:text="Last Name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/account_lastName"
             android:textSize="25sp"
-            android:layout_marginBottom="20dp"
-            android:visibility="invisible" />
+            android:layout_marginBottom="20dp" />
 
         <TextView
-            android:text="Email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/account_email"
             android:textSize="25sp"
-            android:layout_marginBottom="20dp"
-            android:visibility="invisible" />
+            android:layout_marginBottom="20dp" />
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView

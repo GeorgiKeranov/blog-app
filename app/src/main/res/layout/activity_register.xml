@@ -14,7 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/register"
-        android:textSize="28dp"
+        android:textSize="24sp"
         android:textColor="?attr/actionMenuTextColor"
         android:textStyle="bold"
         android:id="@+id/textView"

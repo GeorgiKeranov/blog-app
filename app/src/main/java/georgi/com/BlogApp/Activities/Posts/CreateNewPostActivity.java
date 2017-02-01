@@ -2,12 +2,12 @@ package georgi.com.BlogApp.Activities.Posts;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,7 +19,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 
 import georgi.com.BlogApp.R;
-import georgi.com.BlogApp.Threads.Posts.CreatePostThread;
+import georgi.com.BlogApp.Threads.Posts.CreatePost;
 
 public class CreateNewPostActivity extends AppCompatActivity{
 
@@ -27,6 +27,7 @@ public class CreateNewPostActivity extends AppCompatActivity{
     private EditText title, description;
     private Button butCreatePost;
     private Uri selectedPic;
+    private Context context;
 
 
     @Override
@@ -38,6 +39,7 @@ public class CreateNewPostActivity extends AppCompatActivity{
         title = (EditText) findViewById(R.id.createPost_title);
         description = (EditText) findViewById(R.id.createPost_desc);
         butCreatePost = (Button) findViewById(R.id.createPost_button);
+        context = this;
 
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 10);
 
@@ -57,8 +59,8 @@ public class CreateNewPostActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
 
-                CreatePostThread createPostThread = new CreatePostThread(getApplicationContext(), selectedPic);
-                createPostThread.execute(title.getText().toString(), description.getText().toString());
+                CreatePost createPost = new CreatePost(context, selectedPic);
+                createPost.execute(title.getText().toString(), description.getText().toString());
             }
         });
 

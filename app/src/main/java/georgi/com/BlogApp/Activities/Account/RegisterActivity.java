@@ -7,7 +7,7 @@ import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.EditText;
 
-import georgi.com.BlogApp.Threads.Security.RegisterThread;
+import georgi.com.BlogApp.Threads.Security.Register;
 import georgi.com.BlogApp.R;
 
 public class RegisterActivity extends Activity {
@@ -60,7 +60,7 @@ public class RegisterActivity extends Activity {
                     break;
                 }
 
-                RegisterThread regThread = new RegisterThread(this, username, email);
+                Register regThread = new Register(this, username, email);
                 regThread.execute(
                         firstName.getText().toString(),
                         lastName.getText().toString(),

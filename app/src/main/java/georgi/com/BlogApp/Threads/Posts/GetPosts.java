@@ -17,13 +17,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import georgi.com.BlogApp.Adapters.PostsAdapter;
+import georgi.com.BlogApp.Helpers.HttpRequest;
 import georgi.com.BlogApp.Helpers.PreferencesHelper;
 import georgi.com.BlogApp.POJO.Post;
 
-import static georgi.com.BlogApp.Configs.ServerURLs.LATEST10POSTS_URL;
 
-
-public class GetPostsThread extends AsyncTask<String, Void, List<Post>>{
+public class GetPosts extends AsyncTask<String, Void, List<Post>>{
 
     private String TAG = getClass().getSimpleName();
 
@@ -32,7 +31,7 @@ public class GetPostsThread extends AsyncTask<String, Void, List<Post>>{
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
 
-    public GetPostsThread(Context context, RecyclerView recyclerView, RecyclerView.Adapter adapter) {
+    public GetPosts(Context context, RecyclerView recyclerView, RecyclerView.Adapter adapter) {
         this.context = context;
         this.recyclerView = recyclerView;
         this.adapter = adapter;
@@ -40,29 +39,15 @@ public class GetPostsThread extends AsyncTask<String, Void, List<Post>>{
 
     @Override
     protected List<Post> doInBackground(String... strings) {
-
         try {
 
-            URL url = new URL(strings[0]);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-            conn.setRequestProperty("Cookie", new PreferencesHelper(context).getCookie());
+            HttpRequest httpRequest = new HttpRequest(strings[0],
+                    new PreferencesHelper(context).getCookie(), "GET");
+            String response = httpRequest.sendTheRequest();
 
-            InputStreamReader iSReader = new InputStreamReader(conn.getInputStream());
-            BufferedReader reader = new BufferedReader(iSReader);
+            JSONArray jsonResponse = new JSONArray(response);
 
-            StringBuilder builder = new StringBuilder();
-            String line;
-
-            while((line = reader.readLine()) != null){
-                builder.append(line);
-            }
-            reader.close();
-            iSReader.close();
-
-            JSONArray response = new JSONArray(builder.toString());
-
-            return convertToListOfObjects(response);
+            return convertToListOfObjects(jsonResponse);
 
         } catch(IOException e) {
             e.printStackTrace();

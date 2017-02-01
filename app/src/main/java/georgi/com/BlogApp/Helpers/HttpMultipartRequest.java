@@ -12,7 +12,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 
-public class MultipartDataHelper {
+public class HttpMultipartRequest {
 
     private OutputStream oSWriter;
     private PrintWriter writer;
@@ -21,7 +21,7 @@ public class MultipartDataHelper {
     private String boundary;
     private static String NEW_LINE = "\r\n";
 
-    public MultipartDataHelper(String urlToPOST, String cookie) throws IOException {
+    public HttpMultipartRequest(String urlToPOST, String cookie) throws IOException {
 
         boundary = "===" + System.currentTimeMillis() + "===";
 

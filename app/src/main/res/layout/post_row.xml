@@ -12,7 +12,6 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            app:srcCompat="@mipmap/ic_launcher"
             android:id="@+id/post_picture"
             android:cropToPadding="true"
             android:adjustViewBounds="true"

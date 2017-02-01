@@ -1,6 +1,7 @@
 package georgi.com.BlogApp.Threads.Posts;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
@@ -10,17 +11,17 @@ import android.provider.MediaStore;
 import java.io.File;
 import java.io.IOException;
 
-import georgi.com.BlogApp.Helpers.MultipartDataHelper;
+import georgi.com.BlogApp.Helpers.HttpMultipartRequest;
 import georgi.com.BlogApp.Helpers.PreferencesHelper;
 
 import static georgi.com.BlogApp.Configs.ServerURLs.CREATE_POST_URL;
 
-public class CreatePostThread extends AsyncTask<String, Void, Void> {
+public class CreatePost extends AsyncTask<String, Void, Void> {
 
     private Context context;
     private Uri uri;
 
-    public CreatePostThread(Context context, Uri uri) {
+    public CreatePost(Context context, Uri uri) {
         this.context = context;
         this.uri = uri;
     }
@@ -30,7 +31,7 @@ public class CreatePostThread extends AsyncTask<String, Void, Void> {
 
         try {
 
-            MultipartDataHelper multipart = new MultipartDataHelper(CREATE_POST_URL, new PreferencesHelper(context).getCookie());
+            HttpMultipartRequest multipart = new HttpMultipartRequest(CREATE_POST_URL, new PreferencesHelper(context).getCookie());
             multipart.addFileField("picture", new File(getRealPathFromURI(uri)));
             multipart.addStringField("title", strings[0]);
             multipart.addStringField("description", strings[1]);
@@ -44,6 +45,16 @@ public class CreatePostThread extends AsyncTask<String, Void, Void> {
         return null;
     }
 
+
+    @Override
+    protected void onPostExecute(Void aVoid) {
+        super.onPostExecute(aVoid);
+
+        //TODO alert dialog if it has errors.
+        //TODO alert dialog for successful.
+
+        ((Activity)context).finish();
+    }
 
     private String getRealPathFromURI(Uri contentURI) {
 

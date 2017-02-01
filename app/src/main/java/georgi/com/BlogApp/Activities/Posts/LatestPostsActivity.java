@@ -12,9 +12,10 @@ import android.view.MenuItem;
 import georgi.com.BlogApp.Activities.Account.AccountActivity;
 import georgi.com.BlogApp.Helpers.PreferencesHelper;
 import georgi.com.BlogApp.R;
-import georgi.com.BlogApp.Threads.Posts.GetPostsThread;
+import georgi.com.BlogApp.Threads.Posts.GetPosts;
+import georgi.com.BlogApp.Threads.Security.Logout;
 
-import static georgi.com.BlogApp.Configs.ServerURLs.LATEST10POSTS_URL;
+import static georgi.com.BlogApp.Configs.ServerURLs.LATEST_POSTS_URL;
 
 public class LatestPostsActivity extends AppCompatActivity {
 
@@ -41,9 +42,13 @@ public class LatestPostsActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        GetPostsThread getLatestPosts = new GetPostsThread(this, recyclerView, adapter);
-        getLatestPosts.execute(LATEST10POSTS_URL);
 
+
+    }
+
+    private void setLayoutElements() {
+        GetPosts getLatestPosts = new GetPosts(this, recyclerView, adapter);
+        getLatestPosts.execute(LATEST_POSTS_URL);
     }
 
     @Override
@@ -63,19 +68,35 @@ public class LatestPostsActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
+        Intent intent = null;
+
         switch(item.getItemId()) {
 
             case R.id.toolbar_account :
-                Intent intent = new Intent(this, AccountActivity.class);
-                startActivity(intent);
+                intent = new Intent(this, AccountActivity.class);
                 break;
 
             case R.id.toolbar_createPost :
-                Intent intent1 = new Intent(this, CreateNewPostActivity.class);
-                startActivity(intent1);
+                intent = new Intent(this, CreateNewPostActivity.class);
                 break;
+
+            case R.id.toolbar_yourPosts :
+                intent = new Intent(this, YourPostsActivity.class);
+                break;
+
+            case R.id.toolbar_logout :
+                Logout logout = new Logout(this);
+                logout.execute();
         }
 
+        if(intent != null) startActivity(intent);
+
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setLayoutElements();
     }
 }

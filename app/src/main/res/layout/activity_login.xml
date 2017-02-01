@@ -11,20 +11,6 @@
     tools:context="georgi.com.BlogApp.Activities.Account.LoginActivity"
     android:background="@android:color/holo_blue_bright">
 
-    <Button
-        android:id="@+id/but_login"
-        android:text="Login"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="180dp"
-        android:textSize="18sp"
-        android:background="@android:color/holo_orange_dark"
-        tools:textStyle="bold"
-        android:textColor="@android:color/background_dark"
-        android:onClick="onClick"/>
-
     <EditText
         android:id="@+id/id_password"
         android:background="@android:color/holo_orange_dark"
@@ -55,24 +41,39 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:id="@+id/welcomeText"
-        android:text="@string/welcome"
-        android:textSize="30dp"
-        android:textColor="?attr/actionMenuTextColor"
-        android:textStyle="bold" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_below="@+id/id_password"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="68dp"
         android:id="@+id/id_register"
         android:text="@string/no_account_yet"
-        android:textSize="18dp"
+        android:textSize="14sp"
         android:clickable="true"
         android:onClick="onClick"/>
+
+    <Button
+        android:id="@+id/but_login"
+        android:text="Login"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="157dp"
+        android:textSize="18sp"
+        android:background="@android:color/holo_orange_dark"
+        tools:textStyle="bold"
+        android:textColor="@android:color/background_dark"
+        android:onClick="onClick"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="61dp"
+        android:id="@+id/welcomeText"
+        android:text="@string/welcome"
+        android:textSize="24sp"
+        android:textColor="?attr/actionMenuTextColor"
+        android:textStyle="bold"
+        android:layout_alignParentTop="true"
+        android:layout_alignLeft="@+id/id_register"
+        android:layout_alignStart="@+id/id_register" />
 </RelativeLayout>

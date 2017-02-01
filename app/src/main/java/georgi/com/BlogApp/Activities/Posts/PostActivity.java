@@ -8,24 +8,37 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.LayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import georgi.com.BlogApp.Adapters.CommentsAdapter;
+import georgi.com.BlogApp.Helpers.PreferencesHelper;
 import georgi.com.BlogApp.R;
-import georgi.com.BlogApp.Threads.Posts.GetPostThread;
+import georgi.com.BlogApp.Threads.Account.GetAccountDetails;
+import georgi.com.BlogApp.Threads.Posts.CommentOnPost;
+import georgi.com.BlogApp.Threads.Posts.GetCommentsOnPost;
+import georgi.com.BlogApp.Threads.Posts.GetPostById;
 
 public class PostActivity extends AppCompatActivity{
 
-    private Long post_id;
+    private Long postId;
 
     private TextView title, description;
-    private ImageView image;
+    private ImageView postImage, commentImage;
+    private Button butComment;
+    private EditText comment;
 
     private LayoutManager layoutManager;
 
     private CommentsAdapter commentsAdapter;
     private RecyclerView comments;
+
+    private PreferencesHelper prefHelper;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,23 +49,53 @@ public class PostActivity extends AppCompatActivity{
         newToolbar.setTitle("Post");
         setSupportActionBar(newToolbar);
 
-        post_id = getIntent().getLongExtra("post_id", -1);
-        if(post_id == -1) finish();
+        postId = getIntent().getLongExtra("post_id", -1);
+        if(postId == -1) finish();
 
         title = (TextView) findViewById(R.id.createPost_title);
         description = (TextView) findViewById(R.id.post_description);
-        image = (ImageView) findViewById(R.id.post_image);
+        postImage = (ImageView) findViewById(R.id.post_image);
+        commentImage = (ImageView) findViewById(R.id.post_commentImage);
+        butComment = (Button) findViewById(R.id.post_butComment);
+        comment = (EditText) findViewById(R.id.post_comment);
+
 
         comments = (RecyclerView) findViewById(R.id.post_recyclerView);
         layoutManager = new LinearLayoutManager(this);
         comments.setLayoutManager(layoutManager);
 
+        // Thread to get post from the server and
+        // set tile, description and the image of the selected post.
+        GetPostById getPostsThreadById =
+                new GetPostById(this, title, description, postImage);
+        getPostsThreadById.execute(postId);
 
-        GetPostThread getPostsThread =
-                new GetPostThread(this, title, description, image, comments, commentsAdapter);
+        // Setting the user details for creating a new comment.
+        GetAccountDetails getAccountDetails =
+                new GetAccountDetails(this, commentImage, null, null, null);
+        getAccountDetails.execute();
 
-        getPostsThread.execute(post_id);
 
+        // Thread to get comments from the server and to set them on the UI.
+        GetCommentsOnPost getCommentsOnPost =
+                new GetCommentsOnPost(this, comments, commentsAdapter);
+        getCommentsOnPost.execute(postId);
 
+        butComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                // Commenting on the post and send comment on the server
+                // Then it is refreshing the new comments.
+                CommentOnPost commentOnPost =
+                        new CommentOnPost(getApplicationContext(),
+                                postId, comments, commentsAdapter);
+
+                commentOnPost.execute(comment.getText().toString());
+
+                // Deleting the text from the EditText for new comment.
+                comment.setText("");
+            }
+        });
     }
 }

@@ -13,8 +13,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import georgi.com.BlogApp.R;
-import georgi.com.BlogApp.Threads.Account.GetAccountThread;
-import georgi.com.BlogApp.Threads.Posts.GetPostsThread;
+import georgi.com.BlogApp.Threads.Account.GetAccountDetails;
+import georgi.com.BlogApp.Threads.Posts.GetPosts;
 
 import static georgi.com.BlogApp.Configs.ServerURLs.AUTH_USER_POSTS_URL;
 
@@ -46,7 +46,13 @@ public class AccountActivity extends AppCompatActivity{
         lastName = (TextView) findViewById(R.id.account_lastName);
         email = (TextView) findViewById(R.id.account_email);
 
-        GetAccountThread getAccount = new GetAccountThread(this,
+
+        setLayoutElements();
+
+    }
+
+    private void setLayoutElements() {
+        GetAccountDetails getAccount = new GetAccountDetails(this,
                 profile_picture,
                 firstName,
                 lastName,
@@ -54,9 +60,8 @@ public class AccountActivity extends AppCompatActivity{
 
         getAccount.execute();
 
-        GetPostsThread getPostsThread = new GetPostsThread(this, recyclerView, adapter);
-        getPostsThread.execute(AUTH_USER_POSTS_URL);
-
+        GetPosts getPosts = new GetPosts(this, recyclerView, adapter);
+        getPosts.execute(AUTH_USER_POSTS_URL);
     }
 
     @Override
@@ -82,5 +87,11 @@ public class AccountActivity extends AppCompatActivity{
             default: return super.onOptionsItemSelected(item);
         }
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setLayoutElements();
     }
 }

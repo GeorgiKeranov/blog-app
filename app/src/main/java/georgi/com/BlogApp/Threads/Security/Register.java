@@ -20,11 +20,13 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import georgi.com.BlogApp.Activities.Account.LoginActivity;
+import georgi.com.BlogApp.Helpers.HttpRequest;
+import georgi.com.BlogApp.Helpers.PreferencesHelper;
 
 import static georgi.com.BlogApp.Configs.ServerURLs.REGISTER_URL;
 
 
-public class RegisterThread extends AsyncTask<String, Void, JSONObject> {
+public class Register extends AsyncTask<String, Void, JSONObject> {
 
     private String TAG = getClass().getSimpleName();
 
@@ -32,8 +34,7 @@ public class RegisterThread extends AsyncTask<String, Void, JSONObject> {
 
     private EditText username, email;
 
-    // Getting context from called Activity.
-    public RegisterThread(Context context, EditText username, EditText email){
+    public Register(Context context, EditText username, EditText email){
         this.context = context;
         this.username = username;
         this.email = email;
@@ -42,46 +43,20 @@ public class RegisterThread extends AsyncTask<String, Void, JSONObject> {
     @Override
     protected JSONObject doInBackground(String... strings) {
 
-        JSONObject response = null;
-
         try {
-            // Opening connection.
-            URL url = new URL(REGISTER_URL);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("POST");
-            conn.setDoOutput(true);
 
-            // Writing the request params.
-            OutputStreamWriter writer = new OutputStreamWriter(conn.getOutputStream());
+            HttpRequest httpRequest = new HttpRequest(REGISTER_URL,
+                    new PreferencesHelper(context).getCookie(), "POST");
 
-            String request = "firstName=" + strings[0] +
-                    "&lastName=" + strings[1] +
-                    "&email=" + strings[2] +
-                    "&username=" + strings[3] +
-                    "&password=" + strings[4];
+            httpRequest.addStringField("firstName", strings[0]);
+            httpRequest.addStringField("lastName", strings[1]);
+            httpRequest.addStringField("email", strings[2]);
+            httpRequest.addStringField("username", strings[3]);
+            httpRequest.addStringField("password", strings[4]);
 
-            Log.d(TAG, "REQUEST : " + request);
+            String response = httpRequest.sendTheRequest();
 
-            writer.write(request);
-
-            writer.flush();
-            writer.close();
-
-            // Reading the response.
-            InputStreamReader inputStreamReader = new InputStreamReader(conn.getInputStream(), "UTF-8");
-            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-
-            StringBuilder jsonString = new StringBuilder();
-            String line;
-
-            while((line = bufferedReader.readLine()) != null){
-                jsonString.append(line);
-            }
-
-            bufferedReader.close();
-            inputStreamReader.close();
-
-            response = new JSONObject(jsonString.toString());
+            return new JSONObject(response);
 
         } catch(JSONException e){
             e.printStackTrace();
@@ -89,7 +64,7 @@ public class RegisterThread extends AsyncTask<String, Void, JSONObject> {
             e.printStackTrace();
         }
 
-        return response;
+        return null;
     }
 
     @Override

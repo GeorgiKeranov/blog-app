@@ -21,12 +21,12 @@ import georgi.com.BlogApp.Helpers.PreferencesHelper;
 
 import static georgi.com.BlogApp.Configs.ServerURLs.LOGIN_URL;
 
-public class LoginThread extends AsyncTask<String, Void, String>{
+public class Login extends AsyncTask<String, Void, String>{
 
     private Context context;
     private PreferencesHelper preferencesHelper;
 
-    public LoginThread(Context context) {
+    public Login(Context context) {
         this.context = context;
         this.preferencesHelper = new PreferencesHelper(context);
     }
@@ -104,8 +104,6 @@ public class LoginThread extends AsyncTask<String, Void, String>{
             Intent homeActivity = new Intent(context, LatestPostsActivity.class);
             homeActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             context.startActivity(homeActivity);
-
-
         }
 
     }

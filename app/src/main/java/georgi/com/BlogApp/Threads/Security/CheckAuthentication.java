@@ -16,6 +16,7 @@ import java.net.URL;
 
 import georgi.com.BlogApp.Activities.Account.LoginActivity;
 import georgi.com.BlogApp.Activities.Posts.LatestPostsActivity;
+import georgi.com.BlogApp.Helpers.HttpRequest;
 import georgi.com.BlogApp.Helpers.PreferencesHelper;
 
 import static georgi.com.BlogApp.Configs.ServerURLs.AUTHENTICATION_URL;
@@ -38,20 +39,12 @@ public class CheckAuthentication extends AsyncTask<Void, Void, Boolean>{
 
         try {
 
-            URL url = new URL(AUTHENTICATION_URL);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-            conn.setRequestProperty("Cookie", cookie);
+            HttpRequest httpRequest = new HttpRequest(AUTHENTICATION_URL, cookie, "GET");
+            String response = httpRequest.sendTheRequest();
 
-            InputStreamReader is = new InputStreamReader(conn.getInputStream(), "UTF-8");
-            BufferedReader reader = new BufferedReader(is);
+            JSONObject jsonResponse = new JSONObject(response);
 
-            JSONObject response = new JSONObject(reader.readLine());
-
-            reader.close();
-            is.close();
-
-            return response.getBoolean("authenticated");
+            return jsonResponse.getBoolean("authenticated");
 
         } catch (IOException e) {
             e.printStackTrace();

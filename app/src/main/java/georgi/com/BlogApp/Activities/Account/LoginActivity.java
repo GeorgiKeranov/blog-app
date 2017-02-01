@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import georgi.com.BlogApp.R;
-import georgi.com.BlogApp.Threads.Security.LoginThread;
+import georgi.com.BlogApp.Threads.Security.Login;
 
 public class LoginActivity extends Activity {
 
@@ -30,8 +30,8 @@ public class LoginActivity extends Activity {
 
         switch (view.getId()){
             case R.id.but_login :
-                LoginThread loginThread = new LoginThread(this);
-                loginThread.execute(username.getText().toString(),
+                Login login = new Login(this);
+                login.execute(username.getText().toString(),
                                     password.getText().toString());
                 break;
 
