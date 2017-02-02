@@ -43,7 +43,9 @@
 
         </activity>
 
-        <activity android:name=".Activities.Posts.PostActivity"
+        <activity
+            android:name=".Activities.Posts.PostActivity"
+            android:windowSoftInputMode="adjustPan"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
 
         </activity>

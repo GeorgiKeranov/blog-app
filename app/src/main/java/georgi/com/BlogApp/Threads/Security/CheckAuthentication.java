@@ -8,11 +8,7 @@ import android.os.AsyncTask;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 import georgi.com.BlogApp.Activities.Account.LoginActivity;
 import georgi.com.BlogApp.Activities.Posts.LatestPostsActivity;
@@ -35,7 +31,7 @@ public class CheckAuthentication extends AsyncTask<Void, Void, Boolean>{
     protected Boolean doInBackground(Void... voids) {
 
         String cookie = new PreferencesHelper(context).getCookie();
-        if(cookie == null) return false;
+        if(cookie.equals("NO-COOKIE") || cookie == null) return false;
 
         try {
 

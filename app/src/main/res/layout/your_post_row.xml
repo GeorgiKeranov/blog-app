@@ -4,27 +4,50 @@
     android:layout_height="wrap_content">
 
 
-    <ImageView
-        android:id="@+id/your_post_image"
-        android:cropToPadding="true"
-        android:adjustViewBounds="true"
-        android:layout_width="100dp"
-        android:layout_height="100dp" />
-
-    <TextView
-        android:text="Title"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/your_post_row_linearLayout"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="8dp"
-        android:id="@+id/your_post_title" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="10dp">
 
-    <TextView
-        android:text="Description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/your_post_desc" />
+        <ImageView
+            android:id="@+id/your_post_image"
+            android:cropToPadding="true"
+            android:adjustViewBounds="true"
+            android:layout_height="100dp"
+            android:layout_width="100dp" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:text="Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:id="@+id/your_post_title" />
+
+            <TextView
+                android:layout_marginTop="10dp"
+                android:text="Description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/your_post_desc" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:layout_marginTop="105dp"
+        android:layout_width="fill_parent"
+        android:layout_height="2dip"
+        android:background="#000000"/>
+
 </RelativeLayout>

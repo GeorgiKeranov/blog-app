@@ -2,6 +2,7 @@ package georgi.com.BlogApp.Adapters;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
+import georgi.com.BlogApp.Activities.Posts.PostActivity;
 import georgi.com.BlogApp.POJO.Post;
 import georgi.com.BlogApp.R;
 
@@ -41,6 +43,8 @@ public class YourPostsAdapter extends RecyclerView.Adapter<YourPostsAdapter.MyVi
 
         Post curPost = posts.get(position);
 
+        holder.postId = curPost.getId();
+
         Glide.with(context)
                 .load(POSTS_IMAGES_URL + curPost.getIcon())
                 .override(400, 400)
@@ -60,6 +64,8 @@ public class YourPostsAdapter extends RecyclerView.Adapter<YourPostsAdapter.MyVi
         private ImageView postImage;
         private TextView title, description;
 
+        private Long postId;
+
         public MyViewHolder(View itemView) {
             super(itemView);
 
@@ -67,6 +73,15 @@ public class YourPostsAdapter extends RecyclerView.Adapter<YourPostsAdapter.MyVi
             title = (TextView) itemView.findViewById(R.id.your_post_title);
             description = (TextView) itemView.findViewById(R.id.your_post_desc);
 
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    Intent intent = new Intent(context, PostActivity.class);
+                    intent.putExtra("post_id", postId);
+                    context.startActivity(intent);
+                }
+            });
         }
     }
 

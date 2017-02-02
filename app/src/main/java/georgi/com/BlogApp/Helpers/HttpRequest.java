@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 
 import static java.net.HttpURLConnection.HTTP_OK;
@@ -25,6 +26,7 @@ public class HttpRequest {
         URL url = new URL(urlToRequest);
         connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod(method);
+
 
         if(method.equals("POST")) connection.setDoOutput(true);
 
