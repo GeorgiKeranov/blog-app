@@ -22,13 +22,13 @@ import georgi.com.BlogApp.POJO.User;
 
 import static georgi.com.BlogApp.Configs.ServerURLs.POST_URL;
 
-public class GetCommentsOnPost extends AsyncTask<Long, Void, List<Comment>> {
+public class CommentsOnPost extends AsyncTask<Long, Void, List<Comment>> {
 
     private Context context;
     private RecyclerView recyclerView;
     private CommentsAdapter commentsAdapter;
 
-    public GetCommentsOnPost(Context context, RecyclerView recyclerView, CommentsAdapter commentsAdapter) {
+    public CommentsOnPost(Context context, RecyclerView recyclerView, CommentsAdapter commentsAdapter) {
         this.context = context;
         this.recyclerView = recyclerView;
         this.commentsAdapter = commentsAdapter;

@@ -14,15 +14,13 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-
 import georgi.com.BlogApp.Adapters.CommentsAdapter;
 import georgi.com.BlogApp.Helpers.PreferencesHelper;
 import georgi.com.BlogApp.R;
-import georgi.com.BlogApp.Threads.Account.GetAccountDetails;
+import georgi.com.BlogApp.Threads.Account.AccountDetails;
 import georgi.com.BlogApp.Threads.Posts.CommentOnPost;
-import georgi.com.BlogApp.Threads.Posts.GetCommentsOnPost;
-import georgi.com.BlogApp.Threads.Posts.GetPostById;
+import georgi.com.BlogApp.Threads.Posts.CommentsOnPost;
+import georgi.com.BlogApp.Threads.Posts.PostById;
 
 public class PostActivity extends AppCompatActivity{
 
@@ -37,8 +35,6 @@ public class PostActivity extends AppCompatActivity{
 
     private CommentsAdapter commentsAdapter;
     private RecyclerView comments;
-
-    private PreferencesHelper prefHelper;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,20 +62,20 @@ public class PostActivity extends AppCompatActivity{
 
         // Thread to get post from the server and
         // set tile, description and the image of the selected post.
-        GetPostById getPostsThreadById =
-                new GetPostById(this, title, description, postImage);
+        PostById getPostsThreadById =
+                new PostById(this, title, description, postImage);
         getPostsThreadById.execute(postId);
 
         // Setting the user details for creating a new comment.
-        GetAccountDetails getAccountDetails =
-                new GetAccountDetails(this, commentImage, null, null, null);
-        getAccountDetails.execute();
+        AccountDetails accountDetails =
+                new AccountDetails(this, commentImage, null, null, null);
+        accountDetails.execute();
 
 
         // Thread to get comments from the server and to set them on the UI.
-        GetCommentsOnPost getCommentsOnPost =
-                new GetCommentsOnPost(this, comments, commentsAdapter);
-        getCommentsOnPost.execute(postId);
+        CommentsOnPost commentsOnPost =
+                new CommentsOnPost(this, comments, commentsAdapter);
+        commentsOnPost.execute(postId);
 
         butComment.setOnClickListener(new View.OnClickListener() {
             @Override

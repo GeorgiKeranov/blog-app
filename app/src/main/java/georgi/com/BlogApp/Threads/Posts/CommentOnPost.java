@@ -50,9 +50,9 @@ public class CommentOnPost extends AsyncTask<String, Void, Void>{
     @Override
     protected void onPostExecute(Void aVoid) {
 
-        GetCommentsOnPost getCommentsOnPost =
-                new GetCommentsOnPost(context, recyclerView, commentsAdapter);
-        getCommentsOnPost.execute(id);
+        CommentsOnPost commentsOnPost =
+                new CommentsOnPost(context, recyclerView, commentsAdapter);
+        commentsOnPost.execute(id);
 
     }
 }

@@ -30,6 +30,8 @@ public class YourPostsAdapter extends RecyclerView.Adapter<YourPostsAdapter.MyVi
         this.posts = posts;
     }
 
+    public List<Post> getPosts() { return posts; }
+
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())

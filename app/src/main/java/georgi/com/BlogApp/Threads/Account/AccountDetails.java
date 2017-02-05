@@ -26,18 +26,18 @@ import static georgi.com.BlogApp.Configs.ServerURLs.ACCOUNT_URL;
 import static georgi.com.BlogApp.Configs.ServerURLs.DEFAULT_USER_IMG;
 import static georgi.com.BlogApp.Configs.ServerURLs.USER_IMAGES_URL;
 
-public class GetAccountDetails extends AsyncTask<Void, Void, String[]>{
+public class AccountDetails extends AsyncTask<Void, Void, String[]>{
 
     private Context context;
 
     private ImageView profile;
     private TextView firstName, lastName, email;
 
-    public GetAccountDetails(Context context,
-                             ImageView profile,
-                             TextView firstName,
-                             TextView lastName,
-                             TextView email) {
+    public AccountDetails(Context context,
+                          ImageView profile,
+                          TextView firstName,
+                          TextView lastName,
+                          TextView email) {
 
         this.profile = profile;
         this.firstName = firstName;

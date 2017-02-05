@@ -15,6 +15,16 @@ public class User {
 
     private String profile_picture;
 
+    public User() {}
+
+
+    public User(String userUrl, String firstName, String lastName, String email) {
+        this.userUrl = userUrl;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+    }
+
     public Long getId() {
         return id;
     }

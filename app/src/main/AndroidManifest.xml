@@ -23,12 +23,14 @@
         </activity>
 
         <activity
-            android:name=".Activities.Account.LoginActivity">
+            android:name=".Activities.Account.LoginActivity"
+            android:windowSoftInputMode="adjustPan" >
 
         </activity>
 
         <activity
-            android:name=".Activities.Account.RegisterActivity">
+            android:name=".Activities.Account.RegisterActivity"
+            android:windowSoftInputMode="adjustPan" >
 
         </activity>
 

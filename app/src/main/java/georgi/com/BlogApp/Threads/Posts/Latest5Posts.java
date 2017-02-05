@@ -1,6 +1,5 @@
 package georgi.com.BlogApp.Threads.Posts;
 
-
 import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
@@ -9,50 +8,52 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import georgi.com.BlogApp.Adapters.YourPostsAdapter;
+import georgi.com.BlogApp.Activities.Posts.PostActivity;
+import georgi.com.BlogApp.Adapters.PostsAdapter;
 import georgi.com.BlogApp.Helpers.HttpRequest;
 import georgi.com.BlogApp.Helpers.PreferencesHelper;
 import georgi.com.BlogApp.POJO.Post;
 
-import static georgi.com.BlogApp.Configs.ServerURLs.AUTH_USER_POSTS_URL;
 
-public class AuthUserPosts extends AsyncTask<Void, Void, List<Post>>{
+public class Latest5Posts extends AsyncTask<String, Void, List<Post>>{
+
+    private String TAG = getClass().getSimpleName();
 
     private Context context;
+
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
 
-    public AuthUserPosts(Context context, RecyclerView recyclerView, RecyclerView.Adapter adapter){
+    public Latest5Posts(Context context, RecyclerView recyclerView) {
         this.context = context;
         this.recyclerView = recyclerView;
-        this.adapter = adapter;
     }
 
     @Override
-    protected List<Post> doInBackground(Void... voids) {
-
+    protected List<Post> doInBackground(String... strings) {
         try {
-            HttpRequest normalRequest =
-                    new HttpRequest(AUTH_USER_POSTS_URL,
-                            new PreferencesHelper(context).getCookie(),
-                            "POST");
 
-            String response = normalRequest.sendTheRequest();
+            HttpRequest httpRequest = new HttpRequest(strings[0],
+                    new PreferencesHelper(context).getCookie(), "GET");
+            String response = httpRequest.sendTheRequest();
 
-            JSONArray responseObj = new JSONArray(response);
+            JSONArray jsonResponse = new JSONArray(response);
 
-            return convertToListOfObjects(responseObj);
+            return convertToListOfObjects(jsonResponse);
 
-        } catch (IOException e) {
+        } catch(IOException e) {
             e.printStackTrace();
-        } catch (JSONException e) {
+        } catch(JSONException e) {
             e.printStackTrace();
         }
-
 
         return null;
     }
@@ -60,16 +61,21 @@ public class AuthUserPosts extends AsyncTask<Void, Void, List<Post>>{
     @Override
     protected void onPostExecute(List<Post> posts) {
 
-        adapter = new YourPostsAdapter(context, posts);
-        recyclerView.setAdapter(adapter);
+        PostsAdapter postsAdapter = (PostsAdapter) recyclerView.getAdapter();
+        List<Post> oldPosts = postsAdapter.getPosts();
 
+        for(Post post : posts) {
+            oldPosts.add(post);
+        }
+
+        postsAdapter.notifyDataSetChanged();
     }
 
     private List<Post> convertToListOfObjects(JSONArray jsonArray) throws JSONException {
 
         List<Post> postsResponse = new ArrayList<>();
 
-        for (int i = 0; i < jsonArray.length(); i++) {
+        for(int i = 0; i<jsonArray.length(); i++) {
 
             JSONObject curPost = jsonArray.getJSONObject(i);
 
@@ -83,6 +89,6 @@ public class AuthUserPosts extends AsyncTask<Void, Void, List<Post>>{
             postsResponse.add(newPost);
         }
 
-        return postsResponse;
+        return  postsResponse;
     }
 }

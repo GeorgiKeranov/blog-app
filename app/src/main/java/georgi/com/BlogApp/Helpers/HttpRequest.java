@@ -16,21 +16,19 @@ import static java.net.HttpURLConnection.HTTP_OK;
 
 public class HttpRequest {
 
-    private HttpURLConnection connection;
     private String request;
+    private String urlToRequest;
+    private String cookie;
+    private String method;
 
-    public HttpRequest(String urlToRequest, String cookie, String method) throws IOException {
+
+    public HttpRequest(String urlToRequest, String cookie, String method) {
 
         request = "";
 
-        URL url = new URL(urlToRequest);
-        connection = (HttpURLConnection) url.openConnection();
-        connection.setRequestMethod(method);
-
-
-        if(method.equals("POST")) connection.setDoOutput(true);
-
-        connection.setRequestProperty("Cookie", cookie);
+        this.urlToRequest = urlToRequest;
+        this.cookie = cookie;
+        this.method = method;
     }
 
     public void addStringField(String fieldName, String value){
@@ -41,7 +39,21 @@ public class HttpRequest {
 
     public String sendTheRequest() throws IOException {
 
-        if(!request.equals("")) {
+        URL url;
+
+        // Changing the url if the request method is GET
+        // and if there are request params.
+        if(method.equals("GET") && !request.equals("")) url = new URL(urlToRequest + "?" + request);
+
+        else url = new URL(urlToRequest);
+
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod(method);
+        connection.setRequestProperty("Cookie", cookie);
+
+        // If the request is POST and if there are request params
+        // it is writing the params to the request.
+        if(method.equals("POST") && !request.equals("")) {
             BufferedWriter writer =
                     new BufferedWriter(
                             new OutputStreamWriter(connection.getOutputStream(), "UTF-8")
@@ -52,8 +64,10 @@ public class HttpRequest {
             writer.close();
         }
 
+        // Response code from the connection.
         int responseCode = connection.getResponseCode();
 
+        // Response code == 200 OK
         if(responseCode == HTTP_OK) {
             BufferedReader reader = new BufferedReader(
                     new InputStreamReader(connection.getInputStream(), "UTF-8")
@@ -70,6 +84,7 @@ public class HttpRequest {
             return builder.toString();
         }
 
+        // Response code != 200 OK
         else {
             connection.disconnect();
 

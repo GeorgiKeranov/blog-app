@@ -26,14 +26,14 @@ import georgi.com.BlogApp.POJO.User;
 import static georgi.com.BlogApp.Configs.ServerURLs.POSTS_IMAGES_URL;
 import static georgi.com.BlogApp.Configs.ServerURLs.POST_URL;
 
-public class GetPostById extends AsyncTask<Long, Void, Post> {
+public class PostById extends AsyncTask<Long, Void, Post> {
 
     private Context context;
 
     private TextView title, description;
     private ImageView postImage;
 
-    public GetPostById(Context context, TextView title, TextView description, ImageView postImage) {
+    public PostById(Context context, TextView title, TextView description, ImageView postImage) {
         this.context = context;
         this.title = title;
         this.description = description;

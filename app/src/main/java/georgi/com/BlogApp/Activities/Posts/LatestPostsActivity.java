@@ -1,27 +1,37 @@
 package georgi.com.BlogApp.Activities.Posts;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import georgi.com.BlogApp.Activities.Account.AccountActivity;
+import georgi.com.BlogApp.Adapters.PostsAdapter;
 import georgi.com.BlogApp.Helpers.PreferencesHelper;
+import georgi.com.BlogApp.POJO.Post;
 import georgi.com.BlogApp.R;
-import georgi.com.BlogApp.Threads.Posts.GetPosts;
+import georgi.com.BlogApp.Threads.Posts.Latest5Posts;
+import georgi.com.BlogApp.Threads.Posts.Update5Posts;
 import georgi.com.BlogApp.Threads.Security.Logout;
 
 import static georgi.com.BlogApp.Configs.ServerURLs.LATEST_POSTS_URL;
+import static georgi.com.BlogApp.Configs.ServerURLs.UPDATE_5POSTS_URL;
 
 public class LatestPostsActivity extends AppCompatActivity {
 
+    private List<Post> posts;
+
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter adapter;
-    private RecyclerView.LayoutManager layoutManager;
+    private PostsAdapter adapter;
+    private GridLayoutManager gridLayout;
 
     private String username;
 
@@ -37,18 +47,43 @@ public class LatestPostsActivity extends AppCompatActivity {
 
         setSupportActionBar(myToolbar);
 
+        posts = new ArrayList<>();
 
         recyclerView = (RecyclerView) findViewById(R.id.posts_recyclerView);
-        layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
+        gridLayout = new GridLayoutManager(this, 1);
+        recyclerView.setLayoutManager(gridLayout);
+        adapter = new PostsAdapter(this, posts);
+
+        recyclerView.setAdapter(adapter);
+
+        // Getting latest 5 posts.
+        getLatest5Posts();
 
 
+        // On scroll in posts it will check if the last item is visible
+        // and if it is it will update ui thread with 5 new posts.
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+
+                if (gridLayout.findLastVisibleItemPosition() == posts.size() - 1) {
+                    updateWith5Posts();
+                }
+
+            }
+        });
 
     }
 
-    private void setLayoutElements() {
-        GetPosts getLatestPosts = new GetPosts(this, recyclerView, adapter);
+    private void getLatest5Posts() {
+        Latest5Posts getLatestPosts = new Latest5Posts(this, recyclerView);
         getLatestPosts.execute(LATEST_POSTS_URL);
+    }
+
+    private void updateWith5Posts() {
+        Update5Posts update5Posts = new Update5Posts(this, recyclerView);
+        update5Posts.execute(UPDATE_5POSTS_URL, "" + posts.get(posts.size()-1).getId());
     }
 
     @Override
@@ -70,26 +105,26 @@ public class LatestPostsActivity extends AppCompatActivity {
 
         Intent intent = null;
 
-        switch(item.getItemId()) {
+        switch (item.getItemId()) {
 
-            case R.id.toolbar_account :
+            case R.id.toolbar_account:
                 intent = new Intent(this, AccountActivity.class);
                 break;
 
-            case R.id.toolbar_createPost :
+            case R.id.toolbar_createPost:
                 intent = new Intent(this, CreateNewPostActivity.class);
                 break;
 
-            case R.id.toolbar_yourPosts :
+            case R.id.toolbar_yourPosts:
                 intent = new Intent(this, YourPostsActivity.class);
                 break;
 
-            case R.id.toolbar_logout :
+            case R.id.toolbar_logout:
                 Logout logout = new Logout(this);
                 logout.execute();
         }
 
-        if(intent != null) startActivity(intent);
+        if (intent != null) startActivity(intent);
 
         return super.onOptionsItemSelected(item);
     }
@@ -97,6 +132,7 @@ public class LatestPostsActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        setLayoutElements();
+        getLatest5Posts();
     }
+
 }
