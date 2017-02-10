@@ -1,5 +1,6 @@
 package georgi.com.BlogApp.Activities.Account;
 
+
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -22,9 +23,9 @@ public class AccountActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
 
+        // Toolbar settings.
         Toolbar myToolbar = (Toolbar) findViewById(R.id.account_toolbar);
         myToolbar.setTitle("Your Account");
-
         setSupportActionBar(myToolbar);
 
         profile_picture = (ImageView) findViewById(R.id.account_picture);
@@ -32,18 +33,22 @@ public class AccountActivity extends AppCompatActivity{
         lastName = (TextView) findViewById(R.id.account_lastName);
         email = (TextView) findViewById(R.id.account_email);
 
-
         setLayoutElements();
 
     }
 
     private void setLayoutElements() {
+        // AccountDetails is async thread.
+        // It is getting the details for the
+        // authenticated user and use them
+        // to set UI elements below.
         AccountDetails getAccount = new AccountDetails(this,
                 profile_picture,
                 firstName,
                 lastName,
                 email);
 
+        // Starting the thread.
         getAccount.execute();
     }
 
@@ -53,14 +58,6 @@ public class AccountActivity extends AppCompatActivity{
         getMenuInflater().inflate(R.menu.menu_toolbar, menu);
 
         return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-
-        menu.getItem(0).setTitle("Latest Posts");
-
-        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
@@ -75,6 +72,9 @@ public class AccountActivity extends AppCompatActivity{
     @Override
     protected void onResume() {
         super.onResume();
+
+        // When the application is resumed
+        // The UI elements are refreshed by this function
         setLayoutElements();
     }
 }

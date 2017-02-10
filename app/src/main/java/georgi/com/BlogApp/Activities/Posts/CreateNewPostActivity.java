@@ -1,13 +1,16 @@
 package georgi.com.BlogApp.Activities.Posts;
 
+
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -41,11 +44,26 @@ public class CreateNewPostActivity extends AppCompatActivity{
         butCreatePost = (Button) findViewById(R.id.createPost_button);
         context = this;
 
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 10);
+        // If the API level is more than 15
+        // It checks for runtime permission.
+        if(android.os.Build.VERSION.SDK_INT > 15) {
+
+            // Requesting permission.
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 10);
+
+            boolean permission = checkForPermission();
+
+            // If the permission is not granted
+            // This activity is finishing.
+            if (!permission) finish();
+        }
+
 
         image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Intent intent = new Intent();
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -69,9 +87,12 @@ public class CreateNewPostActivity extends AppCompatActivity{
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(resultCode == Activity.RESULT_OK) {
+
+            // Request code 1 means that image is selected.
             if(requestCode == 1) {
                 selectedPic = data.getData();
 
+                // Set the new selected image.
                 Glide.with(this)
                         .load(selectedPic)
                         .override(800, 800)
@@ -80,11 +101,13 @@ public class CreateNewPostActivity extends AppCompatActivity{
         }
     }
 
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        menu.getItem(0).setTitle("Create New Post");
+    // Checks if read external storage permission is granted.
+    private boolean checkForPermission() {
 
-        return super.onPrepareOptionsMenu(menu);
+        int permissionCode = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
+
+        if(permissionCode == PackageManager.PERMISSION_GRANTED) return true;
+        else return false;
     }
 
     @Override

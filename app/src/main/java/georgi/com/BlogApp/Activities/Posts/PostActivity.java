@@ -15,7 +15,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import georgi.com.BlogApp.Adapters.CommentsAdapter;
-import georgi.com.BlogApp.Helpers.PreferencesHelper;
 import georgi.com.BlogApp.R;
 import georgi.com.BlogApp.Threads.Account.AccountDetails;
 import georgi.com.BlogApp.Threads.Posts.CommentOnPost;

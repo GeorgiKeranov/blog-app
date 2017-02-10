@@ -53,6 +53,8 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
             profilePic = DEFAULT_USER_IMG;
         else  profilePic = USER_IMAGES_URL + comAuthor.getUserUrl() + "/" + profilePic;
 
+
+        // Setting the image with Glide library direct from the url.
         Glide.with(context)
                 .load(USER_IMAGES_URL + comAuthor.getUserUrl() + "/" + comAuthor.getProfile_picture())
                 .override(160, 160)
@@ -61,7 +63,10 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
         holder.fullName.setText(comAuthor.getFullName());
         holder.comment.setText(curComment.getComment());
 
+        // Initializing the repliesAdapter.
         holder.repliesAdapter = new RepliesAdapter(context, curComment.getReplies());
+
+        // Setting the adapter.
         holder.replies.setAdapter(holder.repliesAdapter);
     }
 

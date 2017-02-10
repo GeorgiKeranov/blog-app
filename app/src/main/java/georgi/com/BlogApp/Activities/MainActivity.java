@@ -14,6 +14,8 @@ public class MainActivity extends Activity{
         super.onCreate(savedInstanceState);
 
 
+        // Thread that checks if user is authenticated with the server.
+        // And starts new activity depending on that if the user is authenticated.
         CheckAuthentication checkAuthentication = new CheckAuthentication(this);
         checkAuthentication.execute();
     }

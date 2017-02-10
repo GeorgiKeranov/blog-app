@@ -30,7 +30,6 @@ public class Latest5Posts extends AsyncTask<String, Void, List<Post>>{
     private Context context;
 
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter adapter;
 
     public Latest5Posts(Context context, RecyclerView recyclerView) {
         this.context = context;
@@ -58,19 +57,6 @@ public class Latest5Posts extends AsyncTask<String, Void, List<Post>>{
         return null;
     }
 
-    @Override
-    protected void onPostExecute(List<Post> posts) {
-
-        PostsAdapter postsAdapter = (PostsAdapter) recyclerView.getAdapter();
-        List<Post> oldPosts = postsAdapter.getPosts();
-
-        for(Post post : posts) {
-            oldPosts.add(post);
-        }
-
-        postsAdapter.notifyDataSetChanged();
-    }
-
     private List<Post> convertToListOfObjects(JSONArray jsonArray) throws JSONException {
 
         List<Post> postsResponse = new ArrayList<>();
@@ -90,5 +76,18 @@ public class Latest5Posts extends AsyncTask<String, Void, List<Post>>{
         }
 
         return  postsResponse;
+    }
+
+    @Override
+    protected void onPostExecute(List<Post> posts) {
+
+        PostsAdapter postsAdapter = (PostsAdapter) recyclerView.getAdapter();
+        List<Post> oldPosts = postsAdapter.getPosts();
+
+        for(Post post : posts) {
+            oldPosts.add(post);
+        }
+
+        postsAdapter.notifyDataSetChanged();
     }
 }

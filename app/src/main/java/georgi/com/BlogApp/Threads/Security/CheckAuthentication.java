@@ -31,7 +31,7 @@ public class CheckAuthentication extends AsyncTask<Void, Void, Boolean>{
     protected Boolean doInBackground(Void... voids) {
 
         String cookie = new PreferencesHelper(context).getCookie();
-        if(cookie.equals("NO-COOKIE") || cookie == null) return false;
+        if(cookie == null || cookie.equals("NO-COOKIE")) return false;
 
         try {
 

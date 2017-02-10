@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import georgi.com.BlogApp.Adapters.PostsAdapter;
@@ -31,37 +32,26 @@ public class YourPostsActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_your_posts);
 
+        userPosts = new ArrayList<>();
+
         recyclerView = (RecyclerView) findViewById(R.id.your_posts_recyclerView);
         gridLayoutManager = new GridLayoutManager(this, 1);
         recyclerView.setLayoutManager(gridLayoutManager);
 
+        adapter = new YourPostsAdapter(this, userPosts);
+        recyclerView.setAdapter(adapter);
+
         // Getting the latest 5 user posts and setting the UI thread.
-        Latest5UserPosts latest5UserPosts = new Latest5UserPosts(this, recyclerView);
-        latest5UserPosts.execute();
+        getLatest5Posts();
 
         // On scroll in posts it will check if the last item is visible
         // and if it is it will update ui thread with 5 new posts.
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-
-            boolean oneTimeOnly = true;
-
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-
-                // Getting reference of posts from PostsAdapter
-                // to get the posts size below in function for updating
-                // posts with new 5 on scroll.
-                if(oneTimeOnly) {
-                    adapter = (YourPostsAdapter) recyclerView.getAdapter();
-                    userPosts = adapter.getPosts();
-
-                    oneTimeOnly = false;
-                }
-
                 if (gridLayoutManager.findLastVisibleItemPosition() == userPosts.size() - 1) {
                     updateWith5Posts();
                 }
-
             }
         });
 
@@ -73,6 +63,22 @@ public class YourPostsActivity extends AppCompatActivity{
         Update5Posts update5Posts = new Update5Posts(this, recyclerView);
         update5Posts.execute(UPDATE_USER_5POSTS_URL,
                 "" + userPosts.get(userPosts.size() - 1).getId());
+    }
 
+    private void getLatest5Posts() {
+
+        // This thread gets the latest 5 posts that authenticated user have been posted.
+        Latest5UserPosts latest5UserPosts = new Latest5UserPosts(this, recyclerView);
+        latest5UserPosts.execute();
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // Clears the list of user's posts.
+        userPosts.clear();
+        getLatest5Posts();
     }
 }

@@ -59,8 +59,14 @@ public class Latest5UserPosts extends AsyncTask<Void, Void, List<Post>>{
     @Override
     protected void onPostExecute(List<Post> posts) {
 
-        YourPostsAdapter adapter = new YourPostsAdapter(context, posts);
-        recyclerView.setAdapter(adapter);
+        YourPostsAdapter adapter = (YourPostsAdapter) recyclerView.getAdapter();
+        List<Post> oldPosts = adapter.getPosts();
+
+        for(Post post : posts) {
+            oldPosts.add(post);
+        }
+
+        adapter.notifyDataSetChanged();
     }
 
     private List<Post> convertToListOfObjects(JSONArray jsonArray) throws JSONException {

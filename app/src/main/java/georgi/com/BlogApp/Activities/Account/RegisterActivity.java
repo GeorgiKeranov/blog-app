@@ -1,5 +1,6 @@
 package georgi.com.BlogApp.Activities.Account;
 
+
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -37,9 +38,11 @@ public class RegisterActivity extends Activity {
         // Handling Clicks.
         switch (view.getId()){
 
-            // If register button is clicked :
             case R.id.but_register :
+                // When register button is clicked :
+
                 // If password and confirm password are not equal.
+                // It is creating AlertDialog that says the passwords are not the same.
                 if(!password.getText().toString().equals(confirmPass.getText().toString())){
 
                     // Show alert that passwords are not the same.
@@ -57,9 +60,12 @@ public class RegisterActivity extends Activity {
                         }
                     }).create().show();
 
+                    // Breaking the loop so it wont send the credentials to server.
                     break;
                 }
 
+                // Starting register thread that sends the credentials to the server
+                // and handling the response from it.
                 Register regThread = new Register(this, username, email);
                 regThread.execute(
                         firstName.getText().toString(),
@@ -70,7 +76,7 @@ public class RegisterActivity extends Activity {
 
                 break;
 
-            // If login button is clicked finish activity
+            // If login button is clicked it finishes activity
             // so it is going to login activity.
             case R.id.goToLogin :
                 finish();

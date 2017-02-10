@@ -1,5 +1,6 @@
 package georgi.com.BlogApp.Adapters;
 
+
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +14,7 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
+import georgi.com.BlogApp.Activities.Posts.EditPostActivity;
 import georgi.com.BlogApp.Activities.Posts.PostActivity;
 import georgi.com.BlogApp.POJO.Post;
 import georgi.com.BlogApp.R;
@@ -30,6 +32,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyViewHolder
         this.posts = posts;
     }
 
+    // This method is used when you need to get current posts from adapter.
     public List<Post> getPosts() { return posts; }
 
     @Override
@@ -59,9 +62,9 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyViewHolder
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        Long post_id;
-        ImageView postImage;
-        TextView title, description;
+        private Long post_id;
+        private ImageView postImage;
+        private TextView title, description;
 
 
         public MyViewHolder(View itemView) {
@@ -77,6 +80,19 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyViewHolder
                     Intent intent = new Intent(context, PostActivity.class);
                     intent.putExtra("post_id", post_id);
                     context.startActivity(intent);
+                }
+            });
+
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+
+                    Intent intent = new Intent(context, EditPostActivity.class);
+                    intent.putExtra("id", post_id);
+
+                    context.startActivity(intent);
+
+                    return true;
                 }
             });
         }

@@ -32,7 +32,7 @@ public class CommentOnPost extends AsyncTask<String, Void, Void>{
 
         try {
             HttpRequest httpRequest =
-                    new HttpRequest(POST_URL + id,
+                    new HttpRequest(POST_URL + id + "/comment",
                             new PreferencesHelper(context).getCookie(), "POST");
 
             httpRequest.addStringField("comment", strings[0]);
