@@ -1,6 +1,5 @@
 package georgi.com.BlogApp.Adapters;
 
-
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -18,7 +17,9 @@ import georgi.com.BlogApp.Activities.Posts.PostActivity;
 import georgi.com.BlogApp.POJO.Post;
 import georgi.com.BlogApp.R;
 
+import static georgi.com.BlogApp.Configs.ServerURLs.DEFAULT_POST_IMG;
 import static georgi.com.BlogApp.Configs.ServerURLs.POSTS_IMAGES_URL;
+
 
 public class YourPostsAdapter extends RecyclerView.Adapter<YourPostsAdapter.MyViewHolder> {
 
@@ -30,6 +31,7 @@ public class YourPostsAdapter extends RecyclerView.Adapter<YourPostsAdapter.MyVi
         this.posts = posts;
     }
 
+    // This is used when you need to get posts from adapter.
     public List<Post> getPosts() { return posts; }
 
     @Override
@@ -47,8 +49,18 @@ public class YourPostsAdapter extends RecyclerView.Adapter<YourPostsAdapter.MyVi
 
         holder.postId = curPost.getId();
 
+        String postImage = curPost.getIcon();
+
+        // Checking if postImage equals "no"
+        // that means that there is not a picture so it
+        // is changing the variable to the default image url.
+        if (postImage.equals("no"))
+            postImage = DEFAULT_POST_IMG;
+        else postImage = POSTS_IMAGES_URL + postImage;
+
+        // Loading postImage(url) into the ImageView.
         Glide.with(context)
-                .load(POSTS_IMAGES_URL + curPost.getIcon())
+                .load(postImage)
                 .override(400, 400)
                 .into(holder.postImage);
 
@@ -78,9 +90,9 @@ public class YourPostsAdapter extends RecyclerView.Adapter<YourPostsAdapter.MyVi
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
+                    // Starting new PostActivity with extra param.
                     Intent intent = new Intent(context, PostActivity.class);
-                    intent.putExtra("post_id", postId);
+                    intent.putExtra("post_id", postId); // postId : id of the clicked post.
                     context.startActivity(intent);
                 }
             });

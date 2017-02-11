@@ -1,18 +1,15 @@
 package georgi.com.BlogApp.Helpers;
 
-
-import android.content.Context;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
-import java.net.SocketTimeoutException;
 import java.net.URL;
 
 import static java.net.HttpURLConnection.HTTP_OK;
+
 
 public class HttpRequest {
 

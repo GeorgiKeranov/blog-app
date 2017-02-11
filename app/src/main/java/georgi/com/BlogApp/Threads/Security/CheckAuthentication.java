@@ -1,6 +1,5 @@
 package georgi.com.BlogApp.Threads.Security;
 
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -17,6 +16,10 @@ import georgi.com.BlogApp.Helpers.PreferencesHelper;
 
 import static georgi.com.BlogApp.Configs.ServerURLs.AUTHENTICATION_URL;
 
+
+// This thread is checking if the user is authenticated in the server
+// By getting saved value of cookie from SharedPreferences and
+// sending request to the server to check the cookie.
 public class CheckAuthentication extends AsyncTask<Void, Void, Boolean>{
 
     private String TAG = getClass().getSimpleName();

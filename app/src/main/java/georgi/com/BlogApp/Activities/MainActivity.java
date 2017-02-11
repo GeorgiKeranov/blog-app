@@ -1,11 +1,11 @@
 package georgi.com.BlogApp.Activities;
 
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import georgi.com.BlogApp.Threads.Security.CheckAuthentication;
+
 
 public class MainActivity extends Activity{
 

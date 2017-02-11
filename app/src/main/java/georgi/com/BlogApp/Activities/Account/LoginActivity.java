@@ -1,6 +1,5 @@
 package georgi.com.BlogApp.Activities.Account;
 
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +8,7 @@ import android.widget.EditText;
 
 import georgi.com.BlogApp.R;
 import georgi.com.BlogApp.Threads.Security.Login;
+
 
 public class LoginActivity extends Activity {
 
@@ -41,7 +41,7 @@ public class LoginActivity extends Activity {
                                     password.getText().toString());
                 break;
 
-            //
+
             case R.id.id_register :
 
                 // When register button is clicked it is starting new

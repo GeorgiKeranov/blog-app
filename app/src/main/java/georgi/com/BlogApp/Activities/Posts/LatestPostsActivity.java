@@ -1,6 +1,5 @@
 package georgi.com.BlogApp.Activities.Posts;
 
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -24,6 +23,7 @@ import georgi.com.BlogApp.Threads.Security.Logout;
 
 import static georgi.com.BlogApp.Configs.ServerURLs.LATEST_POSTS_URL;
 import static georgi.com.BlogApp.Configs.ServerURLs.UPDATE_5POSTS_URL;
+
 
 public class LatestPostsActivity extends AppCompatActivity {
 

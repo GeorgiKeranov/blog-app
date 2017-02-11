@@ -17,7 +17,6 @@ public class User {
 
     public User() {}
 
-
     public User(String userUrl, String firstName, String lastName, String email) {
         this.userUrl = userUrl;
         this.firstName = firstName;

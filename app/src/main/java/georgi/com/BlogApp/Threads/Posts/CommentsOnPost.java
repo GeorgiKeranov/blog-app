@@ -1,6 +1,5 @@
 package georgi.com.BlogApp.Threads.Posts;
 
-
 import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
@@ -22,29 +21,36 @@ import georgi.com.BlogApp.POJO.User;
 
 import static georgi.com.BlogApp.Configs.ServerURLs.POST_URL;
 
+
+// This thread is sending request to get comments for some post
+// and handling comments and replies then setting them in recyclerView.
 public class CommentsOnPost extends AsyncTask<Long, Void, List<Comment>> {
 
     private Context context;
-    private RecyclerView recyclerView;
-    private CommentsAdapter commentsAdapter;
 
-    public CommentsOnPost(Context context, RecyclerView recyclerView, CommentsAdapter commentsAdapter) {
+    // This recyclerView is used for the comments.
+    private RecyclerView commentsRecyclerView;
+
+    public CommentsOnPost(Context context, RecyclerView commentsRecyclerView) {
         this.context = context;
-        this.recyclerView = recyclerView;
-        this.commentsAdapter = commentsAdapter;
+        this.commentsRecyclerView = commentsRecyclerView;
     }
 
     @Override
     protected List<Comment> doInBackground(Long... longs) {
 
         try {
+
+            // Sending the request to get comments on post with id - longs[0].
             HttpRequest httpRequest =
                     new HttpRequest(POST_URL + longs[0] + "/comments",
                             new PreferencesHelper(context).getCookie(),
                             "POST");
 
+            // Sending the request and converting the response to JSONArray.
             JSONArray jsonArray = new JSONArray(httpRequest.sendTheRequest());
 
+            // Converting the JSONArray to the List of comments and returning it.
             return convertJSONtoList(jsonArray);
 
         } catch (IOException e) {
@@ -59,12 +65,15 @@ public class CommentsOnPost extends AsyncTask<Long, Void, List<Comment>> {
     @Override
     protected void onPostExecute(List<Comment> comments) {
 
-        commentsAdapter = new CommentsAdapter(context, comments);
-        recyclerView.setAdapter(commentsAdapter);
+        // Creating the adapter for the list of comments.
+        CommentsAdapter commentsAdapter = new CommentsAdapter(context, comments);
 
+        // Setting the adapter to the recyclerView.
+        commentsRecyclerView.setAdapter(commentsAdapter);
     }
 
 
+    // This method is used to convert JSONArray to List of comments.
     private List<Comment> convertJSONtoList(JSONArray jsonArray) throws JSONException {
 
         List<Comment> commentsList = new ArrayList<>();
@@ -104,6 +113,7 @@ public class CommentsOnPost extends AsyncTask<Long, Void, List<Comment>> {
         return commentsList;
     }
 
+    // This method is used to convert JSONObject with details for user to User object.
     private User createAuthor(JSONObject author) throws JSONException {
 
         User newAuthor = new User();
@@ -115,4 +125,5 @@ public class CommentsOnPost extends AsyncTask<Long, Void, List<Comment>> {
 
         return newAuthor;
     }
+
 }

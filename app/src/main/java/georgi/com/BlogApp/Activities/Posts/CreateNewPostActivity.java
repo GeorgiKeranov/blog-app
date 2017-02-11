@@ -1,6 +1,5 @@
 package georgi.com.BlogApp.Activities.Posts;
 
-
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
@@ -23,6 +22,7 @@ import com.bumptech.glide.Glide;
 
 import georgi.com.BlogApp.R;
 import georgi.com.BlogApp.Threads.Posts.CreatePost;
+
 
 public class CreateNewPostActivity extends AppCompatActivity{
 

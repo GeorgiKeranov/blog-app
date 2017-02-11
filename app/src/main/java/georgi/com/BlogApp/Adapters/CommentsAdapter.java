@@ -1,6 +1,5 @@
 package georgi.com.BlogApp.Adapters;
 
-
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,6 +19,7 @@ import georgi.com.BlogApp.R;
 
 import static georgi.com.BlogApp.Configs.ServerURLs.DEFAULT_USER_IMG;
 import static georgi.com.BlogApp.Configs.ServerURLs.USER_IMAGES_URL;
+
 
 public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyViewHolder>{
 

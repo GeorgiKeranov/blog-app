@@ -1,6 +1,5 @@
 package georgi.com.BlogApp.Adapters;
 
-
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -20,6 +19,7 @@ import georgi.com.BlogApp.POJO.Post;
 import georgi.com.BlogApp.R;
 
 import static georgi.com.BlogApp.Configs.ServerURLs.POSTS_IMAGES_URL;
+
 
 public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyViewHolder>{
 
@@ -43,8 +43,11 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyViewHolder
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
+
+        // Getting current post by position.
         Post curPost = posts.get(position);
 
+        // Glide loads given image by url into the ImageView.
         Glide.with(context)
                 .load(POSTS_IMAGES_URL + curPost.getIcon())
                 .override(400, 400)
@@ -74,11 +77,17 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyViewHolder
             title = (TextView) itemView.findViewById(R.id.post_summaryTitle);
             description = (TextView) itemView.findViewById(R.id.post_summaryDesc);
 
+            // When a item is clicked in the recyclerView :
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+
+                    // Starting PostActivity with extra param :
                     Intent intent = new Intent(context, PostActivity.class);
+
+                    // post_id - id of the post that is clicked.
                     intent.putExtra("post_id", post_id);
+
                     context.startActivity(intent);
                 }
             });
@@ -86,7 +95,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyViewHolder
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-
+                    //TODO change this
                     Intent intent = new Intent(context, EditPostActivity.class);
                     intent.putExtra("id", post_id);
 

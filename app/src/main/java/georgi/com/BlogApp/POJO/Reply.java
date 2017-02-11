@@ -1,8 +1,6 @@
 package georgi.com.BlogApp.POJO;
 
 
-import java.util.Date;
-
 public class Reply {
 
     private Long id;

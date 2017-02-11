@@ -1,6 +1,5 @@
 package georgi.com.BlogApp.Activities.Account;
 
-
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -10,6 +9,7 @@ import android.widget.EditText;
 
 import georgi.com.BlogApp.Threads.Security.Register;
 import georgi.com.BlogApp.R;
+
 
 public class RegisterActivity extends Activity {
 

@@ -1,9 +1,7 @@
 package georgi.com.BlogApp.POJO;
 
-
-import java.util.Date;
 import java.util.List;
-import java.util.Set;
+
 
 public class Comment {
 

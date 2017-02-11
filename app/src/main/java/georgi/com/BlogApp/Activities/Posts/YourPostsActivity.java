@@ -1,6 +1,5 @@
 package georgi.com.BlogApp.Activities.Posts;
 
-
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -14,10 +13,13 @@ import georgi.com.BlogApp.Adapters.PostsAdapter;
 import georgi.com.BlogApp.Adapters.YourPostsAdapter;
 import georgi.com.BlogApp.POJO.Post;
 import georgi.com.BlogApp.R;
+import georgi.com.BlogApp.Threads.Posts.Latest5Posts;
 import georgi.com.BlogApp.Threads.Posts.Latest5UserPosts;
 import georgi.com.BlogApp.Threads.Posts.Update5Posts;
 
+import static georgi.com.BlogApp.Configs.ServerURLs.LATEST_USER_POSTS_URL;
 import static georgi.com.BlogApp.Configs.ServerURLs.UPDATE_USER_5POSTS_URL;
+
 
 public class YourPostsActivity extends AppCompatActivity{
 

@@ -1,6 +1,5 @@
 package georgi.com.BlogApp.Activities.Account;
 
-
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +11,7 @@ import android.widget.TextView;
 
 import georgi.com.BlogApp.R;
 import georgi.com.BlogApp.Threads.Account.AccountDetails;
+
 
 public class AccountActivity extends AppCompatActivity{
 

@@ -1,6 +1,5 @@
 package georgi.com.BlogApp.Activities.Posts;
 
-
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +19,7 @@ import georgi.com.BlogApp.Threads.Account.AccountDetails;
 import georgi.com.BlogApp.Threads.Posts.CommentOnPost;
 import georgi.com.BlogApp.Threads.Posts.CommentsOnPost;
 import georgi.com.BlogApp.Threads.Posts.PostById;
+
 
 public class PostActivity extends AppCompatActivity{
 
@@ -73,7 +73,7 @@ public class PostActivity extends AppCompatActivity{
 
         // Thread to get comments from the server and to set them on the UI.
         CommentsOnPost commentsOnPost =
-                new CommentsOnPost(this, comments, commentsAdapter);
+                new CommentsOnPost(this, comments);
         commentsOnPost.execute(postId);
 
         butComment.setOnClickListener(new View.OnClickListener() {
@@ -84,7 +84,7 @@ public class PostActivity extends AppCompatActivity{
                 // Then it is refreshing the new comments.
                 CommentOnPost commentOnPost =
                         new CommentOnPost(getApplicationContext(),
-                                postId, comments, commentsAdapter);
+                                postId, comments);
 
                 commentOnPost.execute(comment.getText().toString());
 

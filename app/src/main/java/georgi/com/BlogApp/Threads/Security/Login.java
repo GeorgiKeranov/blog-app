@@ -21,6 +21,9 @@ import georgi.com.BlogApp.Helpers.PreferencesHelper;
 
 import static georgi.com.BlogApp.Configs.ServerURLs.LOGIN_URL;
 
+
+// This thread sends username and password to the server
+// and saving the cookie if the user is authenticated.
 public class Login extends AsyncTask<String, Void, String>{
 
     private Context context;
@@ -35,16 +38,19 @@ public class Login extends AsyncTask<String, Void, String>{
     protected String doInBackground(String... strings) {
 
         try {
+
             URL url = new URL(LOGIN_URL);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
             conn.setDoOutput(true);
 
+            // Writing the params to the request.
             OutputStreamWriter writer = new OutputStreamWriter(conn.getOutputStream());
             writer.write("username=" + strings[0] + "&" + "password=" + strings[1]);
             writer.flush();
             writer.close();
 
+            // Reading the response from the server.
             InputStreamReader is = new InputStreamReader(conn.getInputStream(), "UTF-8");
             BufferedReader reader = new BufferedReader(is);
 
@@ -55,14 +61,15 @@ public class Login extends AsyncTask<String, Void, String>{
 
             String cookie = null;
 
+            // Getting the response from the server.
             if(response.getBoolean("authenticated")){
+
                 String cookies = conn.getHeaderField("set-cookie");
                 String[] cookiesArray = cookies.split(";");
+
+                // Setting the cookie to returned from server "set-cookie".
                 cookie = cookiesArray[0];
             }
-
-            if(cookie != null)
-                preferencesHelper.setCustomKeyValue("username", strings[0]);
 
             return cookie;
 
@@ -84,6 +91,7 @@ public class Login extends AsyncTask<String, Void, String>{
     protected void onPostExecute(String cookie) {
 
         if(cookie == null) {
+
             // Creating invalid credentials dialog.
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setTitle("Error");
@@ -98,9 +106,11 @@ public class Login extends AsyncTask<String, Void, String>{
         }
 
         else {
-            // Cookie is stored in sharedPreferences.
+
+            // Cookie is stored in SharedPreferences.
             preferencesHelper.setCookie(cookie);
 
+            // Starting LatestPostsActivity and clearing previous activities.
             Intent homeActivity = new Intent(context, LatestPostsActivity.class);
             homeActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             context.startActivity(homeActivity);

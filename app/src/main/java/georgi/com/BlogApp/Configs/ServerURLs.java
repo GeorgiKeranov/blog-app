@@ -1,5 +1,7 @@
 package georgi.com.BlogApp.Configs;
 
+
+// All of the server urls.
 public class ServerURLs {
 
     private static final String IP_ADDRESS = "http://192.168.0.101:8080";

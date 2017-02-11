@@ -1,6 +1,5 @@
 package georgi.com.BlogApp.Activities.Posts;
 
-
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -16,7 +15,8 @@ import com.bumptech.glide.Glide;
 
 import georgi.com.BlogApp.R;
 import georgi.com.BlogApp.Threads.Posts.PostById;
-import georgi.com.BlogApp.Threads.Posts.UpdatePost;
+import georgi.com.BlogApp.Threads.Posts.EditPost;
+
 
 public class EditPostActivity extends AppCompatActivity{
 
@@ -70,8 +70,8 @@ public class EditPostActivity extends AppCompatActivity{
             public void onClick(View view) {
 
                 // Sending the updated post to the server.
-                UpdatePost updatePost = new UpdatePost(context, fileLocation);
-                updatePost.execute("" + id, title.getText().toString(), description.getText().toString());
+                EditPost editPost = new EditPost(context, fileLocation);
+                editPost.execute("" + id, title.getText().toString(), description.getText().toString());
             }
         });
 

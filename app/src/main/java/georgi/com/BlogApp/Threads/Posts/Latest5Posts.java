@@ -8,21 +8,18 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import georgi.com.BlogApp.Activities.Posts.PostActivity;
 import georgi.com.BlogApp.Adapters.PostsAdapter;
 import georgi.com.BlogApp.Helpers.HttpRequest;
 import georgi.com.BlogApp.Helpers.PreferencesHelper;
 import georgi.com.BlogApp.POJO.Post;
 
 
+// This thread is sending request to server for the latest 5 posts
+// and set them to the recyclerView.
 public class Latest5Posts extends AsyncTask<String, Void, List<Post>>{
 
     private String TAG = getClass().getSimpleName();
@@ -38,12 +35,18 @@ public class Latest5Posts extends AsyncTask<String, Void, List<Post>>{
 
     @Override
     protected List<Post> doInBackground(String... strings) {
+
         try {
 
+            // Creating the request.
+            // strings[0] is the url to send that request.
             HttpRequest httpRequest = new HttpRequest(strings[0],
                     new PreferencesHelper(context).getCookie(), "GET");
+
+            // Sending the request and getting the response.
             String response = httpRequest.sendTheRequest();
 
+            // Converting the response to JSONArray
             JSONArray jsonResponse = new JSONArray(response);
 
             return convertToListOfObjects(jsonResponse);
@@ -57,6 +60,7 @@ public class Latest5Posts extends AsyncTask<String, Void, List<Post>>{
         return null;
     }
 
+    // This method is used to convert JSONarray to list of Post objects.
     private List<Post> convertToListOfObjects(JSONArray jsonArray) throws JSONException {
 
         List<Post> postsResponse = new ArrayList<>();
@@ -81,13 +85,18 @@ public class Latest5Posts extends AsyncTask<String, Void, List<Post>>{
     @Override
     protected void onPostExecute(List<Post> posts) {
 
+        // Getting the adapter from the recyclerView
         PostsAdapter postsAdapter = (PostsAdapter) recyclerView.getAdapter();
+
+        // Getting the posts from the postAdapter
         List<Post> oldPosts = postsAdapter.getPosts();
 
+        // Adding the new posts to the old.
         for(Post post : posts) {
             oldPosts.add(post);
         }
 
+        // And notifying the adapter that data is changed.
         postsAdapter.notifyDataSetChanged();
     }
 }
