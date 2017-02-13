@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import georgi.com.BlogApp.Activities.Account.AccountActivity;
+import georgi.com.BlogApp.Activities.Account.EditAccountActivity;
 import georgi.com.BlogApp.Adapters.PostsAdapter;
 import georgi.com.BlogApp.Helpers.PreferencesHelper;
 import georgi.com.BlogApp.POJO.Post;
@@ -104,16 +105,7 @@ public class LatestPostsActivity extends AppCompatActivity {
         switch (item.getItemId()) {
 
             case R.id.toolbar_latestPosts:
-                break;
-
-
-
-            case R.id.toolbar_edit_account:
-                // TODO edit account activity.
-                break;
-
-            case R.id.toolbar_account:
-                intent = new Intent(this, AccountActivity.class);
+                intent = new Intent(this, LatestPostsActivity.class);
                 break;
 
             case R.id.toolbar_createPost:
@@ -122,6 +114,14 @@ public class LatestPostsActivity extends AppCompatActivity {
 
             case R.id.toolbar_yourPosts:
                 intent = new Intent(this, YourPostsActivity.class);
+                break;
+
+            case R.id.toolbar_account:
+                intent = new Intent(this, AccountActivity.class);
+                break;
+
+            case R.id.toolbar_edit_account:
+                intent = new Intent(this, EditAccountActivity.class);
                 break;
 
             case R.id.toolbar_logout:

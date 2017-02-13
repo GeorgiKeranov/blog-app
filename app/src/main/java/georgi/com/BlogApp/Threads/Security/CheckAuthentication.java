@@ -33,16 +33,22 @@ public class CheckAuthentication extends AsyncTask<Void, Void, Boolean>{
     @Override
     protected Boolean doInBackground(Void... voids) {
 
+        // Checks if there is a cookie.
         String cookie = new PreferencesHelper(context).getCookie();
         if(cookie == null || cookie.equals("NO-COOKIE")) return false;
 
         try {
 
+            // Creating request to the server.
             HttpRequest httpRequest = new HttpRequest(AUTHENTICATION_URL, cookie, "GET");
+
+            // Sending the request and getting the response from the server.
             String response = httpRequest.sendTheRequest();
 
+            // Converting the response to JSONObject.
             JSONObject jsonResponse = new JSONObject(response);
 
+            // Returning boolean from the response.
             return jsonResponse.getBoolean("authenticated");
 
         } catch (IOException e) {
@@ -60,15 +66,20 @@ public class CheckAuthentication extends AsyncTask<Void, Void, Boolean>{
 
         Intent intent;
 
+
         if(authenticated) {
+            // Intent for LatestPostsActivity if authentication is successful.
             intent = new Intent(context, LatestPostsActivity.class);
         }
 
         else {
+            // Intent for LoginActivity if authentication is unsuccessful.
             intent = new Intent(context, LoginActivity.class);
         }
 
+        // Removing previous activities.
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
         context.startActivity(intent);
     }
 }

@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import georgi.com.BlogApp.R;
 
 
-public class ViewOtherUser extends AppCompatActivity {
+public class ViewOtherUserActivity extends AppCompatActivity {
 
 
     @Override

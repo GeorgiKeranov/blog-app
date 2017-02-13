@@ -6,8 +6,8 @@ import android.support.annotation.Nullable;
 
 import georgi.com.BlogApp.Threads.Security.CheckAuthentication;
 
-
-public class MainActivity extends Activity{
+// This activity is the starting point of the application.
+public class MainActivity extends Activity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

@@ -68,7 +68,7 @@ public class CreateNewPostActivity extends AppCompatActivity{
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
 
-                startActivityForResult(Intent.createChooser(intent,"Select Gallery"), 1);
+                startActivityForResult(Intent.createChooser(intent,"Choose an app to select a image"), 1);
             }
         });
 

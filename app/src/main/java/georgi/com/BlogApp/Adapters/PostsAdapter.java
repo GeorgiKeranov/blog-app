@@ -18,6 +18,7 @@ import georgi.com.BlogApp.Activities.Posts.PostActivity;
 import georgi.com.BlogApp.POJO.Post;
 import georgi.com.BlogApp.R;
 
+import static georgi.com.BlogApp.Configs.ServerURLs.DEFAULT_POST_IMG;
 import static georgi.com.BlogApp.Configs.ServerURLs.POSTS_IMAGES_URL;
 
 
@@ -47,9 +48,19 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyViewHolder
         // Getting current post by position.
         Post curPost = posts.get(position);
 
+        String imageUrl = curPost.getIcon();
+
+        // Checks if there is image.
+
+        // There is not so changing it to default.
+        if(imageUrl.equals("no")) imageUrl = DEFAULT_POST_IMG;
+
+        // There is so creating the needed url.
+        else imageUrl = POSTS_IMAGES_URL + imageUrl;
+
         // Glide loads given image by url into the ImageView.
         Glide.with(context)
-                .load(POSTS_IMAGES_URL + curPost.getIcon())
+                .load(imageUrl)
                 .override(400, 400)
                 .into(holder.postImage);
 
