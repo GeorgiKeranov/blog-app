@@ -91,7 +91,10 @@ public class Latest5Posts extends AsyncTask<String, Void, List<Post>>{
         // Getting the posts from the postAdapter
         List<Post> oldPosts = postsAdapter.getPosts();
 
-        // Adding the new posts to the old.
+        // Deleting the old posts.
+        oldPosts.clear();
+
+        // Adding the new posts to the old posts reference.
         for(Post post : posts) {
             oldPosts.add(post);
         }

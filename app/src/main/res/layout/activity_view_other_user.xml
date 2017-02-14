@@ -35,6 +35,17 @@
         android:layout_alignLeft="@+id/view_other_user_fullName"
         android:layout_alignStart="@+id/view_other_user_fullName" />
 
+    <TextView
+        android:text="Posts :"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/view_other_user_image"
+        android:layout_alignLeft="@+id/view_other_user_recyclerView"
+        android:layout_alignStart="@+id/view_other_user_recyclerView"
+        android:layout_marginTop="7dp"
+        android:id="@+id/textView2"
+        android:textSize="24sp" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/view_other_user_recyclerView"
         android:layout_width="match_parent"
@@ -44,5 +55,8 @@
         android:layout_marginTop="45dp"
         android:layout_marginBottom="40dp"
         android:layout_marginRight="20dp"
-        android:layout_marginLeft="20dp" />
+        android:layout_marginLeft="20dp" >
+
+    </android.support.v7.widget.RecyclerView>
+
 </RelativeLayout>

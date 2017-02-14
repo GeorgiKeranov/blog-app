@@ -48,13 +48,13 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyViewHolder
         // Getting current post by position.
         Post curPost = posts.get(position);
 
+        holder.post_id = curPost.getId();
+
         String imageUrl = curPost.getIcon();
 
         // Checks if there is image.
-
         // There is not so changing it to default.
         if(imageUrl.equals("no")) imageUrl = DEFAULT_POST_IMG;
-
         // There is so creating the needed url.
         else imageUrl = POSTS_IMAGES_URL + imageUrl;
 
@@ -66,7 +66,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyViewHolder
 
         holder.title.setText(curPost.getSummaryTitle());
         holder.description.setText(curPost.getSummaryDesc());
-        holder.post_id = curPost.getId();
+        holder.date.setText(curPost.getDate());
     }
 
     @Override
@@ -78,15 +78,16 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyViewHolder
 
         private Long post_id;
         private ImageView postImage;
-        private TextView title, description;
+        private TextView title, description, date;
 
 
         public MyViewHolder(View itemView) {
             super(itemView);
 
-            postImage = (ImageView) itemView.findViewById(R.id.post_picture);
-            title = (TextView) itemView.findViewById(R.id.post_summaryTitle);
-            description = (TextView) itemView.findViewById(R.id.post_summaryDesc);
+            postImage = (ImageView) itemView.findViewById(R.id.post_row_picture);
+            title = (TextView) itemView.findViewById(R.id.post_row_summaryTitle);
+            description = (TextView) itemView.findViewById(R.id.post_row_summaryDesc);
+            date = (TextView) itemView.findViewById(R.id.post_row_date) ;
 
             // When a item is clicked in the recyclerView :
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -100,19 +101,6 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyViewHolder
                     intent.putExtra("post_id", post_id);
 
                     context.startActivity(intent);
-                }
-            });
-
-            itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view) {
-                    //TODO change this
-                    Intent intent = new Intent(context, EditPostActivity.class);
-                    intent.putExtra("id", post_id);
-
-                    context.startActivity(intent);
-
-                    return true;
                 }
             });
         }

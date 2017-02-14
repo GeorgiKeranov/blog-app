@@ -12,7 +12,7 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/post_picture"
+            android:id="@+id/post_row_picture"
             android:cropToPadding="true"
             android:adjustViewBounds="true"
             android:layout_width="100dp"
@@ -28,7 +28,7 @@
                 android:text="Title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/post_summaryTitle"
+                android:id="@+id/post_row_summaryTitle"
                 tools:textStyle="bold"
                 android:layout_marginTop="5dp"
                 android:layout_weight="0.15"
@@ -38,8 +38,15 @@
                 android:text="Description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/post_summaryDesc"
+                android:id="@+id/post_row_summaryDesc"
                 android:layout_weight="1" />
+
+            <TextView
+                android:text="Date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/post_row_date"
+                android:layout_weight="0.15" />
         </LinearLayout>
 
     </LinearLayout>

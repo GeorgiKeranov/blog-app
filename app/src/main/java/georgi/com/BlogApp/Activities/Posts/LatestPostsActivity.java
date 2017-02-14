@@ -85,6 +85,9 @@ public class LatestPostsActivity extends AppCompatActivity {
 
     private void updateWith5Posts() {
 
+        // If list of posts is empty don't do anything.
+        if(posts.size() <= 0) return;
+
         // This thread is getting the next 5 posts after the
         // last post. And it is doing this by passing the id of the last seen post.
         Update5Posts update5Posts = new Update5Posts(this, recyclerView);

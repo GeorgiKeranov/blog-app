@@ -15,6 +15,6 @@ public class ViewOtherUserActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_other_user);
 
-
+        // TODO
     }
 }

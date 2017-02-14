@@ -12,22 +12,14 @@
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
-    <ImageView
-        android:layout_height="150dp"
-        android:id="@+id/account_picture"
-        android:layout_weight="1"
-        android:layout_width="150dp"
-        android:layout_below="@+id/account_toolbar"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="223dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/account_toolbar"
-        android:layout_toRightOf="@+id/account_picture"
-        android:layout_toEndOf="@+id/account_picture">
+        android:layout_below="@+id/account_picture"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="49dp">
 
         <TextView
             android:layout_width="match_parent"
@@ -51,13 +43,38 @@
             android:layout_marginBottom="20dp" />
     </LinearLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/account_recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/account_picture"
+    <Button
+        android:text="Edit Account"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/account_editAccount"
+        android:layout_marginTop="18dp"
+        android:layout_below="@+id/account_toolbar"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"></android.support.v7.widget.RecyclerView>
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="42dp"
+        android:layout_marginStart="42dp" />
+
+    <Button
+        android:text="View Your Posts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="25dp"
+        android:layout_marginStart="25dp"
+        android:id="@+id/account_viewYourPosts"
+        android:layout_alignBaseline="@+id/account_editAccount"
+        android:layout_alignBottom="@+id/account_editAccount"
+        android:layout_toRightOf="@+id/account_editAccount"
+        android:layout_toEndOf="@+id/account_editAccount" />
+
+    <ImageView
+        android:layout_height="150dp"
+        android:id="@+id/account_picture"
+        android:layout_weight="1"
+        android:layout_width="150dp"
+        android:layout_marginTop="23dp"
+        android:layout_below="@+id/account_editAccount"
+        android:layout_centerHorizontal="true" />
 
 
 </RelativeLayout>

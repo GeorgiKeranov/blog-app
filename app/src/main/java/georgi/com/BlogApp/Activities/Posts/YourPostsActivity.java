@@ -62,6 +62,9 @@ public class YourPostsActivity extends AppCompatActivity{
 
     private void updateWith5Posts() {
 
+        // If list of posts is empty don't do anything.
+        if(userPosts.size() <= 0) return;
+
         Update5Posts update5Posts = new Update5Posts(this, recyclerView);
         update5Posts.execute(UPDATE_USER_5POSTS_URL,
                 "" + userPosts.get(userPosts.size() - 1).getId());
