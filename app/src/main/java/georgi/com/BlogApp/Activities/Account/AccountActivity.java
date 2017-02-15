@@ -12,9 +12,12 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import georgi.com.BlogApp.Activities.Posts.CreateNewPostActivity;
+import georgi.com.BlogApp.Activities.Posts.LatestPostsActivity;
 import georgi.com.BlogApp.Activities.Posts.YourPostsActivity;
 import georgi.com.BlogApp.R;
 import georgi.com.BlogApp.Threads.Account.AccountDetails;
+import georgi.com.BlogApp.Threads.Security.Logout;
 
 
 public class AccountActivity extends AppCompatActivity{
@@ -91,9 +94,39 @@ public class AccountActivity extends AppCompatActivity{
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
+        Intent intent = null;
+
         switch (item.getItemId()) {
-            default: return super.onOptionsItemSelected(item);
+
+            case R.id.toolbar_latestPosts:
+                intent = new Intent(this, LatestPostsActivity.class);
+                break;
+
+            case R.id.toolbar_createPost:
+                intent = new Intent(this, CreateNewPostActivity.class);
+                break;
+
+            case R.id.toolbar_yourPosts:
+                intent = new Intent(this, YourPostsActivity.class);
+                break;
+
+            case R.id.toolbar_account:
+                intent = new Intent(this, AccountActivity.class);
+                break;
+
+            case R.id.toolbar_edit_account:
+                intent = new Intent(this, EditAccountActivity.class);
+                break;
+
+            case R.id.toolbar_logout:
+                Logout logout = new Logout(this);
+                logout.execute();
+                break;
         }
+
+        if (intent != null) startActivity(intent);
+
+        return super.onOptionsItemSelected(item);
 
     }
 

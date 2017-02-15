@@ -13,8 +13,6 @@ public class Post {
 
     private String description;
 
-    private User author;
-
     private String date;
 
     private List<Comment> comments;
@@ -26,7 +24,6 @@ public class Post {
     public Post(String title, String description, User author) {
         this.title = title;
         this.description = description;
-        this.author = author;
     }
 
     public Long getId() {
@@ -65,13 +62,6 @@ public class Post {
         this.date = date;
     }
 
-    public User getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(User author) {
-        this.author = author;
-    }
 
     public String getDate() {
         return date;

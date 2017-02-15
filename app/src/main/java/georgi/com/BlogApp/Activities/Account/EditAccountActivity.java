@@ -10,6 +10,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,9 +19,13 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 
+import georgi.com.BlogApp.Activities.Posts.CreateNewPostActivity;
+import georgi.com.BlogApp.Activities.Posts.LatestPostsActivity;
+import georgi.com.BlogApp.Activities.Posts.YourPostsActivity;
 import georgi.com.BlogApp.R;
 import georgi.com.BlogApp.Threads.Account.AccountDetails;
 import georgi.com.BlogApp.Threads.Account.EditAccount;
+import georgi.com.BlogApp.Threads.Security.Logout;
 
 
 public class EditAccountActivity extends AppCompatActivity {
@@ -155,6 +161,54 @@ public class EditAccountActivity extends AppCompatActivity {
             }
 
         }
+
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.menu_toolbar, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        Intent intent = null;
+
+        switch (item.getItemId()) {
+
+            case R.id.toolbar_latestPosts:
+                intent = new Intent(this, LatestPostsActivity.class);
+                break;
+
+            case R.id.toolbar_createPost:
+                intent = new Intent(this, CreateNewPostActivity.class);
+                break;
+
+            case R.id.toolbar_yourPosts:
+                intent = new Intent(this, YourPostsActivity.class);
+                break;
+
+            case R.id.toolbar_account:
+                intent = new Intent(this, AccountActivity.class);
+                break;
+
+            case R.id.toolbar_edit_account:
+                intent = new Intent(this, EditAccountActivity.class);
+                break;
+
+            case R.id.toolbar_logout:
+                Logout logout = new Logout(this);
+                logout.execute();
+                break;
+        }
+
+        if (intent != null) startActivity(intent);
+
+        return super.onOptionsItemSelected(item);
 
     }
 

@@ -3,8 +3,6 @@ package georgi.com.BlogApp.POJO;
 
 public class User {
 
-    private Long id;
-
     private String userUrl;
 
     private String firstName;
@@ -22,14 +20,6 @@ public class User {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getUserUrl() {

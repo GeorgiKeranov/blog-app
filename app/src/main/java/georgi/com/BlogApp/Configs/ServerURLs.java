@@ -5,7 +5,7 @@ package georgi.com.BlogApp.Configs;
 public class ServerURLs {
 
     private static final String IP_ADDRESS = "http://192.168.0.101:8080";
-    private static final String SERVER_URL = IP_ADDRESS + "/rest";
+    public static final String SERVER_URL = IP_ADDRESS + "/rest";
 
     public static final String LOGIN_URL = SERVER_URL + "/login";
     public static final String REGISTER_URL = SERVER_URL + "/register";

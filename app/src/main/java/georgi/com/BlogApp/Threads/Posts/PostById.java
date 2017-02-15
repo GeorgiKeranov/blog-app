@@ -30,11 +30,13 @@ public class PostById extends AsyncTask<Long, Void, Post> {
 
     private Context context;
 
-    private TextView title, description;
+    private TextView date, title, description;
     private ImageView postImage;
 
-    public PostById(Context context, TextView title, TextView description, ImageView postImage) {
+    public PostById(Context context, TextView date, TextView title,
+                    TextView description, ImageView postImage) {
         this.context = context;
+        this.date = date;
         this.title = title;
         this.description = description;
         this.postImage = postImage;
@@ -44,7 +46,6 @@ public class PostById extends AsyncTask<Long, Void, Post> {
     protected Post doInBackground(Long... longs) {
 
         try {
-
 
             // Creating the request.
             HttpRequest request = new HttpRequest(POST_URL + longs[0],
@@ -70,6 +71,8 @@ public class PostById extends AsyncTask<Long, Void, Post> {
 
     @Override
     protected void onPostExecute(Post post) {
+
+        date.setText(post.getDate());
 
         String image = post.getIcon();
 
@@ -103,24 +106,8 @@ public class PostById extends AsyncTask<Long, Void, Post> {
         post.setDescription(jsonPost.getString("description"));
         post.setDate(jsonPost.getString("date"));
 
-        JSONObject curAuthor = jsonPost.getJSONObject("author");
-        post.setAuthor(createAuthor(curAuthor));
-
         return post;
 
-    }
-
-    // This method is converting JSONObject to User object.
-    private User createAuthor(JSONObject author) throws JSONException {
-
-        User newAuthor = new User();
-        newAuthor.setUserUrl(author.getString("userUrl"));
-        newAuthor.setFirstName(author.getString("firstName"));
-        newAuthor.setLastName(author.getString("lastName"));
-        newAuthor.setEmail(author.getString("email"));
-        newAuthor.setProfile_picture(author.getString("profile_picture"));
-
-        return newAuthor;
     }
 
 }

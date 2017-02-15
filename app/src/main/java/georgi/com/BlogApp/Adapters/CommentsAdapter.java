@@ -56,7 +56,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
 
         // Setting the image with Glide library direct from the url.
         Glide.with(context)
-                .load(USER_IMAGES_URL + comAuthor.getUserUrl() + "/" + comAuthor.getProfile_picture())
+                .load(profilePic)
                 .override(160, 160)
                 .into(holder.profilePicture);
 
