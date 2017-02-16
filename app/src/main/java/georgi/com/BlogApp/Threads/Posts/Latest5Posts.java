@@ -4,17 +4,21 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 
+import com.google.gson.Gson;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import georgi.com.BlogApp.Adapters.PostsAdapter;
 import georgi.com.BlogApp.Helpers.HttpRequest;
 import georgi.com.BlogApp.Helpers.PreferencesHelper;
+import georgi.com.BlogApp.POJO.Comment;
 import georgi.com.BlogApp.POJO.Post;
 
 
@@ -46,40 +50,18 @@ public class Latest5Posts extends AsyncTask<String, Void, List<Post>>{
             // Sending the request and getting the response.
             String response = httpRequest.sendTheRequest();
 
-            // Converting the response to JSONArray
-            JSONArray jsonResponse = new JSONArray(response);
+            Gson gson = new Gson();
+            // Converting the response from JSON object to array of posts.
+            Post[] posts = gson.fromJson(response, Post[].class);
 
-            return convertToListOfObjects(jsonResponse);
+            // Converting array of posts to List of posts and returning it.
+            return new ArrayList<>(Arrays.asList(posts));
 
         } catch(IOException e) {
-            e.printStackTrace();
-        } catch(JSONException e) {
             e.printStackTrace();
         }
 
         return null;
-    }
-
-    // This method is used to convert JSONarray to list of Post objects.
-    private List<Post> convertToListOfObjects(JSONArray jsonArray) throws JSONException {
-
-        List<Post> postsResponse = new ArrayList<>();
-
-        for(int i = 0; i<jsonArray.length(); i++) {
-
-            JSONObject curPost = jsonArray.getJSONObject(i);
-
-            Post newPost = new Post();
-            newPost.setId(curPost.getLong("id"));
-            newPost.setTitle(curPost.getString("title"));
-            newPost.setDescription(curPost.getString("description"));
-            newPost.setIcon(curPost.getString("icon"));
-            newPost.setDate(curPost.getString("date"));
-
-            postsResponse.add(newPost);
-        }
-
-        return  postsResponse;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package georgi.com.BlogApp.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
+import georgi.com.BlogApp.Activities.Account.ViewOtherUserActivity;
 import georgi.com.BlogApp.POJO.Comment;
 import georgi.com.BlogApp.POJO.User;
 import georgi.com.BlogApp.R;
@@ -45,6 +47,9 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
 
         User comAuthor = curComment.getAuthor();
 
+        // Setting the userUrl of the author of comment.
+        holder.userUrl = comAuthor.getUserUrl();
+
         String profilePic = comAuthor.getProfile_picture();
 
         // Check if there is profile picture.
@@ -68,6 +73,9 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
 
         // Setting the adapter.
         holder.replies.setAdapter(holder.repliesAdapter);
+
+
+
     }
 
     @Override
@@ -76,6 +84,9 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
+
+        // That is the url of the author of comment.
+        String userUrl;
 
         ImageView profilePicture;
         TextView fullName, comment;
@@ -94,6 +105,18 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
             replies = (RecyclerView) itemView.findViewById(R.id.comment_replyRecyclerView);
             layoutManager = new LinearLayoutManager(context);
             replies.setLayoutManager(layoutManager);
+
+            profilePicture.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    // Starting new activity to view the clicked comment author account.
+                    // And adding extra String "userUrl" of the author.
+                    Intent intent = new Intent(context, ViewOtherUserActivity.class);
+                    intent.putExtra("userUrl", userUrl);
+                    context.startActivity(intent);
+                }
+            });
         }
     }
 

@@ -68,8 +68,8 @@ public class YourPostsAdapter extends RecyclerView.Adapter<YourPostsAdapter.MyVi
                 .override(400, 400)
                 .into(holder.postImage);
 
-        holder.title.setText(curPost.getTitle());
-        holder.description.setText(curPost.getDescription());
+        holder.title.setText(curPost.getSummaryTitle());
+        holder.description.setText(curPost.getSummaryDesc());
         holder.date.setText(curPost.getDate());
     }
 

@@ -4,12 +4,15 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 
+import com.google.gson.Gson;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import georgi.com.BlogApp.Adapters.YourPostsAdapter;
@@ -47,18 +50,16 @@ public class Latest5UserPosts extends AsyncTask<Void, Void, List<Post>>{
             // Sending the request and getting the response.
             String response = normalRequest.sendTheRequest();
 
-            // Converting the response to JSONArray.
-            JSONArray responseObj = new JSONArray(response);
+            Gson gson = new Gson();
+            // Converting the response from JSON object to array of posts.
+            Post[] posts = gson.fromJson(response, Post[].class);
 
-            // Converting JSONArray to List of Post objects.
-            return convertToListOfObjects(responseObj);
+            // Converting array of posts to List of posts.
+            return new ArrayList<>(Arrays.asList(posts));
 
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
-
 
         return null;
     }
@@ -84,25 +85,4 @@ public class Latest5UserPosts extends AsyncTask<Void, Void, List<Post>>{
         adapter.notifyDataSetChanged();
     }
 
-    // This method is used to convert JSONArray to List of post objects.
-    private List<Post> convertToListOfObjects(JSONArray jsonArray) throws JSONException {
-
-        List<Post> postsResponse = new ArrayList<>();
-
-        for (int i = 0; i < jsonArray.length(); i++) {
-
-            JSONObject curPost = jsonArray.getJSONObject(i);
-
-            Post newPost = new Post();
-            newPost.setId(curPost.getLong("id"));
-            newPost.setTitle(curPost.getString("title"));
-            newPost.setDescription(curPost.getString("description"));
-            newPost.setIcon(curPost.getString("icon"));
-            newPost.setDate(curPost.getString("date"));
-
-            postsResponse.add(newPost);
-        }
-
-        return postsResponse;
-    }
 }

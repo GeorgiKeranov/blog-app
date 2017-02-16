@@ -4,12 +4,15 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 
+import com.google.gson.Gson;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import georgi.com.BlogApp.Adapters.CommentsAdapter;
@@ -47,15 +50,16 @@ public class CommentsOnPost extends AsyncTask<Long, Void, List<Comment>> {
                             new PreferencesHelper(context).getCookie(),
                             "POST");
 
-            // Sending the request and converting the response to JSONArray.
-            JSONArray jsonArray = new JSONArray(httpRequest.sendTheRequest());
+            // Sending the request and getting the response.
+            String response = httpRequest.sendTheRequest();
 
-            // Converting the JSONArray to the List of comments and returning it.
-            return convertJSONtoList(jsonArray);
+            Gson gson = new Gson();
+            // Converting the response from JSON object to List of comments and returning it.
+            Comment[] comments = gson.fromJson(response, Comment[].class);
+
+            return new ArrayList<>(Arrays.asList(comments));
 
         } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
             e.printStackTrace();
         }
 
@@ -71,59 +75,4 @@ public class CommentsOnPost extends AsyncTask<Long, Void, List<Comment>> {
         // Setting the adapter to the recyclerView.
         commentsRecyclerView.setAdapter(commentsAdapter);
     }
-
-
-    // This method is used to convert JSONArray to List of comments.
-    private List<Comment> convertJSONtoList(JSONArray jsonArray) throws JSONException {
-
-        List<Comment> commentsList = new ArrayList<>();
-        for (int y = 0; y < jsonArray.length(); y++) {
-            JSONObject curComment = jsonArray.getJSONObject(y);
-
-            Comment newComment = new Comment();
-            newComment.setId(curComment.getLong("id"));
-            newComment.setComment(curComment.getString("comment"));
-            newComment.setDate(curComment.getString("date"));
-
-            JSONObject comAuthor = curComment.getJSONObject("author");
-            newComment.setAuthor(createAuthor(comAuthor));
-
-            JSONArray replies = curComment.getJSONArray("replies");
-
-            List<Reply> repliesList = new ArrayList<>();
-            for (int x = 0; x < replies.length(); x++) {
-                JSONObject curReply = replies.getJSONObject(x);
-
-                Reply newReply = new Reply();
-                newReply.setId(curReply.getLong("id"));
-                newReply.setReply(curReply.getString("reply"));
-                newReply.setDate(curReply.getString("date"));
-
-                JSONObject replyAuthor = curReply.getJSONObject("author");
-                newReply.setAuthor(createAuthor(replyAuthor));
-
-                repliesList.add(newReply);
-            }
-
-            newComment.setReplies(repliesList);
-
-            commentsList.add(newComment);
-
-        }
-        return commentsList;
-    }
-
-    // This method is used to convert JSONObject with details for user to User object.
-    private User createAuthor(JSONObject author) throws JSONException {
-
-        User newAuthor = new User();
-        newAuthor.setUserUrl(author.getString("userUrl"));
-        newAuthor.setFirstName(author.getString("firstName"));
-        newAuthor.setLastName(author.getString("lastName"));
-        newAuthor.setEmail(author.getString("email"));
-        newAuthor.setProfile_picture(author.getString("profile_picture"));
-
-        return newAuthor;
-    }
-
 }

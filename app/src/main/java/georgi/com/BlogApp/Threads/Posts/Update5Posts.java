@@ -4,12 +4,15 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 
+import com.google.gson.Gson;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import georgi.com.BlogApp.Adapters.PostsAdapter;
@@ -56,15 +59,13 @@ public class Update5Posts extends AsyncTask<String, Void, List<Post>> {
             // Sending the request and getting the response from the server.
             String response = httpRequest.sendTheRequest();
 
-            // Converting the response to JSONArray.
-            JSONArray jsonArray = new JSONArray(response);
+            // Converting the response from JSON object to array of posts.
+            Post[] posts = new Gson().fromJson(response, Post[].class);
 
-            // Converting the JSONArray to List of Post objects and returning it.
-            return convertToListOfObjects(jsonArray);
+            // Converting the array of posts to list of posts.
+            return new ArrayList<>(Arrays.asList(posts));
 
         } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
             e.printStackTrace();
         }
 
@@ -107,27 +108,4 @@ public class Update5Posts extends AsyncTask<String, Void, List<Post>> {
         }
     }
 
-
-    // This method is converting JSONArray to List of Posts.
-    private List<Post> convertToListOfObjects(JSONArray jsonArray) throws JSONException {
-
-        List<Post> postsResponse = new ArrayList<>();
-
-        for (int i = 0; i < jsonArray.length(); i++) {
-
-            JSONObject curPost = jsonArray.getJSONObject(i);
-
-            Post newPost = new Post();
-            newPost.setId(curPost.getLong("id"));
-            newPost.setTitle(curPost.getString("title"));
-            newPost.setDescription(curPost.getString("description"));
-            newPost.setIcon(curPost.getString("icon"));
-            newPost.setDate(curPost.getString("date"));
-
-            postsResponse.add(newPost);
-        }
-
-        return postsResponse;
-
-    }
 }

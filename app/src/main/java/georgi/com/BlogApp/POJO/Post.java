@@ -15,13 +15,11 @@ public class Post {
 
     private String date;
 
-    private List<Comment> comments;
-
     public Post(){
 
     }
 
-    public Post(String title, String description, User author) {
+    public Post(String title, String description) {
         this.title = title;
         this.description = description;
     }
@@ -67,26 +65,20 @@ public class Post {
         return date;
     }
 
-    public List<Comment> getComments() {
-        return comments;
-    }
 
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
-    }
-
-    //TODO fix these.
     public String getSummaryTitle(){
-        if(title.length() > 15) {
-            String summary = title.substring(0, 15);
+
+        if(title.length() > 40) {
+            String summary = title.substring(0, 40);
             return summary + "...";
         }
         return title;
     }
 
     public String getSummaryDesc(){
-        if(description.length() > 325){
-            String summary = description.substring(0, 325);
+
+        if(description.length() > 50){
+            String summary = description.substring(0, 50);
             return summary + "...";
         }
         return description;

@@ -6,6 +6,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -54,15 +55,13 @@ public class PostById extends AsyncTask<Long, Void, Post> {
             // Sending the request and getting the response.
             String response = request.sendTheRequest();
 
-            // Converting the response to JSONObject.
-            JSONObject jsonResponse = new JSONObject(response);
+            Gson gson = new Gson();
+            // Converting the response from JSON object to Post object;
+            Post post = gson.fromJson(response, Post.class);
 
-            // Converting the JSONObject to Post object.
-            return convertToObject(jsonResponse);
+            return post;
 
         } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
             e.printStackTrace();
         }
 
@@ -93,21 +92,6 @@ public class PostById extends AsyncTask<Long, Void, Post> {
         title.setText(post.getTitle());
 
         description.setText(post.getDescription());
-    }
-
-
-    // This method is converting JSONObject to Post object.
-    private Post convertToObject(JSONObject jsonPost) throws JSONException {
-
-        Post post = new Post();
-        post.setId(jsonPost.getLong("id"));
-        post.setTitle(jsonPost.getString("title"));
-        post.setIcon(jsonPost.getString("icon"));
-        post.setDescription(jsonPost.getString("description"));
-        post.setDate(jsonPost.getString("date"));
-
-        return post;
-
     }
 
 }
