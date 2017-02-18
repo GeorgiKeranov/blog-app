@@ -1,6 +1,5 @@
 package georgi.com.BlogApp.Threads.Account;
 
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -10,6 +9,8 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.provider.MediaStore;
 
+import com.google.gson.Gson;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -18,10 +19,11 @@ import java.io.IOException;
 
 import georgi.com.BlogApp.Helpers.HttpMultipartRequest;
 import georgi.com.BlogApp.Helpers.PreferencesHelper;
+import georgi.com.BlogApp.POJO.ErrorHandler;
 
 import static georgi.com.BlogApp.Configs.ServerURLs.ACCOUNT_URL;
 
-public class EditAccount extends AsyncTask<String, Void, JSONObject> {
+public class EditAccount extends AsyncTask<String, Void, ErrorHandler> {
 
     private Context context;
 
@@ -33,7 +35,7 @@ public class EditAccount extends AsyncTask<String, Void, JSONObject> {
     }
 
     @Override
-    protected JSONObject doInBackground(String... strings) {
+    protected ErrorHandler doInBackground(String... strings) {
 
         try {
 
@@ -55,58 +57,52 @@ public class EditAccount extends AsyncTask<String, Void, JSONObject> {
 
             request.addStringField("currPassword", strings[4]);
 
-            // Sending the request and returning the response converted to JSONObject.
-            return new JSONObject(request.sendTheRequest());
+            // Sending the request and getting the response.
+            String response = request.sendTheRequest();
+
+            Gson gson = new Gson();
+
+            // Converting the response from the server to ErrorHandler object.
+            return gson.fromJson(response, ErrorHandler.class);
 
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
-
 
         return null;
     }
 
 
     @Override
-    protected void onPostExecute(JSONObject jsonObject) {
+    protected void onPostExecute(ErrorHandler errorHandler) {
 
-        try {
+        // Checking if the response from the server have returned error.
+        if(errorHandler.getError()) {
 
-            // If server has returned error it show the error message in alertDialog.
-            if(jsonObject.getBoolean("error")) {
+            // Creating AlertDialog with the error_msg from the server.
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
-                String errorMsg = jsonObject.getString("error_msg");
+            builder.setTitle("Error");
+            builder.setMessage(errorHandler.getError_msg());
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+            });
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.create().show();
+        }
 
-                builder.setTitle("Error");
-                builder.setMessage(errorMsg);
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                });
-
-                builder.create().show();
-
-            }
-
-            // Else if there is not error closing the activity.
-            else {
-                ((Activity) context).finish();
-            }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
+        // Else if there is not error closing the activity.
+        else {
+            ((Activity) context).finish();
         }
 
     }
 
 
-    // This method is getting the real file location in the phone from Uri.
+    // This method is getting the real file location for file in the phone from it Uri.
     private String getRealLocationFromUri(Uri uri) {
 
         Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);

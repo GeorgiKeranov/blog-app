@@ -53,18 +53,9 @@ public class YourPostsAdapter extends RecyclerView.Adapter<YourPostsAdapter.MyVi
 
         holder.postId = curPost.getId();
 
-        String postImage = curPost.getIcon();
-
-        // Checking if postImage equals "no"
-        // that means that there is not a picture so it
-        // is changing the variable to the default image url.
-        if (postImage.equals("no"))
-            postImage = DEFAULT_POST_IMG;
-        else postImage = POSTS_IMAGES_URL + postImage;
-
-        // Loading postImage(url) into the ImageView.
+        // Loading post picture url into the ImageView.
         Glide.with(context)
-                .load(postImage)
+                .load(curPost.getPictureUrl())
                 .override(400, 400)
                 .into(holder.postImage);
 

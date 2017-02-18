@@ -1,51 +1,55 @@
 package georgi.com.BlogApp.Threads.Posts;
 
 import android.content.Context;
+import android.nfc.Tag;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
 import com.google.gson.Gson;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import georgi.com.BlogApp.Adapters.PostsAdapter;
 import georgi.com.BlogApp.Adapters.YourPostsAdapter;
 import georgi.com.BlogApp.Helpers.HttpRequest;
 import georgi.com.BlogApp.Helpers.PreferencesHelper;
 import georgi.com.BlogApp.POJO.Post;
 
-import static georgi.com.BlogApp.Configs.ServerURLs.LATEST_USER_POSTS_URL;
+import static georgi.com.BlogApp.Configs.ServerURLs.AUTH_USER_LATEST5_POSTS;
 
 
 // This thread is sending request to server for the latest 5 posts
-// created by the authenticated user and set them to the yourPostsRecycler.
-public class Latest5UserPosts extends AsyncTask<Void, Void, List<Post>>{
+// created by the authenticated user and set them to the postsRecycler.
+public class Latest5UserPosts extends AsyncTask<String, Void, List<Post>>{
 
     private Context context;
 
-    private RecyclerView yourPostsRecycler;
+    // This String is used to determinate what kind of adapter to use in PostExecute method.
+    private String whatAdapter;
 
-    public Latest5UserPosts(Context context, RecyclerView yourPostsRecycler){
+    private RecyclerView postsRecycler;
+
+    public Latest5UserPosts(Context context, RecyclerView postsRecycler){
         this.context = context;
-        this.yourPostsRecycler = yourPostsRecycler;
+        this.postsRecycler = postsRecycler;
     }
 
     @Override
-    protected List<Post> doInBackground(Void... voids) {
+    protected List<Post> doInBackground(String... strings) {
+
+        // Setting the whatAdapter value.
+        if(strings[0].equals(AUTH_USER_LATEST5_POSTS)) whatAdapter = "YourPostsAdapter";
+        else whatAdapter = "PostsAdapter";
 
         try {
 
             // Creating the request.
-            HttpRequest normalRequest =
-                    new HttpRequest(LATEST_USER_POSTS_URL,
-                            new PreferencesHelper(context).getCookie(),
-                            "POST");
+            HttpRequest normalRequest = new HttpRequest(strings[0], // string[0] - url for the request.
+                            new PreferencesHelper(context).getCookie(), "GET");
 
             // Sending the request and getting the response.
             String response = normalRequest.sendTheRequest();
@@ -67,22 +71,41 @@ public class Latest5UserPosts extends AsyncTask<Void, Void, List<Post>>{
     @Override
     protected void onPostExecute(List<Post> posts) {
 
-        // Getting the adapter from yourPostsRecyclerView.
-        YourPostsAdapter adapter = (YourPostsAdapter) yourPostsRecycler.getAdapter();
+        // Checks the value of whatAdapter.
 
-        // Getting the old Post list from the adapter.
-        List<Post> oldPosts = adapter.getPosts();
+        if (whatAdapter.equals("PostsAdapter")) {
+            // Getting the adapter from yourPostsRecyclerView.
+            PostsAdapter postsAdapter = (PostsAdapter) postsRecycler.getAdapter();
 
-        // Deleting the old posts.
-        oldPosts.clear();
+            // Getting the oldPosts in the adapter.
+            List<Post> oldPosts = postsAdapter.getPosts();
 
-        // Adding the new posts in oldPosts reference.
-        for(Post post : posts) {
-            oldPosts.add(post);
+            // Deleting the old posts.
+            oldPosts.clear();
+
+            // Adding the new Post objects to the old list.
+            for (Post post : posts) oldPosts.add(post);
+
+            // Notifying the postsAdapter that data is changed.
+            postsAdapter.notifyDataSetChanged();
         }
 
-        // Notifying the adapter that the data is changed.
-        adapter.notifyDataSetChanged();
-    }
+        else if (whatAdapter.equals("YourPostsAdapter")) {
+            // Getting the adapter from yourPostsRecyclerView.
+            YourPostsAdapter yourPostsAdapter = (YourPostsAdapter) postsRecycler.getAdapter();
 
+            // Getting the oldPosts in the adapter.
+            List<Post> oldPosts = yourPostsAdapter.getPosts();
+
+            // Deleting the old posts.
+            oldPosts.clear();
+
+            // Adding the new Post objects to the old list.
+            for (Post post : posts) oldPosts.add(post);
+
+            // Notifying the postsAdapter that data is changed.
+            yourPostsAdapter.notifyDataSetChanged();
+        }
+
+    }
 }

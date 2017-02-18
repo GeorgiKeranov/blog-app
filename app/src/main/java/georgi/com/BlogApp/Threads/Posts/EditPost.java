@@ -10,6 +10,8 @@ import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
+import com.google.gson.Gson;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -18,13 +20,14 @@ import java.io.IOException;
 
 import georgi.com.BlogApp.Helpers.HttpMultipartRequest;
 import georgi.com.BlogApp.Helpers.PreferencesHelper;
+import georgi.com.BlogApp.POJO.ErrorHandler;
 
 import static georgi.com.BlogApp.Configs.ServerURLs.POST_URL;
 
 
 // This thread is sending new data for existing post to server
 // and server is changing this post with the given data.
-public class EditPost extends AsyncTask<String, Void, Boolean> {
+public class EditPost extends AsyncTask<String, Void, ErrorHandler> {
 
     // This variable is for debugging.
     private String TAG = getClass().getSimpleName();
@@ -40,10 +43,9 @@ public class EditPost extends AsyncTask<String, Void, Boolean> {
     }
 
     @Override
-    protected Boolean doInBackground(String... strings) {
+    protected ErrorHandler doInBackground(String... strings) {
 
         try {
-
             // Creating a multipart request.
             HttpMultipartRequest multipartRequest =
                     // strings[0] - id of the post that will be edited.
@@ -60,10 +62,12 @@ public class EditPost extends AsyncTask<String, Void, Boolean> {
             multipartRequest.addStringField("title", strings[1]);
             multipartRequest.addStringField("description", strings[2]);
 
+            // Sending the request and getting the response.
             String response = multipartRequest.sendTheRequest();
 
-            if(response.equals("Successful")) return true;
-            else return false;
+            Gson gson = new Gson();
+            // Converting the JSON response to ErrorHandler object.
+            return gson.fromJson(response, ErrorHandler.class);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -73,28 +77,26 @@ public class EditPost extends AsyncTask<String, Void, Boolean> {
     }
 
     @Override
-    protected void onPostExecute(Boolean isSucc) {
+    protected void onPostExecute(ErrorHandler errorHandler) {
 
-        // Checking if the server side response have error.
-        if (!isSucc) {
+        // Checking if the server response have error.
+        if (errorHandler.getError()) {
 
-                /*// Creating alert dialog with the error message from the server.
+                // Creating alert dialog with the error message from the server.
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 builder.setTitle("Error");
-                builder.setMessage();
+                builder.setMessage(errorHandler.getError_msg());
                 builder.setCancelable(false);
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         dialogInterface.dismiss();
                     }
-                }).create().show();*/
-
-
-        } else {
-
-            ((Activity) context).finish();
+                }).create().show();
         }
+
+        // If there is not error closing the activity.
+        else ((Activity) context).finish();
 
     }
 

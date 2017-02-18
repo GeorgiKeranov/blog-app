@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -15,6 +16,7 @@ import java.io.IOException;
 
 import georgi.com.BlogApp.Helpers.HttpRequest;
 import georgi.com.BlogApp.Helpers.PreferencesHelper;
+import georgi.com.BlogApp.POJO.User;
 
 import static georgi.com.BlogApp.Configs.ServerURLs.DEFAULT_USER_IMG;
 import static georgi.com.BlogApp.Configs.ServerURLs.POST_URL;
@@ -23,12 +25,14 @@ import static georgi.com.BlogApp.Configs.ServerURLs.USER_IMAGES_URL;
 // Sending request to server with some id of post and
 // server is returning the author of that post. Then this thread
 // is setting the UI thread elements with this author.
-public class PostAuthor extends AsyncTask<Long, Void, JSONObject> {
+public class PostAuthor extends AsyncTask<Long, Void, User> {
 
+    // This interface is used to set String from that thread to UI thread.
     public interface Listener {
         void setUserUrl(String userUrl);
     }
 
+    // The actual listener.
     private Listener listener;
 
     private Context context;
@@ -41,11 +45,12 @@ public class PostAuthor extends AsyncTask<Long, Void, JSONObject> {
         this.authorName = authorName;
         this.authorImage = authorImage;
 
+        // Connecting the listener with the context of the UI thread.
         listener = (Listener) context;
     }
 
     @Override
-    protected JSONObject doInBackground(Long... longs) {
+    protected User doInBackground(Long... longs) {
 
         try {
 
@@ -57,53 +62,32 @@ public class PostAuthor extends AsyncTask<Long, Void, JSONObject> {
             // Sending the request and getting the response into String.
             String response = httpRequest.sendTheRequest();
 
-            return new JSONObject(response);
+            Gson gson = new Gson();
+            // Converting the JSON response to User object.
+            return gson.fromJson(response, User.class);
 
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
-
 
         return null;
     }
 
     @Override
-    protected void onPostExecute(JSONObject jsonObject) {
+    protected void onPostExecute(User user) {
 
-        // If the json object is null stop the method.
-        if(jsonObject == null) return;
+        // If the user is null stop the method.
+        if(user == null) return;
 
-        // Checking if the response is correct with one of the params that
-        // server is returning for User when all it's okay.
-        if(jsonObject.has("userUrl")) {
+        authorName.setText(user.getFullName());
 
-            try {
+        // Setting the ImageView : authorImage from user's profile picture URL.
+        Glide.with(context)
+                .load(user.getProfPicUrl())
+                .override(800, 800)
+                .into(authorImage);
 
-                String fullName = jsonObject.getString("firstName") + " " + jsonObject.getString("lastName");
-                authorName.setText(fullName);
-
-                String profilePicture = jsonObject.getString("profile_picture");
-
-                // "no" means that there is not profile picture.
-                if(profilePicture.equals("no")) profilePicture = DEFAULT_USER_IMG;
-                // else if there is picture we are creating the needed url for it.
-                // Url is created like that : /res/images/{HERE IS USER URL}/{HERE PROFILE PICTURE NAME}.
-                else profilePicture = USER_IMAGES_URL + jsonObject.getString("userUrl") + profilePicture;
-
-                // Setting the ImageView : authorImage directly from the created above url.
-                Glide.with(context)
-                        .load(profilePicture)
-                        .override(800, 800)
-                        .into(authorImage);
-
-                listener.setUserUrl(jsonObject.getString("userUrl"));
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-
+        // Using the method in the UI thread.
+        listener.setUserUrl(user.getUserUrl());
     }
 }

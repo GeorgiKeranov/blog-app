@@ -45,21 +45,9 @@ public class RepliesAdapter extends RecyclerView.Adapter<RepliesAdapter.MyViewHo
         Reply currReply = replies.get(position);
         User author = currReply.getAuthor();
 
-        // Checking if profile picture equals "no".
-        // That means that there is not profile picture set.
-        String profilePic = author.getProfile_picture();
-
-        if(profilePic.equals("no"))
-            // There is no profile picture so profilePic is set to the default picture url.
-            profilePic = DEFAULT_USER_IMG;
-
-        else
-            // There is profile picture so creating the url that we need for the picture.
-            profilePic = USER_IMAGES_URL + author.getUserUrl() + "/" + profilePic;
-
-        // Loading the profile picture into ImageView.
+        // Loading the author profile picture URL into ImageView.
         Glide.with(context)
-                .load(profilePic)
+                .load(author.getProfPicUrl())
                 .override(160, 160)
                 .into(holder.profilePic);
 

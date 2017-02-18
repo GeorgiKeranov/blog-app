@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -16,6 +17,7 @@ import java.io.IOException;
 
 import georgi.com.BlogApp.Helpers.HttpRequest;
 import georgi.com.BlogApp.Helpers.PreferencesHelper;
+import georgi.com.BlogApp.POJO.User;
 
 import static georgi.com.BlogApp.Configs.ServerURLs.DEFAULT_USER_IMG;
 import static georgi.com.BlogApp.Configs.ServerURLs.SERVER_URL;
@@ -25,7 +27,7 @@ import static georgi.com.BlogApp.Configs.ServerURLs.USER_IMAGES_URL;
 // some user account url and set the UI thread
 // elements with the response from the server.
 // (response contains : profile picture name, first name, last name, email and user url).
-public class UserByUserUrl extends AsyncTask<String, Void, JSONObject>{
+public class UserByUserUrl extends AsyncTask<String, Void, User>{
 
     private Context context;
 
@@ -40,10 +42,9 @@ public class UserByUserUrl extends AsyncTask<String, Void, JSONObject>{
     }
 
     @Override
-    protected JSONObject doInBackground(String... strings) {
+    protected User doInBackground(String... strings) {
 
         try {
-
             // Creating request to the server. strings[0] : userUrl from User object.
             HttpRequest httpRequest = new HttpRequest(SERVER_URL + "/" + strings[0],
                     new PreferencesHelper(context).getCookie(), "GET");
@@ -51,12 +52,12 @@ public class UserByUserUrl extends AsyncTask<String, Void, JSONObject>{
             // Sending the request and handling the response.
             String response = httpRequest.sendTheRequest();
 
-            // Converting the String response to JSONObject.
-            return new JSONObject(response);
+            Gson gson = new Gson();
+
+            // Converting the response(JSON) to User object.
+            return gson.fromJson(response, User.class);
 
         } catch(IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
             e.printStackTrace();
         }
 
@@ -65,40 +66,19 @@ public class UserByUserUrl extends AsyncTask<String, Void, JSONObject>{
 
 
     @Override
-    protected void onPostExecute(JSONObject response) {
+    protected void onPostExecute(User user) {
 
-        // Checking if there is response.
-        if(response == null) return;
+        // Checking if there is not user.
+        if(user == null) return;
 
-        // Checking if the response is returning User object.
-        if(response.has("userUrl")) {
+        // Loading the picture directly from above url.
+        Glide.with(context)
+                .load(user.getProfPicUrl())
+                .override(400, 400)
+                .into(profilePic);
 
-            try {
-
-                String profPicUrl = response.getString("profile_picture");
-                // "no" means that there is no picture set to the User's account.
-                // so we are setting the profPicUrl to default profile picture url.
-                if(profPicUrl.equals("no")) profPicUrl = DEFAULT_USER_IMG;
-
-                // else we are changing the url to the needed.
-                else profPicUrl = USER_IMAGES_URL + response.getString("userUrl") + "/" + profPicUrl;
-
-                // Loading the picture directly from above url.
-                Glide.with(context)
-                        .load(profPicUrl)
-                        .override(400, 400)
-                        .into(profilePic);
-
-                // Setting the TextViews with the response from the server.
-                String fullName = response.getString("firstName") + " " + response.getString("lastName");
-                this.fullName.setText(fullName);
-
-                email.setText(response.getString("email"));
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-        }
+        // Setting the TextViews with the User object details.
+        fullName.setText(user.getFullName());
+        email.setText(user.getEmail());
     }
 }

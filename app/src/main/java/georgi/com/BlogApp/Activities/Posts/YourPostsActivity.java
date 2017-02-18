@@ -22,7 +22,8 @@ import georgi.com.BlogApp.Threads.Posts.Latest5UserPosts;
 import georgi.com.BlogApp.Threads.Posts.Update5Posts;
 import georgi.com.BlogApp.Threads.Security.Logout;
 
-import static georgi.com.BlogApp.Configs.ServerURLs.UPDATE_USER_5POSTS_URL;
+import static georgi.com.BlogApp.Configs.ServerURLs.AUTH_USER_LATEST5_POSTS;
+import static georgi.com.BlogApp.Configs.ServerURLs.AUTH_USER_UPDATE_5POSTS_URL;
 
 
 public class YourPostsActivity extends AppCompatActivity{
@@ -74,7 +75,7 @@ public class YourPostsActivity extends AppCompatActivity{
         if(userPosts.size() <= 0) return;
 
         Update5Posts update5Posts = new Update5Posts(this, recyclerView);
-        update5Posts.execute(UPDATE_USER_5POSTS_URL,
+        update5Posts.execute(AUTH_USER_UPDATE_5POSTS_URL,
                 "" + userPosts.get(userPosts.size() - 1).getId());
     }
 
@@ -82,7 +83,7 @@ public class YourPostsActivity extends AppCompatActivity{
 
         // This thread gets the latest 5 posts that authenticated user have been posted.
         Latest5UserPosts latest5UserPosts = new Latest5UserPosts(this, recyclerView);
-        latest5UserPosts.execute();
+        latest5UserPosts.execute(AUTH_USER_LATEST5_POSTS);
     }
 
     @Override

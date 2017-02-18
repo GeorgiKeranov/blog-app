@@ -85,7 +85,7 @@ public class HttpMultipartRequest {
         byte[] buffer = new byte[4096];
         int bytesRead = -1;
 
-        // Writing the file on parts that are max 4MB.
+        // Writing the file on parts.
         while((bytesRead = fileIS.read(buffer)) != -1) {
             oSWriter.write(buffer, 0, bytesRead);
         }

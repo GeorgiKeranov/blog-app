@@ -32,9 +32,11 @@ public class CreateNewPostActivity extends AppCompatActivity{
 
     private ImageView image;
     private EditText title, description;
-    private Button butCreatePost;
+    private Button butAddImage, butCreatePost;
     private Uri selectedPic;
-    private Context context;
+
+    // That is used in anonymous functions.
+    private Context context = this;
 
 
     @Override
@@ -46,11 +48,11 @@ public class CreateNewPostActivity extends AppCompatActivity{
         toolbar.setTitle("Create New Post");
         setSupportActionBar(toolbar);
 
-        image = (ImageView) findViewById(R.id.createPost_image);
-        title = (EditText) findViewById(R.id.post_title);
-        description = (EditText) findViewById(R.id.createPost_desc);
-        butCreatePost = (Button) findViewById(R.id.createPost_button);
-        context = this;
+        image = (ImageView) findViewById(R.id.create_new_post_image);
+        title = (EditText) findViewById(R.id.create_new_post_title);
+        description = (EditText) findViewById(R.id.create_new_post_desc);
+        butAddImage = (Button) findViewById(R.id.create_new_post_addImageBut);
+        butCreatePost = (Button) findViewById(R.id.create_new_post_createBut);
 
         // If the API level is more than 15
         // It checks for runtime permission.
@@ -68,10 +70,11 @@ public class CreateNewPostActivity extends AppCompatActivity{
         }
 
 
-        image.setOnClickListener(new View.OnClickListener() {
+        butAddImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+                // Starting new application to choose one image from phone.
                 Intent intent = new Intent();
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -80,11 +83,15 @@ public class CreateNewPostActivity extends AppCompatActivity{
             }
         });
 
+
         butCreatePost.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
 
+                // Starting new thread that is sending details from EditTexts
+                // and uri of image (if image is selected) to the server. And server
+                // is creating new post.
                 CreatePost createPost = new CreatePost(context, selectedPic);
                 createPost.execute(title.getText().toString(), description.getText().toString());
             }

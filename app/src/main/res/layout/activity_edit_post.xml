@@ -4,29 +4,6 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Title"
-        android:ems="10"
-        android:layout_marginTop="51dp"
-        android:id="@+id/edit_post_title"
-        android:layout_below="@+id/edit_post_image"
-        android:layout_centerHorizontal="true"
-        android:inputType="text" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Descrpition"
-        android:ems="10"
-        android:layout_below="@+id/edit_post_title"
-        android:layout_alignRight="@+id/edit_post_title"
-        android:layout_alignEnd="@+id/edit_post_title"
-        android:layout_marginTop="72dp"
-        android:id="@+id/edit_post_desc"
-        android:inputType="text" />
-
     <Button
         android:text="Edit the Post"
         android:layout_width="wrap_content"
@@ -51,29 +28,66 @@
         android:id="@+id/edit_post_image"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginLeft="19dp"
+        android:layout_marginStart="19dp"
         android:layout_below="@+id/edit_post_toolbar"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Title"
+        android:id="@+id/edit_post_title"
+        android:inputType="text"
+        android:layout_below="@+id/edit_post_image"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp" />
+
+    <Button
+        android:text="Change image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/edit_post_changeImageBut"
+        android:layout_alignTop="@+id/edit_post_image"
+        android:layout_toRightOf="@+id/edit_post_image"
+        android:layout_toEndOf="@+id/edit_post_image"
+        android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="29dp" />
 
     <TextView
         android:text="Created :"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/edit_post_button"
-        android:layout_toLeftOf="@+id/edit_post_desc"
-        android:layout_toStartOf="@+id/edit_post_desc"
-        android:layout_marginBottom="14dp"
+        android:layout_marginBottom="12dp"
         android:id="@+id/textView6"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:layout_above="@+id/edit_post_button"
+        android:layout_alignLeft="@+id/edit_post_image"
+        android:layout_alignStart="@+id/edit_post_image" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Descrpition"
+        android:layout_marginTop="21dp"
+        android:id="@+id/edit_post_desc"
+        android:inputType="textMultiLine"
+        android:layout_below="@+id/edit_post_title"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <TextView
         android:text="date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/textView6"
+        android:id="@+id/edit_post_date"
+        android:layout_alignBaseline="@+id/textView6"
+        android:layout_alignBottom="@+id/textView6"
         android:layout_toRightOf="@+id/textView6"
         android:layout_toEndOf="@+id/textView6"
-        android:layout_marginLeft="13dp"
-        android:layout_marginStart="13dp"
-        android:id="@+id/edit_post_date" />
+        android:layout_marginLeft="23dp"
+        android:layout_marginStart="23dp" />
 </RelativeLayout>

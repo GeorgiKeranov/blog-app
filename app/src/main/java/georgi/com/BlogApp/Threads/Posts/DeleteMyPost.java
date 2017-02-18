@@ -77,7 +77,7 @@ public class DeleteMyPost extends AsyncTask<Long, Void, Boolean> {
         }
 
         else {
-            builder.setTitle("Error !");
+            builder.setTitle("Error!");
             builder.setMessage("Error please try again.");
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override

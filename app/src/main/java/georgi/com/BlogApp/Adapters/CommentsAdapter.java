@@ -50,18 +50,9 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
         // Setting the userUrl of the author of comment.
         holder.userUrl = comAuthor.getUserUrl();
 
-        String profilePic = comAuthor.getProfile_picture();
-
-        // Check if there is profile picture.
-        // If it is not, profilePic is set to default profile picture.
-        if(profilePic.equals("no"))
-            profilePic = DEFAULT_USER_IMG;
-        else  profilePic = USER_IMAGES_URL + comAuthor.getUserUrl() + "/" + profilePic;
-
-
         // Setting the image with Glide library direct from the url.
         Glide.with(context)
-                .load(profilePic)
+                .load(comAuthor.getProfPicUrl())
                 .override(160, 160)
                 .into(holder.profilePicture);
 
@@ -73,9 +64,6 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
 
         // Setting the adapter.
         holder.replies.setAdapter(holder.repliesAdapter);
-
-
-
     }
 
     @Override

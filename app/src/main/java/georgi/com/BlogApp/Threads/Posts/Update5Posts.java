@@ -21,8 +21,7 @@ import georgi.com.BlogApp.Helpers.HttpRequest;
 import georgi.com.BlogApp.Helpers.PreferencesHelper;
 import georgi.com.BlogApp.POJO.Post;
 
-import static georgi.com.BlogApp.Configs.ServerURLs.UPDATE_5POSTS_URL;
-import static georgi.com.BlogApp.Configs.ServerURLs.UPDATE_USER_5POSTS_URL;
+import static georgi.com.BlogApp.Configs.ServerURLs.AUTH_USER_UPDATE_5POSTS_URL;
 
 
 // This thread is updating with 5 new posts the RecyclerView.
@@ -44,14 +43,14 @@ public class Update5Posts extends AsyncTask<String, Void, List<Post>> {
     protected List<Post> doInBackground(String... strings) {
 
         // Setting the whatAdapter value.
-        if(strings[0].equals(UPDATE_5POSTS_URL)) whatAdapter = "PostsAdapter";
-        if(strings[0].equals(UPDATE_USER_5POSTS_URL)) whatAdapter = "YourPostsAdapter";
+        if(strings[0].equals(AUTH_USER_UPDATE_5POSTS_URL)) whatAdapter = "YourPostsAdapter";
+        else whatAdapter = "PostsAdapter";
 
         try {
 
-            // Sending the request.
-            HttpRequest httpRequest =
-                    new HttpRequest(strings[0], new PreferencesHelper(context).getCookie(), "GET");
+            // Creating the request.
+            HttpRequest httpRequest = new HttpRequest(strings[0], // string[0] - url for the request.
+                            new PreferencesHelper(context).getCookie(), "GET");
 
             // Adding the id of the last downloaded post.
             httpRequest.addStringField("postsBeforeId", strings[1]);

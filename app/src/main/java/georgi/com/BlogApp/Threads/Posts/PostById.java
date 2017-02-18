@@ -56,10 +56,9 @@ public class PostById extends AsyncTask<Long, Void, Post> {
             String response = request.sendTheRequest();
 
             Gson gson = new Gson();
-            // Converting the response from JSON object to Post object;
-            Post post = gson.fromJson(response, Post.class);
 
-            return post;
+            // Converting the response from JSON object to Post object;
+            return gson.fromJson(response, Post.class);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -73,19 +72,8 @@ public class PostById extends AsyncTask<Long, Void, Post> {
 
         date.setText(post.getDate());
 
-        String image = post.getIcon();
-
-        // Checking if there is picture.
-        if(image.equals("no"))
-            // If there is not picture it is changing
-            // the variable to the default post image url.
-            image = DEFAULT_POST_IMG;
-
-        // If there is picture it is changing to the correct url.
-        else image = POSTS_IMAGES_URL + post.getIcon();
-
         Glide.with(context)
-                .load(image)
+                .load(post.getPictureUrl())
                 .override(800, 800)
                 .into(postImage);
 

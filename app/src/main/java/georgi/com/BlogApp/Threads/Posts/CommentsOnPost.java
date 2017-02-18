@@ -47,8 +47,7 @@ public class CommentsOnPost extends AsyncTask<Long, Void, List<Comment>> {
             // Sending the request to get comments on post with id - longs[0].
             HttpRequest httpRequest =
                     new HttpRequest(POST_URL + longs[0] + "/comments",
-                            new PreferencesHelper(context).getCookie(),
-                            "POST");
+                            new PreferencesHelper(context).getCookie(), "GET");
 
             // Sending the request and getting the response.
             String response = httpRequest.sendTheRequest();

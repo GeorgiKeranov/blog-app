@@ -1,7 +1,8 @@
 package georgi.com.BlogApp.POJO;
 
-import java.util.List;
-
+import static georgi.com.BlogApp.Configs.ServerURLs.DEFAULT_POST_IMG;
+import static georgi.com.BlogApp.Configs.ServerURLs.POSTS_IMAGES_URL;
+import static georgi.com.BlogApp.Configs.ServerURLs.POST_URL;
 
 public class Post {
 
@@ -66,6 +67,9 @@ public class Post {
     }
 
 
+    // This method is used when we have limited space on the screen.
+    // If the title is more than 40 characters it is returned with only
+    // 40 characters and "..." .
     public String getSummaryTitle(){
 
         if(title.length() > 40) {
@@ -75,13 +79,40 @@ public class Post {
         return title;
     }
 
+    // This method is used when we have limited space on the screen.
+    // And we substring the original description to smaller one.
     public String getSummaryDesc(){
 
-        if(description.length() > 50){
-            String summary = description.substring(0, 50);
-            return summary + "...";
+        String summaryDesc = description;
+
+        // If summary desc contains "\n" it is split in array
+        // and summaryDesc is the first line of the description.
+        if(description.contains("\n")){
+            String[] descLines = description.split("\n");
+            summaryDesc = descLines[0];
         }
-        return description;
+
+        // If summaryDecs is more than 50 characters
+        // We substring it to 50 characters.
+        if(summaryDesc.length() > 50){
+            summaryDesc = description.substring(0, 50);
+            return summaryDesc + "...";
+        }
+
+        return summaryDesc;
+    }
+
+
+    // This method formats the icon to url for that picture(icon).
+    public String getPictureUrl() {
+
+        // "no" means that there is not picture to that Post
+        // so we are returning the default image for post URL.
+        if(icon.equals("no")) return DEFAULT_POST_IMG;
+
+        // If there is a picture we are adding the server url for pictures
+        // then the picture name and returning created URL.
+        else return POSTS_IMAGES_URL + icon;
     }
 
 }

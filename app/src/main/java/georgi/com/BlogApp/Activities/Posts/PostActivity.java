@@ -99,8 +99,7 @@ public class PostActivity extends AppCompatActivity implements PostAuthor.Listen
 
 
         // Thread to get comments from the server and to set them on the UI.
-        CommentsOnPost commentsOnPost =
-                new CommentsOnPost(this, comments);
+        CommentsOnPost commentsOnPost = new CommentsOnPost(this, comments);
         commentsOnPost.execute(postId);
 
         // When someone clicks on this it is starting

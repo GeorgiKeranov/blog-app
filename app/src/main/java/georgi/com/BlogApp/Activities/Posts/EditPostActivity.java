@@ -27,11 +27,11 @@ import georgi.com.BlogApp.Threads.Security.Logout;
 
 public class EditPostActivity extends AppCompatActivity {
 
-    private ImageView edit_post_image;
+    private ImageView postImage;
     private EditText title, description;
     private TextView date;
 
-    private Button editPostBut;
+    private Button changeImage, editPostBut;
 
     // This variable is used to save the current post's id.
     private Long id;
@@ -54,18 +54,18 @@ public class EditPostActivity extends AppCompatActivity {
         toolbar.setTitle("Edit Your Post");
         setSupportActionBar(toolbar);
 
-        edit_post_image = (ImageView) findViewById(R.id.edit_post_image);
+        postImage = (ImageView) findViewById(R.id.edit_post_image);
         title = (EditText) findViewById(R.id.edit_post_title);
         description = (EditText) findViewById(R.id.edit_post_desc);
         date = (TextView) findViewById(R.id.edit_post_date);
-
-        // Thread to get the post details from the server.
-        PostById postById = new PostById(this, date, title, description, edit_post_image);
-        postById.execute(id);
-
+        changeImage = (Button) findViewById(R.id.edit_post_changeImageBut);
         editPostBut = (Button) findViewById(R.id.edit_post_button);
 
-        edit_post_image.setOnClickListener(new View.OnClickListener() {
+        // Thread to get the post details from the server.
+        PostById postById = new PostById(this, date, title, description, postImage);
+        postById.execute(id);
+
+        changeImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -105,7 +105,7 @@ public class EditPostActivity extends AppCompatActivity {
             Glide.with(this)
                     .load(fileLocation)
                     .override(600, 600)
-                    .into(edit_post_image);
+                    .into(postImage);
         }
     }
 
