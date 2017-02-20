@@ -16,7 +16,7 @@ import georgi.com.BlogApp.Activities.Posts.YourPostsActivity;
 import georgi.com.BlogApp.Helpers.HttpRequest;
 import georgi.com.BlogApp.Helpers.PreferencesHelper;
 
-import static georgi.com.BlogApp.Configs.ServerURLs.POST_URL;
+import static georgi.com.BlogApp.Configs.ServerURLs.POSTS_URL;
 
 public class DeleteMyPost extends AsyncTask<Long, Void, Boolean> {
 
@@ -32,7 +32,7 @@ public class DeleteMyPost extends AsyncTask<Long, Void, Boolean> {
         try {
 
             // Creating the request.
-            HttpRequest httpRequest = new HttpRequest(POST_URL + id[0] + "/delete",
+            HttpRequest httpRequest = new HttpRequest(POSTS_URL + id[0] + "/delete",
                     new PreferencesHelper(context).getCookie(), "POST");
 
             // Sending the request and getting the response.

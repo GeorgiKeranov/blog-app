@@ -8,21 +8,13 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.IOException;
 
 import georgi.com.BlogApp.Helpers.HttpRequest;
 import georgi.com.BlogApp.Helpers.PreferencesHelper;
 import georgi.com.BlogApp.POJO.Post;
-import georgi.com.BlogApp.POJO.User;
 
-import static georgi.com.BlogApp.Configs.ServerURLs.DEFAULT_POST_IMG;
-import static georgi.com.BlogApp.Configs.ServerURLs.DEFAULT_USER_IMG;
-import static georgi.com.BlogApp.Configs.ServerURLs.POSTS_IMAGES_URL;
-import static georgi.com.BlogApp.Configs.ServerURLs.POST_URL;
-import static georgi.com.BlogApp.Configs.ServerURLs.USER_IMAGES_URL;
+import static georgi.com.BlogApp.Configs.ServerURLs.POSTS_URL;
 
 
 // This thread is sending GET request to server to get a post
@@ -49,7 +41,7 @@ public class PostById extends AsyncTask<Long, Void, Post> {
         try {
 
             // Creating the request.
-            HttpRequest request = new HttpRequest(POST_URL + longs[0],
+            HttpRequest request = new HttpRequest(POSTS_URL + longs[0],
                     new PreferencesHelper(context).getCookie(), "GET");
 
             // Sending the request and getting the response.

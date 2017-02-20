@@ -6,10 +6,6 @@ import android.support.v7.widget.RecyclerView;
 
 import com.google.gson.Gson;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,10 +15,8 @@ import georgi.com.BlogApp.Adapters.CommentsAdapter;
 import georgi.com.BlogApp.Helpers.HttpRequest;
 import georgi.com.BlogApp.Helpers.PreferencesHelper;
 import georgi.com.BlogApp.POJO.Comment;
-import georgi.com.BlogApp.POJO.Reply;
-import georgi.com.BlogApp.POJO.User;
 
-import static georgi.com.BlogApp.Configs.ServerURLs.POST_URL;
+import static georgi.com.BlogApp.Configs.ServerURLs.POSTS_URL;
 
 
 // This thread is sending request to get comments for some post
@@ -34,6 +28,9 @@ public class CommentsOnPost extends AsyncTask<Long, Void, List<Comment>> {
     // This recyclerView is used for the comments.
     private RecyclerView commentsRecyclerView;
 
+    // This is the id of the post that we want comments.
+    private Long postId;
+
     public CommentsOnPost(Context context, RecyclerView commentsRecyclerView) {
         this.context = context;
         this.commentsRecyclerView = commentsRecyclerView;
@@ -44,9 +41,11 @@ public class CommentsOnPost extends AsyncTask<Long, Void, List<Comment>> {
 
         try {
 
-            // Sending the request to get comments on post with id - longs[0].
+            postId = longs[0];
+
+            // Sending the request to get comments on post with id of the post.
             HttpRequest httpRequest =
-                    new HttpRequest(POST_URL + longs[0] + "/comments",
+                    new HttpRequest(POSTS_URL + postId + "/comments",
                             new PreferencesHelper(context).getCookie(), "GET");
 
             // Sending the request and getting the response.
@@ -69,7 +68,7 @@ public class CommentsOnPost extends AsyncTask<Long, Void, List<Comment>> {
     protected void onPostExecute(List<Comment> comments) {
 
         // Creating the adapter for the list of comments.
-        CommentsAdapter commentsAdapter = new CommentsAdapter(context, comments);
+        CommentsAdapter commentsAdapter = new CommentsAdapter(context, comments, postId);
 
         // Setting the adapter to the recyclerView.
         commentsRecyclerView.setAdapter(commentsAdapter);

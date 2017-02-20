@@ -10,12 +10,11 @@ import com.google.gson.Gson;
 
 import java.io.IOException;
 
-import georgi.com.BlogApp.Adapters.CommentsAdapter;
 import georgi.com.BlogApp.Helpers.HttpRequest;
 import georgi.com.BlogApp.Helpers.PreferencesHelper;
 import georgi.com.BlogApp.POJO.ErrorHandler;
 
-import static georgi.com.BlogApp.Configs.ServerURLs.POST_URL;
+import static georgi.com.BlogApp.Configs.ServerURLs.POSTS_URL;
 
 
 // This thread is handling comments by the user and sending them to the server.
@@ -42,7 +41,7 @@ public class CommentOnPost extends AsyncTask<String, Void, ErrorHandler>{
 
             // Sending POST request to the server.
             HttpRequest httpRequest =
-                    new HttpRequest(POST_URL + id + "/comment",
+                    new HttpRequest(POSTS_URL + id + "/comment",
                             new PreferencesHelper(context).getCookie(), "POST");
 
             // Adding the actual comment to the request.

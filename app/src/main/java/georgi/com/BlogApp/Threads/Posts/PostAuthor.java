@@ -9,18 +9,13 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.IOException;
 
 import georgi.com.BlogApp.Helpers.HttpRequest;
 import georgi.com.BlogApp.Helpers.PreferencesHelper;
 import georgi.com.BlogApp.POJO.User;
 
-import static georgi.com.BlogApp.Configs.ServerURLs.DEFAULT_USER_IMG;
-import static georgi.com.BlogApp.Configs.ServerURLs.POST_URL;
-import static georgi.com.BlogApp.Configs.ServerURLs.USER_IMAGES_URL;
+import static georgi.com.BlogApp.Configs.ServerURLs.POSTS_URL;
 
 // Sending request to server with some id of post and
 // server is returning the author of that post. Then this thread
@@ -56,7 +51,7 @@ public class PostAuthor extends AsyncTask<Long, Void, User> {
 
             // Creating the request.
             // longs[0] : this is the id of the post from which that we need the author.
-            HttpRequest httpRequest = new HttpRequest(POST_URL + longs[0] + "/author",
+            HttpRequest httpRequest = new HttpRequest(POSTS_URL + longs[0] + "/author",
                     new PreferencesHelper(context).getCookie(), "GET");
 
             // Sending the request and getting the response into String.

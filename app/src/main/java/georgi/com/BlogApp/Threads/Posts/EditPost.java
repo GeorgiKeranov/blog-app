@@ -8,12 +8,8 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 
 import com.google.gson.Gson;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,7 +18,7 @@ import georgi.com.BlogApp.Helpers.HttpMultipartRequest;
 import georgi.com.BlogApp.Helpers.PreferencesHelper;
 import georgi.com.BlogApp.POJO.ErrorHandler;
 
-import static georgi.com.BlogApp.Configs.ServerURLs.POST_URL;
+import static georgi.com.BlogApp.Configs.ServerURLs.POSTS_URL;
 
 
 // This thread is sending new data for existing post to server
@@ -49,7 +45,7 @@ public class EditPost extends AsyncTask<String, Void, ErrorHandler> {
             // Creating a multipart request.
             HttpMultipartRequest multipartRequest =
                     // strings[0] - id of the post that will be edited.
-                    new HttpMultipartRequest(POST_URL + strings[0],
+                    new HttpMultipartRequest(POSTS_URL + strings[0],
                             new PreferencesHelper(context).getCookie());
 
             // Adding the params/files to the request.

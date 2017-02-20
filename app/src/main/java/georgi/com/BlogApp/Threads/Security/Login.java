@@ -110,6 +110,11 @@ public class Login extends AsyncTask<String, Void, String>{
             // Cookie is stored in SharedPreferences.
             preferencesHelper.setCookie(cookie);
 
+            // Starting new thread that is getting the userUrl of the
+            // authenticated user by the cookie and saving it in SharedPreferences.
+            Thread saveUserUrl = new Thread(new SaveUserUrl(context));
+            saveUserUrl.start();
+
             // Starting LatestPostsActivity and clearing previous activities.
             Intent homeActivity = new Intent(context, LatestPostsActivity.class);
             homeActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

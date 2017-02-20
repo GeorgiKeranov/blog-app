@@ -23,18 +23,18 @@ import static georgi.com.BlogApp.Configs.ServerURLs.USER_IMAGES_URL;
 
 // This thread is sending GET request to get the authenticated user's
 // details like first name , last name  ... And setting them to the UI thread.
-public class AccountDetails extends AsyncTask<Void, Void, User>{
+public class AuthenticatedUser extends AsyncTask<Void, Void, User>{
 
     private Context context;
 
     private ImageView profile;
     private TextView firstName, lastName, email;
 
-    public AccountDetails(Context context,
-                          ImageView profile,
-                          TextView firstName,
-                          TextView lastName,
-                          TextView email) {
+    public AuthenticatedUser(Context context,
+                             ImageView profile,
+                             TextView firstName,
+                             TextView lastName,
+                             TextView email) {
 
         this.context = context;
         this.profile = profile;

@@ -22,8 +22,7 @@ import georgi.com.BlogApp.Activities.Account.EditAccountActivity;
 import georgi.com.BlogApp.Activities.Account.ViewOtherUserActivity;
 import georgi.com.BlogApp.Adapters.CommentsAdapter;
 import georgi.com.BlogApp.R;
-import georgi.com.BlogApp.Threads.Account.AccountDetails;
-import georgi.com.BlogApp.Threads.Account.UserByUserUrl;
+import georgi.com.BlogApp.Threads.Account.AuthenticatedUser;
 import georgi.com.BlogApp.Threads.Posts.CommentOnPost;
 import georgi.com.BlogApp.Threads.Posts.CommentsOnPost;
 import georgi.com.BlogApp.Threads.Posts.PostAuthor;
@@ -92,15 +91,13 @@ public class PostActivity extends AppCompatActivity implements PostAuthor.Listen
                 new PostById(this, date, title, description, postImage);
         getPostsThreadById.execute(postId);
 
-        // Setting the user details for creating a new comment.
-        AccountDetails accountDetails =
-                new AccountDetails(this, commentImage, null, null, null);
-        accountDetails.execute();
+        // Setting the authenticated user image for creating a new comment.
+        AuthenticatedUser authenticatedUser =
+                new AuthenticatedUser(this, commentImage, null, null, null);
+        authenticatedUser.execute();
 
-
-        // Thread to get comments from the server and to set them on the UI.
-        CommentsOnPost commentsOnPost = new CommentsOnPost(this, comments);
-        commentsOnPost.execute(postId);
+        // Setting the comments in the comments recycler view.
+        setComments();
 
         // When someone clicks on this it is starting
         // new activity to view the clicked user account.
@@ -177,6 +174,12 @@ public class PostActivity extends AppCompatActivity implements PostAuthor.Listen
 
         return super.onOptionsItemSelected(item);
 
+    }
+
+    public void setComments() {
+        // Thread to get comments from the server and to set them on the UI.
+        CommentsOnPost commentsOnPost = new CommentsOnPost(this, comments);
+        commentsOnPost.execute(postId);
     }
 
     @Override

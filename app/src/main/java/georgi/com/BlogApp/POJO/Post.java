@@ -2,7 +2,6 @@ package georgi.com.BlogApp.POJO;
 
 import static georgi.com.BlogApp.Configs.ServerURLs.DEFAULT_POST_IMG;
 import static georgi.com.BlogApp.Configs.ServerURLs.POSTS_IMAGES_URL;
-import static georgi.com.BlogApp.Configs.ServerURLs.POST_URL;
 
 public class Post {
 

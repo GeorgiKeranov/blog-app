@@ -16,7 +16,7 @@ import georgi.com.BlogApp.Activities.Posts.CreateNewPostActivity;
 import georgi.com.BlogApp.Activities.Posts.LatestPostsActivity;
 import georgi.com.BlogApp.Activities.Posts.YourPostsActivity;
 import georgi.com.BlogApp.R;
-import georgi.com.BlogApp.Threads.Account.AccountDetails;
+import georgi.com.BlogApp.Threads.Account.AuthenticatedUser;
 import georgi.com.BlogApp.Threads.Security.Logout;
 
 
@@ -69,11 +69,11 @@ public class AccountActivity extends AppCompatActivity{
 
     // This method is setting the UI elements.
     private void setLayoutElements() {
-        // AccountDetails is async thread.
+        // AuthenticatedUser is async thread.
         // It is getting the details for the
         // authenticated user and use them
         // to set UI elements below.
-        AccountDetails getAccount = new AccountDetails(this,
+        AuthenticatedUser getAccount = new AuthenticatedUser(this,
                 profile_picture,
                 firstName,
                 lastName,

@@ -33,11 +33,22 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/comment_replyRecyclerView"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/comment_userProfilePic"
         android:layout_alignLeft="@+id/comment_fullName"
         android:layout_alignStart="@+id/comment_fullName"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
+
+    <ImageView
+        android:layout_height="20dp"
+        app:srcCompat="@android:drawable/ic_menu_delete"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/comment_deleteImg"
+        android:background="@android:color/holo_red_dark"
+        android:layout_width="20dp"
+        android:visibility="invisible" />
 </RelativeLayout>

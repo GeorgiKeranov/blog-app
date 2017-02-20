@@ -23,7 +23,7 @@ import georgi.com.BlogApp.Activities.Posts.CreateNewPostActivity;
 import georgi.com.BlogApp.Activities.Posts.LatestPostsActivity;
 import georgi.com.BlogApp.Activities.Posts.YourPostsActivity;
 import georgi.com.BlogApp.R;
-import georgi.com.BlogApp.Threads.Account.AccountDetails;
+import georgi.com.BlogApp.Threads.Account.AuthenticatedUser;
 import georgi.com.BlogApp.Threads.Account.EditAccount;
 import georgi.com.BlogApp.Threads.Security.Logout;
 
@@ -61,9 +61,9 @@ public class EditAccountActivity extends AppCompatActivity {
         currentPassword = (EditText) findViewById(R.id.edit_account_currPassword);
 
         // Sending request to server and fill in the EditTexts with server's response.
-        AccountDetails accountDetails =
-                new AccountDetails(this, profilePic, firstName, lastName, email);
-        accountDetails.execute();
+        AuthenticatedUser authenticatedUser =
+                new AuthenticatedUser(this, profilePic, firstName, lastName, email);
+        authenticatedUser.execute();
 
 
         // This button is to change the image in ImageView.
