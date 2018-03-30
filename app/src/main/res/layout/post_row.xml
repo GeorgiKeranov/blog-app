@@ -11,12 +11,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:padding="5dp"/>
+
         <ImageView
             android:id="@+id/post_row_picture"
             android:cropToPadding="true"
             android:adjustViewBounds="true"
             android:layout_width="100dp"
-            android:layout_height="100dp" />
+            android:layout_height="100dp"
+            android:padding="5dp"
+            android:visibility="gone"/>
 
         <LinearLayout
             android:orientation="vertical"
@@ -25,28 +33,29 @@
             android:layout_weight="1">
 
             <TextView
-                android:text="Title"
+                android:text="Loading title ..."
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/post_row_summaryTitle"
                 tools:textStyle="bold"
-                android:layout_marginTop="5dp"
-                android:layout_weight="0.15"
+                android:layout_margin="5dp"
                 android:textIsSelectable="false" />
 
             <TextView
-                android:text="Description"
+                android:text="Loading description ..."
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="5dp"
                 android:id="@+id/post_row_summaryDesc"
-                android:layout_weight="1" />
+                android:lines="2"
+                />
 
             <TextView
-                android:text="Date"
+                android:text="Loading date ..."
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/post_row_date"
-                android:layout_weight="0.15" />
+                android:layout_margin="5dp"/>
         </LinearLayout>
 
     </LinearLayout>

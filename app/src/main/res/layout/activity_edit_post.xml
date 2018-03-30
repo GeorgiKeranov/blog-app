@@ -1,17 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
 
-    <Button
-        android:text="Edit the Post"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="23dp"
-        android:id="@+id/edit_post_button" />
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
@@ -24,70 +17,94 @@
         android:layout_alignParentStart="true"
         android:id="@+id/edit_post_toolbar" />
 
-    <ImageView
-        android:id="@+id/edit_post_image"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_marginTop="14dp"
-        android:layout_marginLeft="19dp"
-        android:layout_marginStart="19dp"
-        android:layout_below="@+id/edit_post_toolbar"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <EditText
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Title"
-        android:id="@+id/edit_post_title"
-        android:inputType="text"
-        android:layout_below="@+id/edit_post_image"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp" />
+        android:layout_height="wrap_content">
 
-    <Button
-        android:text="Change image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/edit_post_changeImageBut"
-        android:layout_alignTop="@+id/edit_post_image"
-        android:layout_toRightOf="@+id/edit_post_image"
-        android:layout_toEndOf="@+id/edit_post_image"
-        android:layout_marginLeft="20dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="29dp" />
+        <RelativeLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp">
 
-    <TextView
-        android:text="Created :"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
-        android:id="@+id/textView6"
-        android:textStyle="bold"
-        android:layout_above="@+id/edit_post_button"
-        android:layout_alignLeft="@+id/edit_post_image"
-        android:layout_alignStart="@+id/edit_post_image" />
+            <ProgressBar
+                android:id="@+id/edit_post_image_progress_bar"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_margin="20dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Descrpition"
-        android:layout_marginTop="21dp"
-        android:id="@+id/edit_post_desc"
-        android:inputType="textMultiLine"
-        android:layout_below="@+id/edit_post_title"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+            <ImageView
+                android:id="@+id/edit_post_image"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_margin="20dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
 
-    <TextView
-        android:text="date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/edit_post_date"
-        android:layout_alignBaseline="@+id/textView6"
-        android:layout_alignBottom="@+id/textView6"
-        android:layout_toRightOf="@+id/textView6"
-        android:layout_toEndOf="@+id/textView6"
-        android:layout_marginLeft="23dp"
-        android:layout_marginStart="23dp" />
-</RelativeLayout>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Loading title..."
+                android:id="@+id/edit_post_title"
+                android:inputType="text"
+                android:layout_below="@+id/edit_post_image"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp" />
+
+            <Button
+                android:text="Change image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/edit_post_changeImageBut"
+                android:layout_alignTop="@+id/edit_post_image"
+                android:layout_toRightOf="@+id/edit_post_image"
+                android:layout_toEndOf="@+id/edit_post_image"
+                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="29dp" />
+
+
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Loading description..."
+                android:layout_marginTop="21dp"
+                android:id="@+id/edit_post_desc"
+                android:inputType="textMultiLine"
+                android:layout_below="@+id/edit_post_title"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            <TextView
+                android:text="Created :"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView6"
+                android:textStyle="bold"
+                android:layout_below="@+id/edit_post_desc"
+                />
+
+            <TextView
+                android:text="Loading date..."
+                android:layout_marginLeft="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/edit_post_date"
+                android:layout_toRightOf="@+id/textView6"
+                android:layout_below="@+id/edit_post_desc"/>
+
+            <Button
+                android:text="Edit the Post"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/edit_post_date"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/edit_post_button" />
+
+        </RelativeLayout>
+    </ScrollView>
+</LinearLayout>

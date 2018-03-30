@@ -2,14 +2,21 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="wrap_content"
-    android:layout_height="wrap_content" >
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp">
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
+        <ProgressBar
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/reply_row_prof_pic_progress_bar" />
+
         <ImageView
+            android:visibility="gone"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:id="@+id/reply_row_profPic" />
@@ -18,7 +25,7 @@
             android:layout_marginLeft="5dp"
             android:orientation="vertical"
             android:layout_height="wrap_content"
-            android:layout_width="200dp">
+            android:layout_width="150dp">
 
             <TextView
                 android:text="Full Name"
@@ -39,61 +46,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:text="Reply"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/reply_row_showNewReplyRow"
-                android:layout_marginBottom="5dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:background="@color/colorPrimary"
-                android:textColor="@android:color/black" />
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:visibility="gone"
-        android:id="@+id/reply_row_newReply_row"
-        android:layout_marginTop="5dp"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <ImageView
-            android:layout_height="40dp"
-            android:layout_width="40dp"
-            android:id="@+id/reply_row_newReply_profPic" />
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <EditText
+            <ImageView
+                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:inputType="text"
-                android:ems="10"
-                android:id="@+id/reply_row_newReply"
+                app:srcCompat="@android:drawable/ic_menu_delete"
+                android:id="@+id/reply_row_deleteReply"
                 android:layout_weight="1"
-                android:hint="Type your reply here"
-                android:textSize="15dp"/>
-
-            <Button
-                android:text="Reply"
-                android:id="@+id/reply_row_newReplyBut"
-                android:layout_weight="1"
-                android:background="@android:color/holo_blue_bright"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginRight="5dp"/>
+                android:background="@android:color/holo_red_dark"
+                android:layout_marginLeft="20dp" />
         </LinearLayout>
 
     </LinearLayout>
-
 
 </LinearLayout>

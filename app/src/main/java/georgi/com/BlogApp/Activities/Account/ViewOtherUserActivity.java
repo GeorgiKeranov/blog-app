@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -22,8 +23,7 @@ import georgi.com.BlogApp.Adapters.PostsAdapter;
 import georgi.com.BlogApp.POJO.Post;
 import georgi.com.BlogApp.R;
 import georgi.com.BlogApp.Threads.Account.UserByUserUrl;
-import georgi.com.BlogApp.Threads.Posts.Latest5UserPosts;
-import georgi.com.BlogApp.Threads.Posts.Update5Posts;
+import georgi.com.BlogApp.Threads.Posts.PostsOnPage;
 import georgi.com.BlogApp.Threads.Security.Logout;
 
 import static georgi.com.BlogApp.Configs.ServerURLs.SERVER_URL;
@@ -31,8 +31,10 @@ import static georgi.com.BlogApp.Configs.ServerURLs.SERVER_URL;
 
 public class ViewOtherUserActivity extends AppCompatActivity {
 
+    private String className = this.getClass().getSimpleName();
     private String userUrl = null;
 
+    private ProgressBar profilePicProgressBar;
     private ImageView profilePic;
     private TextView fullname, email;
 
@@ -40,6 +42,10 @@ public class ViewOtherUserActivity extends AppCompatActivity {
     private RecyclerView postsRecycler;
     private PostsAdapter postsAdapter;
     private GridLayoutManager gridLayout;
+
+    private int page = 0;
+
+    public boolean morePages = true;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,6 +75,8 @@ public class ViewOtherUserActivity extends AppCompatActivity {
         postsAdapter = new PostsAdapter(this, postList);
         postsRecycler.setAdapter(postsAdapter);
 
+        profilePicProgressBar = (ProgressBar) findViewById(R.id.view_other_user_image_progress_bar);
+
         profilePic = (ImageView) findViewById(R.id.view_other_user_image);
 
         fullname = (TextView) findViewById(R.id.view_other_user_fullName);
@@ -76,14 +84,14 @@ public class ViewOtherUserActivity extends AppCompatActivity {
 
         // This thread is sending request to the server
         // with the above userUrl in order to get the user.
-        UserByUserUrl userByUserUrl = new UserByUserUrl(this,
+        UserByUserUrl userByUserUrl = new UserByUserUrl(this, profilePicProgressBar,
                 profilePic, fullname, email);
 
         // Starting the thread with the userUrl as param.
         userByUserUrl.execute(userUrl);
 
         // Setting the latest 5 posts from server to the postsRecycler.
-        getLatest5Posts();
+        getPostsOnPage();
 
 
         postsRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -93,7 +101,7 @@ public class ViewOtherUserActivity extends AppCompatActivity {
                 // If the last visible item position equals the list of posts size -1
                 // update the postsRecycler with new 5 posts.
                 if(gridLayout.findLastVisibleItemPosition() == postList.size() - 1) {
-                    updateWith5Posts();
+                    getPostsOnPage();
                 }
             }
         });
@@ -103,17 +111,14 @@ public class ViewOtherUserActivity extends AppCompatActivity {
     // This method is starting thread that sends request
     // to the server for latest 5 posts by the userUrl of the user.
     // Clears all the old posts in the postList and adds the new ones.
-    private void getLatest5Posts() {
-        Latest5UserPosts latest5UserPosts = new Latest5UserPosts(this, postsRecycler);
-        latest5UserPosts.execute(SERVER_URL + "/" + userUrl + "/latest-posts");
-    }
+    private void getPostsOnPage() {
 
-    // This method is getting 5 posts before the id of the last shown post.
-    // And sets them in the postsRecycler.
-    private void updateWith5Posts() {
-        Update5Posts update5Posts = new Update5Posts(this, postsRecycler);
-        update5Posts.execute(SERVER_URL + "/" + userUrl + "/posts",
-                "" + postList.get(postList.size() -1).getId());
+        if(morePages) {
+            PostsOnPage postsOnPage = new PostsOnPage(this, postsRecycler, className);
+            postsOnPage.execute(SERVER_URL + "/" + userUrl + "/posts?page=" + page);
+
+            page++;
+        }
     }
 
     @Override
@@ -161,13 +166,5 @@ public class ViewOtherUserActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
 
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        // Setting the latest 5 posts from server to the postsRecycler.
-        getLatest5Posts();
     }
 }

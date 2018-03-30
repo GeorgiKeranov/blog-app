@@ -18,21 +18,25 @@ import georgi.com.BlogApp.Activities.Account.EditAccountActivity;
 import georgi.com.BlogApp.Adapters.YourPostsAdapter;
 import georgi.com.BlogApp.POJO.Post;
 import georgi.com.BlogApp.R;
-import georgi.com.BlogApp.Threads.Posts.Latest5UserPosts;
-import georgi.com.BlogApp.Threads.Posts.Update5Posts;
+import georgi.com.BlogApp.Threads.Posts.PostsOnPage;
 import georgi.com.BlogApp.Threads.Security.Logout;
 
-import static georgi.com.BlogApp.Configs.ServerURLs.AUTH_USER_LATEST5_POSTS;
-import static georgi.com.BlogApp.Configs.ServerURLs.AUTH_USER_UPDATE_5POSTS_URL;
+import static georgi.com.BlogApp.Configs.ServerURLs.POSTS_AUTH_USER_URL;
 
 
 public class YourPostsActivity extends AppCompatActivity{
+
+    private String className = this.getClass().getSimpleName();
 
     private GridLayoutManager gridLayout;
     private RecyclerView recyclerView;
     private YourPostsAdapter adapter;
 
+    private int page = 0;
+
     private List<Post> userPosts;
+
+    public boolean morePages = true;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,7 +57,7 @@ public class YourPostsActivity extends AppCompatActivity{
         recyclerView.setAdapter(adapter);
 
         // Getting the latest 5 user posts and setting the UI thread.
-        getLatest5Posts();
+        getPostsByPage();
 
         // On scroll in posts it will check if the last item is visible
         // and if it is it will update ui thread with 5 new posts.
@@ -61,7 +65,7 @@ public class YourPostsActivity extends AppCompatActivity{
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 if (gridLayout.findLastVisibleItemPosition() == userPosts.size() - 1) {
-                    updateWith5Posts();
+                    getPostsByPage();
                 }
             }
         });
@@ -69,21 +73,15 @@ public class YourPostsActivity extends AppCompatActivity{
     }
 
 
-    private void updateWith5Posts() {
+    private void getPostsByPage() {
 
-        // If list of posts is empty don't do anything.
-        if(userPosts.size() <= 0) return;
+        if(morePages) {
+            PostsOnPage postsOnPage = new PostsOnPage(this, recyclerView, className);
+            postsOnPage.execute(POSTS_AUTH_USER_URL + "?page=" + page);
 
-        Update5Posts update5Posts = new Update5Posts(this, recyclerView);
-        update5Posts.execute(AUTH_USER_UPDATE_5POSTS_URL,
-                "" + userPosts.get(userPosts.size() - 1).getId());
-    }
+            page++;
+        }
 
-    private void getLatest5Posts() {
-
-        // This thread gets the latest 5 posts that authenticated user have been posted.
-        Latest5UserPosts latest5UserPosts = new Latest5UserPosts(this, recyclerView);
-        latest5UserPosts.execute(AUTH_USER_LATEST5_POSTS);
     }
 
     @Override
@@ -133,11 +131,16 @@ public class YourPostsActivity extends AppCompatActivity{
 
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
+    public void deletePostById(Long id) {
 
-        // Updating UI with new Posts.
-        getLatest5Posts();
+        for(int i = 0; i<userPosts.size(); i++)
+            if(userPosts.get(i).getId() == id) {
+                // Removing the post.
+                userPosts.remove(i);
+                // Updating the adapter.
+                recyclerView.getAdapter().notifyDataSetChanged();
+
+                break;
+            }
     }
 }

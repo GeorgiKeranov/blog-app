@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -27,6 +28,7 @@ import georgi.com.BlogApp.Threads.Security.Logout;
 
 public class EditPostActivity extends AppCompatActivity {
 
+    private ProgressBar postImageProgressBar;
     private ImageView postImage;
     private EditText title, description;
     private TextView date;
@@ -54,6 +56,7 @@ public class EditPostActivity extends AppCompatActivity {
         toolbar.setTitle("Edit Your Post");
         setSupportActionBar(toolbar);
 
+        postImageProgressBar = (ProgressBar) findViewById(R.id.edit_post_image_progress_bar);
         postImage = (ImageView) findViewById(R.id.edit_post_image);
         title = (EditText) findViewById(R.id.edit_post_title);
         description = (EditText) findViewById(R.id.edit_post_desc);
@@ -62,7 +65,7 @@ public class EditPostActivity extends AppCompatActivity {
         editPostBut = (Button) findViewById(R.id.edit_post_button);
 
         // Thread to get the post details from the server.
-        PostById postById = new PostById(this, date, title, description, postImage);
+        PostById postById = new PostById(this, date, title, description, postImageProgressBar, postImage);
         postById.execute(id);
 
         changeImage.setOnClickListener(new View.OnClickListener() {

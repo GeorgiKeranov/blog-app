@@ -32,19 +32,14 @@ public class ReplyOnComment extends AsyncTask<String, Void, ErrorHandler> {
     protected ErrorHandler doInBackground(String... strings) {
 
         try {
-
-            Log.d("REPLYY", "URL: " + POSTS_URL + postId + "/reply");
-
             // Needed url to reply to some comment : /rest/posts/{HERE ID OF THE POST}/reply .
-            HttpRequest httpRequest = new HttpRequest(POSTS_URL + postId + "/reply",
+            HttpRequest httpRequest = new HttpRequest(POSTS_URL + "/" + postId + "/reply",
                     new PreferencesHelper(context).getCookie(), "POST");
 
             // strings[0] : Text that will be in the new reply.
             httpRequest.addStringField("reply", strings[0]);
-            Log.d("REPLYY", "reply: " + strings[0]);
             // strings[1] : Id of the comment that we will reply.
             httpRequest.addStringField("commentIdToReply", strings[1]);
-            Log.d("REPLYY", "commentIdToReply: " + strings[1]);
 
             // Sending the request and getting the response.
             String response = httpRequest.sendTheRequest();

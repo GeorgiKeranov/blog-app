@@ -1,54 +1,129 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="10dp">
 
-    <ImageView
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:id="@+id/comment_userProfilePic" />
-
-    <TextView
-        android:text="Full name"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/comment_userProfilePic"
-        android:layout_toEndOf="@+id/comment_userProfilePic"
-        android:layout_marginLeft="11dp"
-        android:layout_marginStart="11dp"
-        android:id="@+id/comment_fullName" />
+        android:orientation="horizontal">
 
-    <TextView
-        android:text="Comment"
-        android:layout_width="wrap_content"
+        <ProgressBar
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/comment_user_profile_pic_progress_bar" />
+
+        <ImageView
+            android:visibility="gone"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/comment_userProfilePic" />
+
+        <LinearLayout
+            android:layout_marginLeft="5dp"
+            android:orientation="vertical"
+            android:layout_width="210dp"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:text="Full name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/comment_fullName" />
+
+            <TextView
+                android:text="Comment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/comment_fullName"
+                android:layout_alignLeft="@+id/comment_fullName"
+                android:layout_alignStart="@+id/comment_fullName"
+                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
+                android:id="@+id/comment_comment" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
+            android:padding="5dp"
+            android:text="Reply"
+            android:textColor="#FFF"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/comment_show_new_reply"
+            android:background="@color/colorPrimary"
+            android:textAlignment="center" />
+
+        <ImageView
+            android:layout_height="40dp"
+            android:layout_marginLeft="5dp"
+            app:srcCompat="@android:drawable/ic_menu_delete"
+            android:id="@+id/comment_deleteImg"
+            android:background="@android:color/holo_red_dark"
+            android:layout_width="40dp"
+            android:visibility="visible"
+            android:layout_marginRight="10dp" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/comment_newReply_row"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/comment_fullName"
-        android:layout_alignLeft="@+id/comment_fullName"
-        android:layout_alignStart="@+id/comment_fullName"
-        android:layout_marginLeft="15dp"
-        android:layout_marginStart="15dp"
-        android:id="@+id/comment_comment" />
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="50dp">
+
+        <ProgressBar
+            android:layout_height="40dp"
+            android:layout_width="40dp"
+            android:id="@+id/comment_newReply_prof_pic_progress_bar" />
+
+        <ImageView
+            android:visibility="gone"
+            android:layout_height="40dp"
+            android:layout_width="40dp"
+            android:id="@+id/comment_newReply_profPic" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:inputType="text"
+                android:id="@+id/comment_newReply"
+                android:hint="Type your reply here"
+                android:textSize="15dp"/>
+
+            <Button
+                android:text="Reply"
+                android:id="@+id/comment_newReplyBut"
+                android:background="@android:color/holo_blue_bright"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginRight="5dp"/>
+        </LinearLayout>
+
+    </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/comment_replyRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/comment_userProfilePic"
-        android:layout_alignLeft="@+id/comment_fullName"
-        android:layout_alignStart="@+id/comment_fullName"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="10dp"/>
 
-    <ImageView
-        android:layout_height="20dp"
-        app:srcCompat="@android:drawable/ic_menu_delete"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:id="@+id/comment_deleteImg"
-        android:background="@android:color/holo_red_dark"
-        android:layout_width="20dp"
-        android:visibility="invisible" />
-</RelativeLayout>
+</LinearLayout>

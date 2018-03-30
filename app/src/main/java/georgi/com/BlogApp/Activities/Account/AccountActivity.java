@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import georgi.com.BlogApp.Activities.Posts.CreateNewPostActivity;
@@ -22,7 +23,8 @@ import georgi.com.BlogApp.Threads.Security.Logout;
 
 public class AccountActivity extends AppCompatActivity{
 
-    private ImageView profile_picture;
+    private ProgressBar profilePictureProgressBar;
+    private ImageView profilePicture;
     private TextView firstName, lastName, email;
 
     private Button editAccount, viewPosts;
@@ -37,7 +39,8 @@ public class AccountActivity extends AppCompatActivity{
         myToolbar.setTitle("Your Account");
         setSupportActionBar(myToolbar);
 
-        profile_picture = (ImageView) findViewById(R.id.account_picture);
+        profilePictureProgressBar = (ProgressBar) findViewById(R.id.account_picture_progress_bar);
+        profilePicture = (ImageView) findViewById(R.id.account_picture);
         firstName = (TextView) findViewById(R.id.account_firstName);
         lastName = (TextView) findViewById(R.id.account_lastName);
         email = (TextView) findViewById(R.id.account_email);
@@ -73,11 +76,9 @@ public class AccountActivity extends AppCompatActivity{
         // It is getting the details for the
         // authenticated user and use them
         // to set UI elements below.
-        AuthenticatedUser getAccount = new AuthenticatedUser(this,
-                profile_picture,
-                firstName,
-                lastName,
-                email);
+        AuthenticatedUser getAccount = new AuthenticatedUser(
+                this, profilePictureProgressBar, profilePicture, firstName, lastName, email
+        );
 
         // Starting the thread.
         getAccount.execute();

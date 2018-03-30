@@ -7,10 +7,17 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 
 import java.util.List;
 
@@ -19,7 +26,9 @@ import georgi.com.BlogApp.Helpers.PreferencesHelper;
 import georgi.com.BlogApp.POJO.Comment;
 import georgi.com.BlogApp.POJO.User;
 import georgi.com.BlogApp.R;
+import georgi.com.BlogApp.Threads.Account.AuthenticatedUser;
 import georgi.com.BlogApp.Threads.Posts.DeleteComment;
+import georgi.com.BlogApp.Threads.Posts.ReplyOnComment;
 
 import static georgi.com.BlogApp.Configs.ServerURLs.DEFAULT_USER_IMG;
 import static georgi.com.BlogApp.Configs.ServerURLs.USER_IMAGES_URL;
@@ -46,6 +55,10 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
         authUserUrl = new PreferencesHelper(context).getCustomKeyValue("userUrl");
     }
 
+    public List<Comment> getComments() {
+        return this.comments;
+    }
+
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.comment_row, parent, false);
@@ -56,7 +69,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
     public void onBindViewHolder(final MyViewHolder holder, int position) {
 
         // Getting the current comment.
-        Comment curComment = comments.get(position);
+        final Comment curComment = comments.get(position);
 
         // Setting the commentId with the current comment id.
         holder.commentId = curComment.getId();
@@ -68,6 +81,21 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
         Glide.with(context)
                 .load(comAuthor.getProfPicUrl())
                 .override(160, 160)
+                .listener(new RequestListener<String, GlideDrawable>() {
+                    @Override
+                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                        holder.profilePicProgressBar.setVisibility(View.GONE);
+                        holder.profilePicture.setVisibility(View.VISIBLE);
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                        holder.profilePicProgressBar.setVisibility(View.GONE);
+                        holder.profilePicture.setVisibility(View.VISIBLE);
+                        return false;
+                    }
+                })
                 .into(holder.profilePicture);
 
         // Setting the userUrl of the author of comment.
@@ -87,13 +115,39 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
             @Override
             public void onClick(View view) {
 
-                DeleteComment deleteComment = new DeleteComment(context, postId);
-                deleteComment.execute(holder.commentId);
+                DeleteComment deleteComment = new DeleteComment(context, holder.commentId, postId);
+                deleteComment.execute();
+            }
+        });
+
+        holder.showNewReplyRow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if(holder.newReplyRow.getVisibility() == View.GONE) {
+                    holder.newReplyRow.setVisibility(View.VISIBLE);
+                    // This thread is setting the authenticated user profile picture in ImageView.
+                    AuthenticatedUser authenticatedUser = new AuthenticatedUser(
+                            context, holder.newReplyAuthorPicProgressBar,
+                            holder.newReplyAuthorPic, null, null, null);
+
+                    authenticatedUser.execute();
+                }
+
+                else holder.newReplyRow.setVisibility(View.GONE);
+            }
+        });
+
+        holder.newReplyBut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ReplyOnComment replyOnComment = new ReplyOnComment(context, postId);
+                replyOnComment.execute(holder.newReply.getText().toString(), "" + curComment.getId());
             }
         });
 
         // Initializing the repliesAdapter.
-        holder.repliesAdapter = new RepliesAdapter(context, curComment.getReplies(), postId, holder.commentId);
+        holder.repliesAdapter = new RepliesAdapter(context, curComment.getReplies());
 
         // Setting the adapter.
         holder.replies.setAdapter(holder.repliesAdapter);
@@ -111,8 +165,13 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
 
         private Long commentId;
 
-        private ImageView profilePicture, deleteComment;
-        private TextView fullName, comment;
+        private ProgressBar profilePicProgressBar, newReplyAuthorPicProgressBar;
+        private ImageView profilePicture, newReplyAuthorPic, deleteComment;
+        private TextView fullName, comment, showNewReplyRow;
+
+        private EditText newReply;
+        private Button newReplyBut;
+        private LinearLayout newReplyRow;
 
         private RecyclerView replies;
         private RepliesAdapter repliesAdapter;
@@ -121,14 +180,24 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
         public MyViewHolder(View itemView) {
             super(itemView);
 
+            profilePicProgressBar = (ProgressBar) itemView.findViewById(R.id.comment_user_profile_pic_progress_bar);
+            newReplyAuthorPicProgressBar = (ProgressBar) itemView.findViewById(R.id.comment_newReply_prof_pic_progress_bar);
+
             profilePicture = (ImageView) itemView.findViewById(R.id.comment_userProfilePic);
+            newReplyAuthorPic = (ImageView) itemView.findViewById(R.id.comment_newReply_profPic);
             deleteComment = (ImageView) itemView.findViewById(R.id.comment_deleteImg);
+
             fullName = (TextView) itemView.findViewById(R.id.comment_fullName);
             comment = (TextView) itemView.findViewById(R.id.comment_comment);
+            showNewReplyRow = (TextView) itemView.findViewById(R.id.comment_show_new_reply);
 
             replies = (RecyclerView) itemView.findViewById(R.id.comment_replyRecyclerView);
             layoutManager = new LinearLayoutManager(context);
             replies.setLayoutManager(layoutManager);
+
+            newReplyRow = (LinearLayout) itemView.findViewById(R.id.comment_newReply_row);
+            newReply = (EditText) itemView.findViewById(R.id.comment_newReply);
+            newReplyBut = (Button) itemView.findViewById(R.id.comment_newReplyBut);
 
             profilePicture.setOnClickListener(new View.OnClickListener() {
                 @Override

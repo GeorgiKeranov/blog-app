@@ -4,10 +4,15 @@ package georgi.com.BlogApp.Threads.Account;
 import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.google.gson.Gson;
 
 import org.json.JSONException;
@@ -31,11 +36,15 @@ public class UserByUserUrl extends AsyncTask<String, Void, User>{
 
     private Context context;
 
+    private ProgressBar profilePicProgressBar;
     private ImageView profilePic;
     private TextView fullName, email;
 
-    public UserByUserUrl(Context context, ImageView profilePic, TextView fullName, TextView email) {
+    public UserByUserUrl(Context context, ProgressBar profilePicProgressBar, ImageView profilePic,
+                         TextView fullName, TextView email) {
+
         this.context = context;
+        this.profilePicProgressBar = profilePicProgressBar;
         this.profilePic = profilePic;
         this.fullName = fullName;
         this.email = email;
@@ -75,6 +84,21 @@ public class UserByUserUrl extends AsyncTask<String, Void, User>{
         Glide.with(context)
                 .load(user.getProfPicUrl())
                 .override(400, 400)
+                .listener(new RequestListener<String, GlideDrawable>() {
+                    @Override
+                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                        profilePicProgressBar.setVisibility(View.GONE);
+                        profilePic.setVisibility(View.VISIBLE);
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                        profilePicProgressBar.setVisibility(View.GONE);
+                        profilePic.setVisibility(View.VISIBLE);
+                        return false;
+                    }
+                })
                 .into(profilePic);
 
         // Setting the TextViews with the User object details.

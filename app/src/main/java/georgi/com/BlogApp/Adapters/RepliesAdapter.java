@@ -1,6 +1,7 @@
 package georgi.com.BlogApp.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,38 +10,39 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 
 import java.util.List;
 
+import georgi.com.BlogApp.Activities.Account.ViewOtherUserActivity;
+import georgi.com.BlogApp.Helpers.PreferencesHelper;
 import georgi.com.BlogApp.POJO.Reply;
 import georgi.com.BlogApp.POJO.User;
 import georgi.com.BlogApp.R;
 import georgi.com.BlogApp.Threads.Account.AuthenticatedUser;
+import georgi.com.BlogApp.Threads.Posts.DeleteReply;
 import georgi.com.BlogApp.Threads.Posts.ReplyOnComment;
-
-import static georgi.com.BlogApp.Configs.ServerURLs.DEFAULT_USER_IMG;
-import static georgi.com.BlogApp.Configs.ServerURLs.USER_IMAGES_URL;
 
 public class RepliesAdapter extends RecyclerView.Adapter<RepliesAdapter.MyViewHolder> {
 
     private Context context;
 
+    // authUserUrl of the authenticated user.
+    private String authUserUrl;
+
     private List<Reply> replies;
 
-    // This is the id of the comment that we will show replies on.
-    private Long commentId;
-
-    // This the id of the post that belongs these replies.
-    private Long postId;
-
-    public RepliesAdapter(Context context, List<Reply> replies, Long postId, Long commentId) {
+    public RepliesAdapter(Context context, List<Reply> replies) {
         this.context = context;
         this.replies = replies;
-        this.postId = postId;
-        this.commentId = commentId;
+
+        this.authUserUrl = new PreferencesHelper(context).getCustomKeyValue("userUrl");
     }
 
     @Override
@@ -54,41 +56,44 @@ public class RepliesAdapter extends RecyclerView.Adapter<RepliesAdapter.MyViewHo
 
         // Getting current post from the list.
         // And getting the author from that post.
-        Reply currReply = replies.get(position);
+        final Reply currReply = replies.get(position);
         User author = currReply.getAuthor();
 
         // Loading the author profile picture URL into ImageView.
         Glide.with(context)
                 .load(author.getProfPicUrl())
                 .override(160, 160)
+                .listener(new RequestListener<String, GlideDrawable>() {
+                    @Override
+                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                        holder.profilePicProgressBar.setVisibility(View.GONE);
+                        holder.profilePic.setVisibility(View.VISIBLE);
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                        holder.profilePicProgressBar.setVisibility(View.GONE);
+                        holder.profilePic.setVisibility(View.VISIBLE);
+                        return false;
+                    }
+                })
                 .into(holder.profilePic);
 
         holder.fullName.setText(author.getFullName());
         holder.reply.setText(currReply.getReply());
 
+        // If the author of the post userUrl and the authenticated userUrl
+        // are the same setting the delete ImageView visibility to visible.
+        if(author.getUserUrl().equals(authUserUrl))
+            holder.deleteCurReply.setVisibility(View.VISIBLE);
 
-        holder.showNewReplyRow.setOnClickListener(new View.OnClickListener() {
+        holder.deleteCurReply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                if(holder.newReplyRow.getVisibility() == View.GONE) {
-                    holder.newReplyRow.setVisibility(View.VISIBLE);
-                    // This thread is setting the authenticated user profile picture in ImageView.
-                    AuthenticatedUser authenticatedUser =
-                            new AuthenticatedUser(context, holder.newReplyAuthorPic, null, null, null);
-                    authenticatedUser.execute();
-                }
-
-                else holder.newReplyRow.setVisibility(View.GONE);
-            }
-        });
-
-        holder.newReplyBut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                ReplyOnComment replyOnComment = new ReplyOnComment(context, postId);
-                replyOnComment.execute(holder.newReply.getText().toString(), "" + commentId);
+                // Starting new thread to delete the reply from the server.
+                DeleteReply deleteReply = new DeleteReply(context, currReply.getId());
+                deleteReply.execute();
             }
         });
     }
@@ -101,25 +106,32 @@ public class RepliesAdapter extends RecyclerView.Adapter<RepliesAdapter.MyViewHo
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        private ImageView profilePic, newReplyAuthorPic;
-        private TextView fullName, reply, showNewReplyRow;
-        private EditText newReply;
-        private Button newReplyBut;
-        private LinearLayout newReplyRow;
+        private ProgressBar profilePicProgressBar;
+        private ImageView profilePic, deleteCurReply;
+        private TextView fullName, reply;
 
         public MyViewHolder(View itemView) {
             super(itemView);
 
-            profilePic = (ImageView) itemView.findViewById(R.id.reply_row_profPic);
-            newReplyAuthorPic = (ImageView) itemView.findViewById(R.id.reply_row_newReply_profPic);
+            profilePicProgressBar = (ProgressBar) itemView.findViewById(R.id.reply_row_prof_pic_progress_bar);
 
-            showNewReplyRow = (TextView) itemView.findViewById(R.id.reply_row_showNewReplyRow);
+            profilePic = (ImageView) itemView.findViewById(R.id.reply_row_profPic);
+            deleteCurReply = (ImageView) itemView.findViewById(R.id.reply_row_deleteReply);
+
             fullName = (TextView) itemView.findViewById(R.id.reply_row_fullName);
             reply = (TextView) itemView.findViewById(R.id.reply_row_reply);
 
-            newReplyRow = (LinearLayout) itemView.findViewById(R.id.reply_row_newReply_row);
-            newReply = (EditText) itemView.findViewById(R.id.reply_row_newReply);
-            newReplyBut = (Button) itemView.findViewById(R.id.reply_row_newReplyBut);
+            profilePic.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    // Starting new activity to view the clicked comment author account.
+                    // And adding extra String "userUrl" of the author.
+                    Intent intent = new Intent(context, ViewOtherUserActivity.class);
+                    intent.putExtra("userUrl", authUserUrl);
+                    context.startActivity(intent);
+                }
+            });
         }
     }
 }

@@ -15,60 +15,54 @@ import georgi.com.BlogApp.Helpers.HttpRequest;
 import georgi.com.BlogApp.Helpers.PreferencesHelper;
 import georgi.com.BlogApp.POJO.ErrorHandler;
 
-import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
-import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
-import static georgi.com.BlogApp.Configs.ServerURLs.DELETE_COMMENT_URL;
+import static georgi.com.BlogApp.Configs.ServerURLs.DELETE_REPLY_URL;
 
-public class DeleteComment extends AsyncTask<Void, Void, ErrorHandler> {
+public class DeleteReply extends AsyncTask<Void, Void, ErrorHandler> {
 
     private Context context;
 
-    // That is the id of post from who the comment is.
-    private Long postId;
+    private Long replyId;
 
-    private Long commentId;
-
-    public DeleteComment(Context context, Long commentId, Long postId) {
+    public DeleteReply(Context context, Long replyId) {
         this.context = context;
-        this.commentId = commentId;
-        this.postId = postId;
+        this.replyId = replyId;
     }
 
     @Override
     protected ErrorHandler doInBackground(Void... voids) {
 
         try {
-
-            // Creating the request.
-            HttpRequest httpRequest = new HttpRequest(DELETE_COMMENT_URL,
+            // Creating the request to delete reply with POST method.
+            HttpRequest httpRequest = new HttpRequest(DELETE_REPLY_URL,
                     new PreferencesHelper(context).getCookie(), "POST");
 
-            // longs[0] is the id for the comment to delete.
-            httpRequest.addStringField("commentId", "" + commentId);
+            // Adding the id of the reply to delete in the httpRequest.
+            httpRequest.addStringField("replyId", "" + replyId);
 
             // Sending the request and getting the response.
             String response = httpRequest.sendTheRequest();
+            Log.d("ERROR", response);
 
             Gson gson = new Gson();
-            // Converting the JSON response to ErrorHandler.
+            // Converting the JSON to ErrorHandler object and returning it.
             return gson.fromJson(response, ErrorHandler.class);
 
-        } catch(IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return null;
+        return new ErrorHandler(false);
     }
 
     @Override
     protected void onPostExecute(ErrorHandler errorHandler) {
 
         if(errorHandler.getError()) {
-            Log.e("Error", errorHandler.getError_msg());
+            Log.d("ERROR", errorHandler.getError_msg());
         }
 
         else {
-            ((PostActivity) context).deleteCommentById(commentId);
+            ((PostActivity) context).deleteReplyById(replyId);
         }
     }
 }

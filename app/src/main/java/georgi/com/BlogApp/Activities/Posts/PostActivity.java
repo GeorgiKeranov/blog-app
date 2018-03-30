@@ -15,12 +15,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import java.util.List;
 
 import georgi.com.BlogApp.Activities.Account.AccountActivity;
 import georgi.com.BlogApp.Activities.Account.EditAccountActivity;
 import georgi.com.BlogApp.Activities.Account.ViewOtherUserActivity;
 import georgi.com.BlogApp.Adapters.CommentsAdapter;
+import georgi.com.BlogApp.POJO.Comment;
+import georgi.com.BlogApp.POJO.Reply;
 import georgi.com.BlogApp.R;
 import georgi.com.BlogApp.Threads.Account.AuthenticatedUser;
 import georgi.com.BlogApp.Threads.Posts.CommentOnPost;
@@ -37,14 +42,14 @@ public class PostActivity extends AppCompatActivity implements PostAuthor.Listen
 
     private TextView authorName, date, title, description;
     private ImageView authorImage, postImage, commentImage;
+    private ProgressBar authorImageProgressBar, postImageProgressBar, commentImageProgressBar;
     private Button butComment;
     private EditText comment;
     private LinearLayout authorRow;
 
     private LayoutManager layoutManager;
 
-    private CommentsAdapter commentsAdapter;
-    private RecyclerView comments;
+    private RecyclerView commentsRecyclerView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -68,36 +73,41 @@ public class PostActivity extends AppCompatActivity implements PostAuthor.Listen
 
         authorImage = (ImageView) findViewById(R.id.post_author_image);
         postImage = (ImageView) findViewById(R.id.post_image);
-        commentImage = (ImageView) findViewById(R.id.post_commentImage);
+        commentImage = (ImageView) findViewById(R.id.post_comment_image);
 
-        butComment = (Button) findViewById(R.id.post_butComment);
+        authorImageProgressBar = (ProgressBar) findViewById(R.id.post_author_image_progress_bar);
+        postImageProgressBar = (ProgressBar) findViewById(R.id.post_image_progress_bar);
+        commentImageProgressBar = (ProgressBar) findViewById(R.id.post_comment_image_progress_bar);
+
+        butComment = (Button) findViewById(R.id.post_but_comment);
         comment = (EditText) findViewById(R.id.post_comment);
 
         authorRow = (LinearLayout) findViewById(R.id.post_author_row);
 
-        comments = (RecyclerView) findViewById(R.id.post_recyclerView);
+        commentsRecyclerView = (RecyclerView) findViewById(R.id.post_recycler_view);
         layoutManager = new LinearLayoutManager(this);
-        comments.setLayoutManager(layoutManager);
+        commentsRecyclerView.setLayoutManager(layoutManager);
 
 
         // Thread to get first name, last name and the profile picture of author of post
         // by id and set them in the UI thread(this thread). Also it is getting the userUrl of the author.
-        PostAuthor postAuthor = new PostAuthor(this, authorName, authorImage);
+        PostAuthor postAuthor = new PostAuthor(this, authorName, authorImageProgressBar, authorImage);
         postAuthor.execute(postId);
 
         // Thread to get post from the server and
         // set tile, description and the image of the selected post.
-        PostById getPostsThreadById =
-                new PostById(this, date, title, description, postImage);
-        getPostsThreadById.execute(postId);
+        PostById getPostByIdThread = new PostById(this, date, title, description, postImageProgressBar, postImage);
+        getPostByIdThread.execute(postId);
 
         // Setting the authenticated user image for creating a new comment.
-        AuthenticatedUser authenticatedUser =
-                new AuthenticatedUser(this, commentImage, null, null, null);
+        AuthenticatedUser authenticatedUser = new AuthenticatedUser(
+                this, commentImageProgressBar, commentImage, null, null, null
+        );
         authenticatedUser.execute();
 
-        // Setting the comments in the comments recycler view.
-        setComments();
+        // Thread to get commentsRecyclerView from the server and to set them on the recycler view.
+        CommentsOnPost commentsOnPost = new CommentsOnPost(this, commentsRecyclerView);
+        commentsOnPost.execute(postId);
 
         // When someone clicks on this it is starting
         // new activity to view the clicked user account.
@@ -115,10 +125,10 @@ public class PostActivity extends AppCompatActivity implements PostAuthor.Listen
             public void onClick(View view) {
 
                 // Commenting on the post and send comment on the server
-                // Then it is refreshing the new comments.
+                // Then it is refreshing the new commentsRecyclerView.
                 CommentOnPost commentOnPost =
                         new CommentOnPost(getApplicationContext(),
-                                postId, comments);
+                                postId, commentsRecyclerView);
 
                 commentOnPost.execute(comment.getText().toString());
 
@@ -176,14 +186,52 @@ public class PostActivity extends AppCompatActivity implements PostAuthor.Listen
 
     }
 
-    public void setComments() {
-        // Thread to get comments from the server and to set them on the UI.
-        CommentsOnPost commentsOnPost = new CommentsOnPost(this, comments);
-        commentsOnPost.execute(postId);
-    }
-
     @Override
     public void setUserUrl(String userUrl) {
         authorUrl = userUrl;
+    }
+
+    // Deleting comment from the UI.
+    public void deleteCommentById(Long id) {
+
+        CommentsAdapter commentsAdapter = (CommentsAdapter) commentsRecyclerView.getAdapter();
+
+        List<Comment> comments = commentsAdapter.getComments();
+
+        for(int i = 0; i<comments.size(); i++)
+            if(comments.get(i).getId() == id)
+                comments.remove(i);
+
+        commentsAdapter.notifyDataSetChanged();
+    }
+
+    // Delete reply from the UI.
+    public void deleteReplyById(Long id) {
+
+        CommentsAdapter commentsAdapter = (CommentsAdapter) commentsRecyclerView.getAdapter();
+
+        List<Comment> comments = commentsAdapter.getComments();
+
+        for(int i = 0; i<comments.size(); i++) {
+
+            List<Reply> currReplies = comments.get(i).getReplies();
+
+            boolean replyDeleted = false;
+
+            for(int y = 0; i<currReplies.size(); i++)
+                if(currReplies.get(i).getId() == id) {
+
+                    currReplies.remove(i);
+                    replyDeleted = true;
+
+                    break;
+                }
+
+            if(replyDeleted)
+                break;
+        }
+
+        commentsAdapter.notifyDataSetChanged();
+
     }
 }

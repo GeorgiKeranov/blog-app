@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.bumptech.glide.Glide;
 
@@ -31,6 +32,7 @@ import georgi.com.BlogApp.Threads.Security.Logout;
 public class EditAccountActivity extends AppCompatActivity {
 
     private Button setNewPicture, editTheAccount;
+    private ProgressBar profilePicProgressBar;
     private ImageView profilePic;
     private EditText firstName, lastName, email, newPassword, confirmPass, currentPassword;
 
@@ -51,6 +53,8 @@ public class EditAccountActivity extends AppCompatActivity {
         setNewPicture = (Button) findViewById(R.id.edit_account_newPicBut);
         editTheAccount = (Button) findViewById(R.id.edit_account_saveBut);
 
+        profilePicProgressBar = (ProgressBar) findViewById(R.id.edit_account_profile_pic_progress_bar);
+
         profilePic = (ImageView) findViewById(R.id.edit_account_profilePic);
 
         firstName = (EditText) findViewById(R.id.edit_account_firstName);
@@ -62,7 +66,7 @@ public class EditAccountActivity extends AppCompatActivity {
 
         // Sending request to server and fill in the EditTexts with server's response.
         AuthenticatedUser authenticatedUser =
-                new AuthenticatedUser(this, profilePic, firstName, lastName, email);
+                new AuthenticatedUser(this, profilePicProgressBar , profilePic, firstName, lastName, email);
         authenticatedUser.execute();
 
 

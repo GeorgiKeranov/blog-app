@@ -45,7 +45,7 @@ public class EditPost extends AsyncTask<String, Void, ErrorHandler> {
             // Creating a multipart request.
             HttpMultipartRequest multipartRequest =
                     // strings[0] - id of the post that will be edited.
-                    new HttpMultipartRequest(POSTS_URL + strings[0],
+                    new HttpMultipartRequest(POSTS_URL + "/" + strings[0],
                             new PreferencesHelper(context).getCookie());
 
             // Adding the params/files to the request.

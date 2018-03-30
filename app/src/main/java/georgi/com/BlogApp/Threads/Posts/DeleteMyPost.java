@@ -18,21 +18,24 @@ import georgi.com.BlogApp.Helpers.PreferencesHelper;
 
 import static georgi.com.BlogApp.Configs.ServerURLs.POSTS_URL;
 
-public class DeleteMyPost extends AsyncTask<Long, Void, Boolean> {
+public class DeleteMyPost extends AsyncTask<Void, Void, Boolean> {
 
     private Context context;
 
-    public DeleteMyPost(Context context) {
+    private Long postId;
+
+    public DeleteMyPost(Context context, Long postId) {
         this.context = context;
+        this.postId = postId;
     }
 
     @Override
-    protected Boolean doInBackground(Long... id) {
+    protected Boolean doInBackground(Void... voids) {
 
         try {
 
             // Creating the request.
-            HttpRequest httpRequest = new HttpRequest(POSTS_URL + id[0] + "/delete",
+            HttpRequest httpRequest = new HttpRequest(POSTS_URL + "/" + postId + "/delete",
                     new PreferencesHelper(context).getCookie(), "POST");
 
             // Sending the request and getting the response.
@@ -41,7 +44,7 @@ public class DeleteMyPost extends AsyncTask<Long, Void, Boolean> {
             // Converting the response to JSONObject.
             JSONObject resp = new JSONObject(response);
 
-            return resp.getBoolean("deleted");
+            return resp.getBoolean("error");
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -55,20 +58,18 @@ public class DeleteMyPost extends AsyncTask<Long, Void, Boolean> {
 
 
     @Override
-    protected void onPostExecute(Boolean deleted) {
+    protected void onPostExecute(Boolean error) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
-        if(deleted) {
+        if(!error) {
             builder.setTitle("Successful!");
             builder.setMessage("Your post is successfully deleted.");
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
 
-                    Intent intent = new Intent(context, YourPostsActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    context.startActivity(intent);
+                    ((YourPostsActivity) context).deletePostById(postId);
 
                     dialogInterface.dismiss();
                 }

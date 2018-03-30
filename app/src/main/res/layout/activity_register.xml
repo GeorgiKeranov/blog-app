@@ -135,22 +135,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/goToLogin"
-                android:text="@string/already_got_account"
-                android:textSize="18dp"
-                android:layout_marginBottom="5dp"
-                android:clickable="true"
-                android:onClick="onClick"/>
-        </TableRow>
-
-        <TableRow
-            android:gravity="center_horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
             <Button
                 android:id="@+id/but_register"
                 android:text="Register"
@@ -160,6 +144,23 @@
                 android:background="@android:color/holo_red_light"
                 tools:textStyle="bold"
                 android:textColor="@android:color/background_dark"
+                android:onClick="onClick"/>
+        </TableRow>
+
+        <TableRow
+            android:layout_marginTop="10dp"
+            android:gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/goToLogin"
+                android:text="@string/already_got_account"
+                android:textSize="18dp"
+                android:layout_marginBottom="5dp"
+                android:clickable="true"
                 android:onClick="onClick"/>
         </TableRow>
 

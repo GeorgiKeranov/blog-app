@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical" android:layout_width="match_parent"
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <android.support.v7.widget.Toolbar
@@ -10,195 +12,206 @@
         android:background="?attr/colorPrimary"
         android:theme="?attr/actionBarTheme"
         android:minHeight="?attr/actionBarSize"
-        android:id="@+id/edit_account_toolbar"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:id="@+id/edit_account_toolbar" />
 
-    <Button
-        android:text="Set new profile picture"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/edit_account_newPicBut"
-        android:layout_marginTop="46dp"
-        android:layout_alignTop="@+id/edit_account_profilePic"
-        android:layout_toRightOf="@+id/edit_account_profilePic"
-        android:layout_toEndOf="@+id/edit_account_profilePic" />
-
-    <ImageView
-        android:id="@+id/edit_account_profilePic"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginStart="10dp"
-        android:layout_below="@+id/edit_account_toolbar"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <LinearLayout
+    <RelativeLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:layout_above="@+id/edit_account_saveBut"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_height="match_parent"
+        android:layout_margin="5dp">
+
+        <Button
+            android:text="Set new profile picture"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/edit_account_newPicBut"
+            android:layout_marginTop="46dp"
+            android:layout_marginLeft="10dp"
+            android:layout_alignTop="@+id/edit_account_profilePic"
+            android:layout_toRightOf="@+id/edit_account_profilePic"
+            android:layout_toEndOf="@+id/edit_account_profilePic" />
+
+        <ProgressBar
+            android:id="@+id/edit_account_profile_pic_progress_bar"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <ImageView
+            android:id="@+id/edit_account_profilePic"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
         <LinearLayout
-            android:orientation="horizontal"
+            android:id="@+id/edit_account_details"
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:weightSum="1">
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/edit_account_profilePic"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true">
 
-            <TextView
-                android:text="First name"
-                android:textSize="18dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:weightSum="1">
 
-            <EditText
-                android:layout_width="wrap_content"
+                <TextView
+                    android:text="First name"
+                    android:textSize="18dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
+                    android:hint="First name"
+                    android:ems="10"
+                    android:id="@+id/edit_account_firstName"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:weightSum="1">
+
+                <TextView
+                    android:text="Last name"
+                    android:textSize="18dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
+                    android:hint="Last name"
+                    android:ems="10"
+                    android:id="@+id/edit_account_lastName"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:weightSum="1">
+
+                <TextView
+                    android:text="Email"
+                    android:textSize="18dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="Email"
+                    android:ems="10"
+                    android:id="@+id/edit_account_email"
+                    android:layout_weight="1"
+                    android:inputType="textWebEmailAddress" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:weightSum="1">
+
+                <TextView
+                    android:text="New Password"
+                    android:textSize="18dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:hint="Not required"
+                    android:ems="10"
+                    android:id="@+id/edit_account_newPass"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:weightSum="1">
+
+                <TextView
+                    android:text="Confirm"
+                    android:textSize="18dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:hint="Not required"
+                    android:ems="10"
+                    android:id="@+id/edit_account_confirmPass"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:hint="First name"
-                android:ems="10"
-                android:id="@+id/edit_account_firstName"
-                android:layout_weight="1" />
+                android:weightSum="1">
+
+                <TextView
+                    android:text="Current Password"
+                    android:textSize="18dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="58dp"
+                    android:layout_weight="1"/>
+
+                <EditText
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="Required"
+                    android:ems="10"
+                    android:id="@+id/edit_account_currPassword"
+                    android:layout_weight="1"
+                    android:inputType="textPassword" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:weightSum="1">
+        <Button
+            android:layout_centerHorizontal="true"
+            android:text="Save changes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/edit_account_saveBut"
+            android:layout_below="@+id/edit_account_details" />
 
-            <TextView
-                android:text="Last name"
-                android:textSize="18dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:hint="Last name"
-                android:ems="10"
-                android:id="@+id/edit_account_lastName"
-                android:layout_weight="1" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:weightSum="1">
-
-            <TextView
-                android:text="Email"
-                android:textSize="18dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="Email"
-                android:ems="10"
-                android:id="@+id/edit_account_email"
-                android:layout_weight="1"
-                android:inputType="textWebEmailAddress" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:weightSum="1">
-
-            <TextView
-                android:text="New Password"
-                android:textSize="18dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:inputType="textPassword"
-                android:hint="Not required"
-                android:ems="10"
-                android:id="@+id/edit_account_newPass"
-                android:layout_weight="1" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:weightSum="1">
-
-            <TextView
-                android:text="Confirm"
-                android:textSize="18dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:inputType="textPassword"
-                android:hint="Not required"
-                android:ems="10"
-                android:id="@+id/edit_account_confirmPass"
-                android:layout_weight="1" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:weightSum="3">
-
-            <TextView
-                android:text="Current Password"
-                android:textSize="18dp"
-                android:layout_width="wrap_content"
-                android:layout_height="58dp" />
-
-            <EditText
-                android:layout_marginLeft="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="Required"
-                android:ems="10"
-                android:id="@+id/edit_account_currPassword"
-                android:layout_weight="1"
-                android:inputType="textPassword" />
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <Button
-        android:text="Save changes"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/edit_account_saveBut"
-        android:layout_marginLeft="91dp"
-        android:layout_marginStart="91dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignLeft="@+id/edit_account_profilePic"
-        android:layout_alignStart="@+id/edit_account_profilePic"
-        android:layout_marginBottom="5dp" />
-
-</RelativeLayout>
+    </RelativeLayout>
+</LinearLayout>

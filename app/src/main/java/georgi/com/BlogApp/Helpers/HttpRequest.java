@@ -83,9 +83,20 @@ public class HttpRequest {
 
         // Response code != 200 OK
         else {
+
+            BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(connection.getInputStream(), "UTF-8")
+            );
+
+            StringBuilder builder = new StringBuilder();
+            String line;
+
+            while((line = reader.readLine()) != null) builder.append(line);
+            reader.close();
+
             connection.disconnect();
 
-            throw new IOException("Response is not OK : " + connection.getResponseMessage());
+            throw new IOException("Response is not OK : " + connection.getResponseMessage() + " " + builder.toString());
         }
 
     }

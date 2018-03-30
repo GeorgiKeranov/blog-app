@@ -9,9 +9,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 
 import java.util.List;
 
@@ -47,7 +51,7 @@ public class YourPostsAdapter extends RecyclerView.Adapter<YourPostsAdapter.MyVi
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(final MyViewHolder holder, int position) {
 
         Post curPost = posts.get(position);
 
@@ -57,6 +61,21 @@ public class YourPostsAdapter extends RecyclerView.Adapter<YourPostsAdapter.MyVi
         Glide.with(context)
                 .load(curPost.getPictureUrl())
                 .override(400, 400)
+                .listener(new RequestListener<String, GlideDrawable>() {
+                    @Override
+                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                        holder.postImageProgressBar.setVisibility(View.GONE);
+                        holder.postImage.setVisibility(View.VISIBLE);
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                        holder.postImageProgressBar.setVisibility(View.GONE);
+                        holder.postImage.setVisibility(View.VISIBLE);
+                        return false;
+                    }
+                })
                 .into(holder.postImage);
 
         holder.title.setText(curPost.getSummaryTitle());
@@ -71,6 +90,7 @@ public class YourPostsAdapter extends RecyclerView.Adapter<YourPostsAdapter.MyVi
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
+        private ProgressBar postImageProgressBar;
         private ImageView postImage, editPost, deletePost;
         private TextView title, description, date;
 
@@ -78,6 +98,8 @@ public class YourPostsAdapter extends RecyclerView.Adapter<YourPostsAdapter.MyVi
 
         public MyViewHolder(View itemView) {
             super(itemView);
+
+            postImageProgressBar = (ProgressBar) itemView.findViewById(R.id.your_post_image_progress_bar);
 
             postImage = (ImageView) itemView.findViewById(R.id.your_post_image);
             editPost = (ImageView) itemView.findViewById(R.id.your_post_row_edit);
@@ -113,8 +135,8 @@ public class YourPostsAdapter extends RecyclerView.Adapter<YourPostsAdapter.MyVi
                         public void onClick(DialogInterface dialogInterface, int i) {
                             // AsyncThread that sends to server
                             // request to delete post by given id.
-                            DeleteMyPost deleteMyPost = new DeleteMyPost(context);
-                            deleteMyPost.execute(postId); // postId : id of the post selected.
+                            DeleteMyPost deleteMyPost = new DeleteMyPost(context, postId);
+                            deleteMyPost.execute(); // postId : id of the post selected.
 
                             dialogInterface.dismiss();
                         }

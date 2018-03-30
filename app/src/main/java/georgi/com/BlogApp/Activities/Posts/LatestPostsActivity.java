@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -15,18 +16,17 @@ import java.util.List;
 import georgi.com.BlogApp.Activities.Account.AccountActivity;
 import georgi.com.BlogApp.Activities.Account.EditAccountActivity;
 import georgi.com.BlogApp.Adapters.PostsAdapter;
-import georgi.com.BlogApp.Helpers.PreferencesHelper;
 import georgi.com.BlogApp.POJO.Post;
 import georgi.com.BlogApp.R;
-import georgi.com.BlogApp.Threads.Posts.Latest5Posts;
-import georgi.com.BlogApp.Threads.Posts.Update5Posts;
+import georgi.com.BlogApp.Threads.Posts.PostsOnPage;
 import georgi.com.BlogApp.Threads.Security.Logout;
-
-import static georgi.com.BlogApp.Configs.ServerURLs.LATEST_POSTS_URL;
-import static georgi.com.BlogApp.Configs.ServerURLs.UPDATE_5POSTS_URL;
+;
+import static georgi.com.BlogApp.Configs.ServerURLs.POSTS_URL;
 
 
 public class LatestPostsActivity extends AppCompatActivity {
+
+    private String className = this.getClass().getSimpleName();
 
     // The list of posts that is used for the PostsAdapter.
     private List<Post> posts;
@@ -34,6 +34,9 @@ public class LatestPostsActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private PostsAdapter adapter;
     private GridLayoutManager gridLayout;
+
+    public int page = 0;
+    public boolean morePages = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,9 +58,7 @@ public class LatestPostsActivity extends AppCompatActivity {
 
         recyclerView.setAdapter(adapter); // Setting the adapter.
 
-        // Getting latest 5 posts.
-        getLatest5Posts();
-
+        getPostsByPage();
 
         // On scroll in posts it will check if the last item is visible
         // and if it is it will update ui thread with 5 new posts.
@@ -67,7 +68,7 @@ public class LatestPostsActivity extends AppCompatActivity {
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
 
                 if (gridLayout.findLastVisibleItemPosition() == posts.size() - 1) {
-                    updateWith5Posts();
+                    getPostsByPage();
                 }
 
             }
@@ -75,23 +76,16 @@ public class LatestPostsActivity extends AppCompatActivity {
 
     }
 
-    private void getLatest5Posts() {
+    private void getPostsByPage() {
 
-        // This thread is getting the latest 5 posts from the server
-        // And it is updating them to the UI thread.
-        Latest5Posts getLatestPosts = new Latest5Posts(this, recyclerView);
-        getLatestPosts.execute(LATEST_POSTS_URL);
-    }
+        if(morePages) {
+            // This thread is getting the 10 posts on given page from the server
+            // And it is updating them to the UI thread.
+            PostsOnPage postsOnPage = new PostsOnPage(this, recyclerView, className);
+            postsOnPage.execute(POSTS_URL + "?page=" + page);
 
-    private void updateWith5Posts() {
-
-        // If list of posts is empty don't do anything.
-        if(posts.size() <= 0) return;
-
-        // This thread is getting the next 5 posts after the
-        // last post. And it is doing this by passing the id of the last seen post.
-        Update5Posts update5Posts = new Update5Posts(this, recyclerView);
-        update5Posts.execute(UPDATE_5POSTS_URL, "" + posts.get(posts.size()-1).getId());
+            page++;
+        }
     }
 
     @Override
@@ -136,17 +130,6 @@ public class LatestPostsActivity extends AppCompatActivity {
         if (intent != null) startActivity(intent);
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        // Posts are cleared.
-        posts.clear();
-
-        // And getting the latest 5 posts.
-        getLatest5Posts();
     }
 
 }

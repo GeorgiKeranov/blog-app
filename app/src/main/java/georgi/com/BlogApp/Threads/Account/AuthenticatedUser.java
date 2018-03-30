@@ -2,14 +2,16 @@ package georgi.com.BlogApp.Threads.Account;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.google.gson.Gson;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
 
@@ -18,8 +20,6 @@ import georgi.com.BlogApp.Helpers.PreferencesHelper;
 import georgi.com.BlogApp.POJO.User;
 
 import static georgi.com.BlogApp.Configs.ServerURLs.ACCOUNT_URL;
-import static georgi.com.BlogApp.Configs.ServerURLs.DEFAULT_USER_IMG;
-import static georgi.com.BlogApp.Configs.ServerURLs.USER_IMAGES_URL;
 
 // This thread is sending GET request to get the authenticated user's
 // details like first name , last name  ... And setting them to the UI thread.
@@ -27,17 +27,18 @@ public class AuthenticatedUser extends AsyncTask<Void, Void, User>{
 
     private Context context;
 
-    private ImageView profile;
+    private ProgressBar userImageProgressBar;
+    private ImageView userImage;
     private TextView firstName, lastName, email;
 
-    public AuthenticatedUser(Context context,
-                             ImageView profile,
-                             TextView firstName,
-                             TextView lastName,
-                             TextView email) {
+    public AuthenticatedUser(Context context, ProgressBar userImageProgressBar, ImageView userImage,
+                             TextView firstName, TextView lastName, TextView email) {
 
         this.context = context;
-        this.profile = profile;
+
+        this.userImageProgressBar = userImageProgressBar;
+        this.userImage = userImage;
+
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -89,6 +90,21 @@ public class AuthenticatedUser extends AsyncTask<Void, Void, User>{
         Glide.with(context)
                 .load(user.getProfPicUrl())
                 .override(size, size)
-                .into(profile);
+                .listener(new RequestListener<String, GlideDrawable>() {
+                    @Override
+                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                        userImageProgressBar.setVisibility(View.GONE);
+                        userImage.setVisibility(View.VISIBLE);
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                        userImageProgressBar.setVisibility(View.GONE);
+                        userImage.setVisibility(View.VISIBLE);
+                        return false;
+                    }
+                })
+                .into(userImage);
     }
 }

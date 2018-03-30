@@ -28,7 +28,7 @@ public class CommentsOnPost extends AsyncTask<Long, Void, List<Comment>> {
     // This recyclerView is used for the comments.
     private RecyclerView commentsRecyclerView;
 
-    // This is the id of the post that we want comments.
+    // This is the id of the post from who we will get comments.
     private Long postId;
 
     public CommentsOnPost(Context context, RecyclerView commentsRecyclerView) {
@@ -45,7 +45,7 @@ public class CommentsOnPost extends AsyncTask<Long, Void, List<Comment>> {
 
             // Sending the request to get comments on post with id of the post.
             HttpRequest httpRequest =
-                    new HttpRequest(POSTS_URL + postId + "/comments",
+                    new HttpRequest(POSTS_URL + "/" + postId + "/comments",
                             new PreferencesHelper(context).getCookie(), "GET");
 
             // Sending the request and getting the response.

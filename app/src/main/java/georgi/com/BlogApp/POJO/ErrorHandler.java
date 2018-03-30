@@ -7,6 +7,10 @@ public class ErrorHandler {
 
     private String error_msg;
 
+    public ErrorHandler(Boolean error) {
+        this.error = error;
+    }
+
     public Boolean getError() {
         return error;
     }

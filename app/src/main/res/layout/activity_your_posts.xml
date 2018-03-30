@@ -15,8 +15,6 @@
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="80dp"
-        android:id="@+id/your_posts_recyclerView" />
+        android:id="@+id/your_posts_recyclerView"
+        android:layout_below="@id/your_posts_toolbar"/>
 </RelativeLayout>

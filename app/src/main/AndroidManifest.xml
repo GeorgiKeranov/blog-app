@@ -14,7 +14,8 @@
 
         <activity
             android:name=".Activities.MainActivity"
-            android:theme="@android:style/Theme.NoTitleBar">
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,57 +26,65 @@
 
         <activity
             android:name=".Activities.Account.LoginActivity"
-            android:windowSoftInputMode="adjustPan" >
+            android:screenOrientation="portrait">
 
         </activity>
 
 
         <activity
             android:name=".Activities.Account.RegisterActivity"
-            android:windowSoftInputMode="adjustPan" >
+            android:screenOrientation="portrait">
 
         </activity>
 
 
         <activity
-            android:name=".Activities.Posts.LatestPostsActivity">
+            android:name=".Activities.Posts.LatestPostsActivity"
+            android:screenOrientation="portrait">
 
         </activity>
 
 
-        <activity android:name=".Activities.Account.AccountActivity">
+        <activity android:name=".Activities.Account.AccountActivity"
+            android:screenOrientation="portrait">
 
         </activity>
 
 
         <activity
             android:name=".Activities.Posts.PostActivity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan">
 
         </activity>
 
 
-        <activity android:name=".Activities.Posts.CreateNewPostActivity">
+        <activity android:name=".Activities.Posts.CreateNewPostActivity"
+            android:screenOrientation="portrait">
 
         </activity>
 
 
-        <activity android:name=".Activities.Posts.YourPostsActivity">
+        <activity android:name=".Activities.Posts.YourPostsActivity"
+            android:screenOrientation="portrait">
 
         </activity>
 
 
-        <activity android:name=".Activities.Posts.EditPostActivity">
+        <activity android:name=".Activities.Posts.EditPostActivity"
+            android:screenOrientation="portrait">
 
         </activity>
 
 
-        <activity android:name=".Activities.Account.ViewOtherUserActivity">
+        <activity android:name=".Activities.Account.ViewOtherUserActivity"
+            android:screenOrientation="portrait">
 
         </activity>
 
 
-        <activity android:name=".Activities.Account.EditAccountActivity">
+        <activity android:name=".Activities.Account.EditAccountActivity"
+            android:screenOrientation="portrait">
 
         </activity>
 

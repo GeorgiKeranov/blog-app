@@ -41,7 +41,7 @@ public class CommentOnPost extends AsyncTask<String, Void, ErrorHandler>{
 
             // Sending POST request to the server.
             HttpRequest httpRequest =
-                    new HttpRequest(POSTS_URL + id + "/comment",
+                    new HttpRequest(POSTS_URL + "/" + id + "/comment",
                             new PreferencesHelper(context).getCookie(), "POST");
 
             // Adding the actual comment to the request.
