@@ -12,4 +12,4 @@ For scrolling lists with data.
 
 # Pictures and video
 ## Pictures -> https://georgikeranov.com/project/Blog
-## Video -> https://www.youtube.com/watch?v=hClXpGD-3V0
+## Video -> https://www.youtube.com/watch?v=_EsLyXYh-6I
