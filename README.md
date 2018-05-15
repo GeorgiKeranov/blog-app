@@ -11,5 +11,5 @@ For image cache and load.
 For scrolling lists with data.
 
 # Pictures and video
-## Pictures -> https://georgikeranov.com/project/Blog
+## Pictures -> https://georgikeranov.com/project/BlogApp%20%28Android%29
 ## Video -> https://www.youtube.com/watch?v=_EsLyXYh-6I
