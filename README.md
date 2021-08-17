@@ -2,6 +2,12 @@
 
 BlogApp is android application that uses REST API from https://github.com/GeorgiKeranov/Blog.
 
+## Table of contents
+- [Technologies used](#technologies-used)
+- [Functionalities](#functionalities)
+- [Video Preview](#video-preview)
+- [Pictures](#pictures)
+
 ## Technologies used
 - Java
 - XML
@@ -11,10 +17,19 @@ BlogApp is android application that uses REST API from https://github.com/Georgi
 - Glide
 - RecyclerView
 
-## Vieo Preview
+## Functionalities
+- Register
+- Login
+- Create posts with images
+- Edit posts
+- Add profile picture
+- Edit account
+- Comment and reply on posts
+- View posts by all users
+
+## Video Preview
 You can view how the app looks like and function in this [youtube video](https://www.youtube.com/watch?v=_EsLyXYh-6I)
 
-## Pictures
 ## Pictures
 Login           |  Register
 :-------------------------:|:-------------------------:
