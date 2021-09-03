@@ -28,7 +28,7 @@ BlogApp is android application that uses REST API from my [other project "Blog"]
 - View posts by all users
 
 ## Video Preview
-You can view how the app looks like and function in this [youtube video](https://www.youtube.com/watch?v=_EsLyXYh-6I)
+You can view how the app looks like and functions in this [youtube video](https://www.youtube.com/watch?v=_EsLyXYh-6I)
 
 ## Pictures
 Login           |  Register
