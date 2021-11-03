@@ -1,6 +1,6 @@
-# BlogApp
+# Blog App
 
-BlogApp is android application that uses REST API from my [other project "Blog"](https://github.com/GeorgiKeranov/Blog).
+Blog App is android application that uses REST API from my [other project "Blog CMS"](https://github.com/GeorgiKeranov/blog-cms).
 
 ## Table of contents
 - [Technologies used](#technologies-used)
